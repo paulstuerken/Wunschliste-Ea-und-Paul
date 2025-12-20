@@ -4,175 +4,216 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Unsere Wunschliste</title>
-  button.undo {
-  background: #ff4fa3;
-  color: #ffffff;
-}
+
   <style>
     body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial;
-  background: #f7f6f3;
-  color: #2b2b2b;
-}
-    .wrap { max-width: 800px; margin: 40px auto; padding: 0 16px; }
-    h1 { font-size: 22px; }
-    h2 { font-size: 16px; margin-top: 30px; }
-    .item {
-  background: #ffffff;
-  border: 1px solid #e6e4df;
-  border-radius: 16px;
-  padding: 16px;
-  margin: 16px 0;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 16px;
-}
-button {
-  background: #8ecae6;        /* hellblau */
-  color: #0b2233;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: 13px;
-}
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial;
+      background: #f7f6f3;
+      color: #2b2b2b;
+      margin: 0;
+    }
 
-button:disabled {
-  background: #ff4fa3;   /* knall pink = vergeben */
-  color: #ffffff;
-  cursor: not-allowed;
-}
-    .status { font-size:12px; color:#555; margin-top:6px; }
+    .wrap {
+      max-width: 820px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-top: 36px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .item {
+      background: #ffffff;
+      border: 1px solid #e6e4df;
+      border-radius: 16px;
+      padding: 16px;
+      margin: 16px 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 16px;
+    }
+
+    a {
+      color: #2b2b2b;
+      font-size: 13px;
+    }
+
+    .status {
+      font-size: 12px;
+      color: #777;
+      margin-top: 6px;
+    }
+
+    button {
+      background: #8ecae6;   /* hellblau = reservieren */
+      color: #0b2233;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    button:disabled {
+      background: #d6d4cf;   /* grau = vergeben */
+      color: #777;
+      cursor: not-allowed;
+    }
+
+    button.undo {
+      background: #ff4fa3;   /* pink = rückgängig */
+      color: #ffffff;
+    }
   </style>
 </head>
+
 <body>
-<div class="wrap">
-  <h1>Wunschliste von Ea und Paul</h1>
-  <p>Falls ihr uns etwas schenken möchtet, freuen wir uns sehr über einen Blick auf diese Liste.
-Die Geschenke können natürlich ganz frei ausgewählt und gekauft werden.
-Wenn ihr euch für etwas entscheidet, könnt ihr es hier gern als reserviert markieren, damit es nicht doppelt verschenkt wird.</p>
+  <div class="wrap">
+    <h1>Unsere Hochzeitswunschliste</h1>
+    <p>
+      Geschenke sind natürlich kein Muss.
+      Falls ihr uns dennoch eine Freude machen möchtet, haben wir hier ein paar Ideen gesammelt.
+      Die Auswahl und der Kauf sind ganz euch überlassen – eine kurze Reservierung hilft lediglich,
+      Doppelungen zu vermeiden.
+    </p>
 
-  <div id="list">Lade Liste…</div>
-</div>
+    <div id="list">Lade Liste…</div>
+  </div>
 
-<script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-const SUPABASE_URL = "https://tpfovcyqqhqlyzcopiwt.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwZm92Y3lxcWhxbHl6Y29waXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyMzQ0NDgsImV4cCI6MjA4MTgxMDQ0OH0.UBAnfI_s7vQkPMDmwZHLVTYUkmZIAMvS6sK0w60Cvps";
+    const SUPABASE_URL = "HIER_DEINE_SUPABASE_URL";
+    const SUPABASE_ANON_KEY = "HIER_DEIN_ANON_KEY";
 
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const list = document.getElementById("list");
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const list = document.getElementById("list");
 
-async function load() {
-  const { data, error } = await sb.from("gifts").select("*").order("category").order("title");
-  if (error) { list.textContent = "Fehler beim Laden"; console.error(error); return; }
-  if (!data || data.length === 0) { list.textContent = "Noch keine Geschenke eingetragen."; return; }
+    function getLocalToken(id) {
+      return localStorage.getItem("gift_token_" + id);
+    }
 
-  const cats = {};
-  data.forEach(g => (cats[g.category] ??= []).push(g));
+    function setLocalToken(id, token) {
+      localStorage.setItem("gift_token_" + id, token);
+    }
 
-  let html = "";
-  Object.keys(cats).forEach(c => {
-    html += `<h2>${c}</h2>`;
-    cats[c].forEach(g => {
-      html += `
-        <div class="item">
-          <div>
-            <div>${g.title}</div>
-            <a href="${g.url}" target="_blank" rel="noopener">zum Shop</a>
-            <div class="status">${g.reserved ? "reserviert" : "frei"}</div>
-          </div>
-          ${(() => {
-  const myToken = getLocalToken(g.id);
-  const reservedByMe =
-    g.reserved &&
-    g.reserved_token &&
-    myToken &&
-    g.reserved_token === myToken;
+    function clearLocalToken(id) {
+      localStorage.removeItem("gift_token_" + id);
+    }
 
-  if (!g.reserved) {
-    return `<button onclick="reserveGift('${g.id}')">reservieren</button>`;
-  }
+    function randomToken() {
+      const arr = new Uint8Array(16);
+      crypto.getRandomValues(arr);
+      return Array.from(arr).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
 
- if (reservedByMe) {
-  return `<button class="undo" onclick="unreserveGift('${g.id}')">rückgängig</button>`;
-}
+    async function load() {
+      const { data } = await sb
+        .from("gifts")
+        .select("*")
+        .order("category")
+        .order("title");
 
-  return `<button disabled>vergeben</button>`;
-})()}
-        </div>`;
-    });
-  });
+      if (!data || data.length === 0) {
+        list.textContent = "Noch keine Geschenke eingetragen.";
+        return;
+      }
 
-  list.innerHTML = html;
-}
+      const cats = {};
+      data.forEach(g => (cats[g.category] ??= []).push(g));
 
-function getLocalToken(id) {
-  return localStorage.getItem("gift_token_" + id) || null;
-}
-function setLocalToken(id, token) {
-  localStorage.setItem("gift_token_" + id, token);
-}
-function clearLocalToken(id) {
-  localStorage.removeItem("gift_token_" + id);
-}
-function randomToken() {
-  const arr = new Uint8Array(16);
-  crypto.getRandomValues(arr);
-  return Array.from(arr).map(b => b.toString(16).padStart(2, "0")).join("");
-}
+      let html = "";
+      for (const c in cats) {
+        html += `<h2>${c}</h2>`;
+        cats[c].forEach(g => {
+          const myToken = getLocalToken(g.id);
+          const reservedByMe =
+            g.reserved &&
+            g.reserved_token &&
+            myToken &&
+            g.reserved_token === myToken;
 
-window.reserveGift = async (id) => {
-  const ok = confirm("Möchtest du dieses Geschenk wirklich reservieren?");
-  if (!ok) return;
+          let buttonHtml = "";
+          if (!g.reserved) {
+            buttonHtml = `<button onclick="reserveGift('${g.id}')">reservieren</button>`;
+          } else if (reservedByMe) {
+            buttonHtml = `<button class="undo" onclick="unreserveGift('${g.id}')">rückgängig</button>`;
+          } else {
+            buttonHtml = `<button disabled>vergeben</button>`;
+          }
 
-  const token = randomToken();
+          html += `
+            <div class="item">
+              <div>
+                <div>${g.title}</div>
+                <a href="${g.url}" target="_blank" rel="noopener">zum Shop</a>
+                <div class="status">${g.reserved ? "reserviert" : "frei"}</div>
+              </div>
+              ${buttonHtml}
+            </div>
+          `;
+        });
+      }
 
-  const { error } = await sb
-    .from("gifts")
-    .update({ reserved: true, reserved_token: token, reserved_at: new Date().toISOString() })
-    .eq("id", id)
-    .eq("reserved", false);
+      list.innerHTML = html;
+    }
 
-  if (error) {
-    alert("Konnte nicht reservieren. Bitte neu laden.");
-    console.error(error);
-    return;
-  }
+    window.reserveGift = async (id) => {
+      if (!confirm("Möchtest du dieses Geschenk wirklich reservieren?")) return;
 
-  setLocalToken(id, token);
-  load();
-};
+      const token = randomToken();
 
-window.unreserveGift = async (id) => {
-  const ok = confirm("Reservierung wirklich rückgängig machen?");
-  if (!ok) return;
+      await sb
+        .from("gifts")
+        .update({
+          reserved: true,
+          reserved_token: token,
+          reserved_at: new Date().toISOString()
+        })
+        .eq("id", id)
+        .eq("reserved", false);
 
-  const token = getLocalToken(id);
-  if (!token) {
-    alert("Du kannst nur deine eigene Reservierung rückgängig machen.");
-    return;
-  }
+      setLocalToken(id, token);
+      load();
+    };
 
-  const { error } = await sb
-    .from("gifts")
-    .update({ reserved: false, reserved_token: null, reserved_at: null })
-    .eq("id", id)
-    .eq("reserved_token", token);
+    window.unreserveGift = async (id) => {
+      if (!confirm("Reservierung wirklich rückgängig machen?")) return;
 
-  if (error) {
-    alert("Konnte nicht freigeben. Bitte neu laden.");
-    console.error(error);
-    return;
-  }
+      const token = getLocalToken(id);
+      if (!token) return;
 
-  clearLocalToken(id);
-  load();
-};
+      await sb
+        .from("gifts")
+        .update({
+          reserved: false,
+          reserved_token: null,
+          reserved_at: null
+        })
+        .eq("id", id)
+        .eq("reserved_token", token);
 
-load();
-</script>
+      clearLocalToken(id);
+      load();
+    };
+
+    load();
+  </script>
 </body>
 </html>
