@@ -54,9 +54,24 @@ async function load() {
             <a href="${g.url}" target="_blank" rel="noopener">zum Shop</a>
             <div class="status">${g.reserved ? "reserviert" : "frei"}</div>
           </div>
-          <button ${g.reserved ? "disabled" : ""} onclick="reserveGift('${g.id}')">
-            ${g.reserved ? "vergeben" : "reservieren"}
-          </button>
+          ${(() => {
+  const myToken = getLocalToken(g.id);
+  const reservedByMe =
+    g.reserved &&
+    g.reserved_token &&
+    myToken &&
+    g.reserved_token === myToken;
+
+  if (!g.reserved) {
+    return `<button onclick="reserveGift('${g.id}')">reservieren</button>`;
+  }
+
+  if (reservedByMe) {
+    return `<button onclick="unreserveGift('${g.id}')">rückgängig</button>`;
+  }
+
+  return `<button disabled>vergeben</button>`;
+})()}
         </div>`;
     });
   });
@@ -64,9 +79,66 @@ async function load() {
   list.innerHTML = html;
 }
 
+function getLocalToken(id) {
+  return localStorage.getItem("gift_token_" + id) || null;
+}
+function setLocalToken(id, token) {
+  localStorage.setItem("gift_token_" + id, token);
+}
+function clearLocalToken(id) {
+  localStorage.removeItem("gift_token_" + id);
+}
+function randomToken() {
+  const arr = new Uint8Array(16);
+  crypto.getRandomValues(arr);
+  return Array.from(arr).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
 window.reserveGift = async (id) => {
-  const { error } = await sb.from("gifts").update({ reserved: true }).eq("id", id).eq("reserved", false);
-  if (error) { alert("Konnte nicht reservieren. Bitte neu laden."); console.error(error); }
+  const ok = confirm("Möchtest du dieses Geschenk wirklich reservieren?");
+  if (!ok) return;
+
+  const token = randomToken();
+
+  const { error } = await sb
+    .from("gifts")
+    .update({ reserved: true, reserved_token: token, reserved_at: new Date().toISOString() })
+    .eq("id", id)
+    .eq("reserved", false);
+
+  if (error) {
+    alert("Konnte nicht reservieren. Bitte neu laden.");
+    console.error(error);
+    return;
+  }
+
+  setLocalToken(id, token);
+  load();
+};
+
+window.unreserveGift = async (id) => {
+  const ok = confirm("Reservierung wirklich rückgängig machen?");
+  if (!ok) return;
+
+  const token = getLocalToken(id);
+  if (!token) {
+    alert("Du kannst nur deine eigene Reservierung rückgängig machen.");
+    return;
+  }
+
+  const { error } = await sb
+    .from("gifts")
+    .update({ reserved: false, reserved_token: null, reserved_at: null })
+    .eq("id", id)
+    .eq("reserved_token", token);
+
+  if (error) {
+    alert("Konnte nicht freigeben. Bitte neu laden.");
+    console.error(error);
+    return;
+  }
+
+  clearLocalToken(id);
   load();
 };
 
