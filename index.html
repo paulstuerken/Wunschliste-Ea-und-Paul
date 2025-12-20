@@ -37,6 +37,14 @@
       line-height: 1.5;
     }
 
+    .hero {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 18px;
+      margin-bottom: 32px;
+    }
+
     .item {
       background: #ffffff;
       border: 1px solid #e6e4df;
@@ -61,7 +69,7 @@
     }
 
     button {
-      background: #8ecae6;   /* hellblau = reservieren */
+      background: #8ecae6;
       color: #0b2233;
       border: none;
       padding: 10px 16px;
@@ -71,13 +79,13 @@
     }
 
     button:disabled {
-      background: #d6d4cf;   /* grau = vergeben */
+      background: #d6d4cf;
       color: #777;
       cursor: not-allowed;
     }
 
     button.undo {
-      background: #ff4fa3;   /* pink = rückgängig */
+      background: #ff4fa3;
       color: #ffffff;
     }
   </style>
@@ -85,6 +93,14 @@
 
 <body>
   <div class="wrap">
+
+    <!-- BRAUTPAAR BILD -->
+    <img
+      src="https://drive.google.com/uc?export=view&id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0"
+      alt="Brautpaar"
+      class="hero"
+    >
+
     <h1>Unsere Hochzeitswunschliste</h1>
     <p>
       Geschenke sind natürlich kein Muss.
