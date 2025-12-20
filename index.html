@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unsere Wunschliste</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, Arial; background:#fff; color:#111; }
+    .wrap { max-width: 800px; margin: 40px auto; padding: 0 16px; }
+    h1 { font-size: 22px; }
+    h2 { font-size: 16px; margin-top: 30px; }
+    .item { border:1px solid #eee; border-radius:10px; padding:12px; margin:10px 0; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    a { color:#111; }
+    button { background:#111; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+    button[disabled] { opacity:.4; cursor:not-allowed; }
+    .status { font-size:12px; color:#555; margin-top:6px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Wunschliste von Ea und Paul</h1>
+  <p>Bitte kauft die Geschenke direkt über den jeweiligen Shop-Link und klickt danach auf reservieren. Wir speichern keine Namen, nur ob ein Geschenk frei oder reserviert ist.</p>
+
+  <div id="list">Lade Liste…</div>
+</div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const SUPABASE_URL = "https://tpfovcyqqhqlyzcopiwt.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwZm92Y3lxcWhxbHl6Y29waXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyMzQ0NDgsImV4cCI6MjA4MTgxMDQ0OH0.UBAnfI_s7vQkPMDmwZHLVTYUkmZIAMvS6sK0w60Cvps";
+
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const list = document.getElementById("list");
+
+async function load() {
+  const { data, error } = await sb.from("gifts").select("*").order("category").order("title");
+  if (error) { list.textContent = "Fehler beim Laden"; console.error(error); return; }
+  if (!data || data.length === 0) { list.textContent = "Noch keine Geschenke eingetragen."; return; }
+
+  const cats = {};
+  data.forEach(g => (cats[g.category] ??= []).push(g));
+
+  let html = "";
+  Object.keys(cats).forEach(c => {
+    html += `<h2>${c}</h2>`;
+    cats[c].forEach(g => {
+      html += `
+        <div class="item">
+          <div>
+            <div>${g.title}</div>
+            <a href="${g.url}" target="_blank" rel="noopener">zum Shop</a>
+            <div class="status">${g.reserved ? "reserviert" : "frei"}</div>
+          </div>
+          <button ${g.reserved ? "disabled" : ""} onclick="reserveGift('${g.id}')">
+            ${g.reserved ? "vergeben" : "reservieren"}
+          </button>
+        </div>`;
+    });
+  });
+
+  list.innerHTML = html;
+}
+
+window.reserveGift = async (id) => {
+  const { error } = await sb.from("gifts").update({ reserved: true }).eq("id", id).eq("reserved", false);
+  if (error) { alert("Konnte nicht reservieren. Bitte neu laden."); console.error(error); }
+  load();
+};
+
+load();
+</script>
+</body>
+</html>
