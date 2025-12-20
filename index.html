@@ -92,9 +92,9 @@ async function load() {
     return `<button onclick="reserveGift('${g.id}')">reservieren</button>`;
   }
 
-  if (reservedByMe) {
-    return `<button onclick="unreserveGift('${g.id}')">rückgängig</button>`;
-  }
+ if (reservedByMe) {
+  return `<button class="undo" onclick="unreserveGift('${g.id}')">rückgängig</button>`;
+}
 
   return `<button disabled>vergeben</button>`;
 })()}
