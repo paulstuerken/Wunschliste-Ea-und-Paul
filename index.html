@@ -68,6 +68,12 @@
       margin-top: 6px;
     }
 
+    .price {
+      font-size: 13px;
+      color: #555;
+      margin-top: 4px;
+    }
+
     button {
       background: #8ecae6;
       color: #0b2233;
@@ -93,6 +99,7 @@
 
 <body>
   <div class="wrap">
+
     <img
       src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000"
       alt="Brautpaar"
@@ -119,6 +126,15 @@
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const list = document.getElementById("list");
 
+    function formatPrice(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return "";
+      return new Intl.NumberFormat("de-DE", {
+        style: "currency",
+        currency: "EUR"
+      }).format(n);
+    }
+
     function getLocalToken(id) {
       return localStorage.getItem("gift_token_" + id);
     }
@@ -134,7 +150,9 @@
     function randomToken() {
       const arr = new Uint8Array(16);
       crypto.getRandomValues(arr);
-      return Array.from(arr).map(b => b.toString(16).padStart(2, "0")).join("");
+      return Array.from(arr)
+        .map(b => b.toString(16).padStart(2, "0"))
+        .join("");
     }
 
     async function load() {
@@ -182,6 +200,7 @@
             <div class="item">
               <div>
                 <div>${g.title}</div>
+                ${g.price != null ? `<div class="price">${formatPrice(g.price)}</div>` : ``}
                 <a href="${g.url}" target="_blank" rel="noopener">zum Shop</a>
                 <div class="status">${g.reserved ? "reserviert" : "frei"}</div>
               </div>
