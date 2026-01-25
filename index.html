@@ -68,7 +68,7 @@
       margin-top: 6px;
     }
 
-    .price {
+    .preis {
       font-size: 13px;
       color: #555;
       margin-top: 4px;
@@ -125,15 +125,6 @@
 
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const list = document.getElementById("list");
-
-    function formatPrice(value) {
-      const n = Number(value);
-      if (!Number.isFinite(n)) return "";
-      return new Intl.NumberFormat("de-DE", {
-        style: "currency",
-        currency: "EUR"
-      }).format(n);
-    }
 
     function getLocalToken(id) {
       return localStorage.getItem("gift_token_" + id);
@@ -200,7 +191,7 @@
             <div class="item">
               <div>
                 <div>${g.title}</div>
-                ${g.price != null ? `<div class="price">${formatPrice(g.price)}</div>` : ``}
+                ${g.Preis ? `<div class="preis">${g.Preis}</div>` : ``}
                 <a href="${g.url}" target="_blank" rel="noopener">zum Shop</a>
                 <div class="status">${g.reserved ? "reserviert" : "frei"}</div>
               </div>
