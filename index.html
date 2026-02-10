@@ -608,7 +608,9 @@
     const state = {
       gifts: [],
       reservations: [],
-      allReservations: [], // Admin only
+      contributions: [], // New for group gifts
+      allReservations: [],
+      allContributions: [], // Admin only
       userPins: [],
       filter: { search: "", showFreeOnly: false, showMineOnly: false },
       sort: "cat",
@@ -618,10 +620,39 @@
 
     /* --- Helpers --- */
     function loadPins() { try { state.userPins = JSON.parse(localStorage.getItem("user_pins") || "[]"); } catch (e) { state.userPins = []; } }
-    function savePin(pin) { if (!state.userPins.includes(pin)) { state.userPins.push(pin); localStorage.setItem("user_pins", JSON.stringify(state.userPins)); } }
+    function savePin(pin) {
+      if (!state.userPins.includes(pin)) {
+        state.userPins.push(pin);
+        localStorage.setItem("user_pins", JSON.stringify(state.userPins));
+      }
+    }
 
-    function getAvailable(g) { return Math.max(0, (g.quantity || 1) - (g.reserved_quantity || 0)); }
-    function isReservedByMe(g) { return state.reservations.some(r => r.gift_id === g.id && state.userPins.includes(r.pin)); }
+    function getAvailable(g) {
+      if (g.is_group_gift) {
+        // Logic for group gift availability? 
+        // It's always "available" for contribution unless specific logic.
+        // But for sorting/filtering, let's say available if not fully funded?
+        const current = getContributionTotal(g.id);
+        if (g.target_amount > 0 && current >= g.target_amount) return 0; // Fully funded
+        return 1; // Available
+      }
+      return Math.max(0, (g.quantity || 1) - (g.reserved_quantity || 0));
+    }
+
+    function getContributionTotal(giftId) {
+      const list = state.isAdmin ? state.allContributions : state.contributions;
+      // Note: Normal user usually only fetches their own if we filter? 
+      // Wait, for progress bar we need ALL contributions sum.
+      // So standard fetch must get all contributions (public info).
+      return state.contributions.filter(c => c.gift_id === giftId).reduce((sum, c) => sum + (parseFloat(c.amount) || 0), 0);
+    }
+
+    function isReservedByMe(g) {
+      if (g.is_group_gift) {
+        return state.contributions.some(c => c.gift_id === g.id && state.userPins.includes(c.pin));
+      }
+      return state.reservations.some(r => r.gift_id === g.id && state.userPins.includes(r.pin));
+    }
 
     function parsePrice(s) {
       if (!s) return Infinity;
@@ -669,7 +700,7 @@
         const { error: insErr } = await sb.from("reservations").insert({ gift_id: id, pin: pin, qty: 1 });
         if (insErr) {
           console.error(insErr);
-          if (insErr.code === '23505') showToast("Code bereits vergeben? Bitte ändern."); // Constraint code
+          if (insErr.code === '23505') showToast("Code bereits vergeben? Bitte ändern.");
           else showToast("Fehler beim Speichern. (Policy?)");
           return;
         }
@@ -678,7 +709,6 @@
         const newQ = (fresh.reserved_quantity || 0) + 1;
         const { error: upErr } = await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
 
-        // If 2nd step fails, ideally rollback? For now, just warn.
         if (upErr) console.error("Update failed", upErr);
 
         savePin(pin);
@@ -694,7 +724,6 @@
         if (!(await confirm("Freigeben?", "Möchtest du diese Reservierung freigeben?"))) return;
 
         // 1. Delete
-        // Identify by gift_id + pin if we don't have PK easily
         const { error: delErr } = await sb.from("reservations").delete().match({ gift_id: id, pin: r.pin });
         if (delErr) { showToast("Fehler beim Löschen."); return; }
 
@@ -709,48 +738,112 @@
         loadData();
       },
 
+      // Group Gift: Contribute
+      contribute: async (id) => {
+        const g = state.gifts.find(x => x.id === id);
+        if (!g) return;
+
+        // Custom Input Modal
+        const input = await requestContributionInput(g.title);
+        if (!input) return; // Cancelled
+
+        const { amount, name, message, pin } = input;
+
+        // Insert
+        const { error } = await sb.from("contributions").insert({
+          gift_id: id,
+          amount: amount,
+          name: name,
+          message: message,
+          pin: pin
+        });
+
+        if (error) {
+          console.error(error);
+          showToast("Fehler beim Speichern.");
+          return;
+        }
+
+        savePin(pin);
+        showToast("Beitrag gespeichert!");
+        loadData();
+      },
+
+      // Group Gift: Remove Contribution
+      removeContribution: async (id) => {
+        // Check which contributions are mine
+        const myContribs = state.contributions.filter(c => c.gift_id === id && state.userPins.includes(c.pin));
+        if (myContribs.length === 0) return;
+
+        // If multiple, maybe ask which one? For simplicity, just list them or take latest?
+        // Simplest: Just remove the most recent one.
+        const c = myContribs[myContribs.length - 1];
+
+        if (!(await confirm("Beitrag zurückziehen?", `Deinen Beitrag von ${c.amount}€ entfernen?`))) return;
+
+        const { error } = await sb.from("contributions").delete().eq("id", c.id);
+        if (error) { showToast("Fehler beim Entfernen."); return; }
+
+        showToast("Entfernt.");
+        loadData();
+      },
+
       openReleaseModal: async () => {
         const pin = await requestPin("Reservierung finden", "Bitte gib deinen Code ein.");
         if (!pin) return;
 
-        // Check remote
+        // Check remote reservations
         const { data: list, error } = await sb.from("reservations").select("*, gifts(title)").eq("pin", pin);
-        if (error || !list || list.length === 0) { showToast("Keine Reservierung gefunden."); return; }
 
-        const item = list[0];
-        const title = item.gifts ? item.gifts.title : "Unbekannt";
+        // Check remote contributions
+        const { data: cList } = await sb.from("contributions").select("*, gifts(title)").eq("pin", pin);
 
-        if (!(await confirm("Gefunden", `Freigeben: "${escape(title)}"?`))) return;
+        if ((!list || list.length === 0) && (!cList || cList.length === 0)) {
+          showToast("Keine Einträge gefunden."); return;
+        }
 
-        await sb.from("reservations").delete().eq("pin", pin).eq("gift_id", item.gift_id);
-
-        const { data: g } = await sb.from("gifts").select("reserved_quantity").eq("id", item.gift_id).single();
-        if (g) {
-          await sb.from("gifts").update({ reserved_quantity: Math.max(0, g.reserved_quantity - item.qty) }).eq("id", item.gift_id);
+        // Prioritize Reservations first, then Contributions
+        if (list && list.length > 0) {
+          const item = list[0];
+          const title = item.gifts ? item.gifts.title : "Unbekannt";
+          if (!(await confirm("Gefunden", `Freigeben: "${escape(title)}"?`))) return;
+          await sb.from("reservations").delete().eq("id", item.id);
+          const { data: g } = await sb.from("gifts").select("reserved_quantity").eq("id", item.gift_id).single();
+          if (g) {
+            await sb.from("gifts").update({ reserved_quantity: Math.max(0, g.reserved_quantity - item.qty) }).eq("id", item.gift_id);
+          }
+        } else if (cList && cList.length > 0) {
+          const item = cList[0];
+          const title = item.gifts ? item.gifts.title : "Unbekannt";
+          if (!(await confirm("Beitrag gefunden", `Beitrag für "${escape(title)}" (${item.amount}€) entfernen?`))) return;
+          await sb.from("contributions").delete().eq("id", item.id);
         }
 
         savePin(pin);
-        showToast("Freigegeben.");
+        showToast("Erledigt.");
         loadData();
       },
 
       // Admin Action: Delete a specific reservation by ID
-      adminDelete: async (resId, giftId, qty) => {
-        if (!(await confirm("ADMIN LÖSCHEN", "Diese Reservierung wirklich löschen?"))) return;
+      adminDelete: async (resId, giftId, qty, isContribution = false) => {
+        if (!(await confirm("ADMIN LÖSCHEN", "Wirklich löschen?"))) return;
 
-        // 1. Delete by ID using RLS policy (policy must allow delete by true or basic access)
-        const { error } = await sb.from("reservations").delete().eq("id", resId);
+        const table = isContribution ? "contributions" : "reservations";
+        const { error } = await sb.from(table).delete().eq("id", resId);
+
         if (error) {
           console.error(error);
-          showToast("Fehler beim Löschen.");
+          showToast("Fehler.");
           return;
         }
 
-        // 2. Decrement
-        const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", giftId).single();
-        if (fresh) {
-          const newQ = Math.max(0, (fresh.reserved_quantity || 0) - qty);
-          await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", giftId);
+        if (!isContribution) {
+          // Decrement reserved qty only for reservations
+          const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", giftId).single();
+          if (fresh) {
+            const newQ = Math.max(0, (fresh.reserved_quantity || 0) - qty);
+            await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", giftId);
+          }
         }
 
         showToast("Gelöscht.");
@@ -820,6 +913,69 @@
       });
     }
 
+    function requestContributionInput(giftTitle) {
+      return new Promise(resolve => {
+        const el = document.getElementById('modalOverlay');
+        document.getElementById('modalTitle').textContent = "Beteiligen an: " + giftTitle;
+
+        const html = `
+                <div style="text-align:left; margin-bottom:20px;">
+                    <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Betrag (€)</label>
+                    <input type="number" id="inp-amount" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:16px; margin-bottom:12px;" placeholder="z.B. 50">
+                    
+                    <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Name (optional)</label>
+                    <input type="text" id="inp-name" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:16px; margin-bottom:12px;" placeholder="Dein Name">
+                    
+                    <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Nachricht (optional)</label>
+                    <textarea id="inp-msg" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:14px; resize:none; margin-bottom:12px;" rows="2" placeholder="Deine Nachricht an das Brautpaar..."></textarea>
+                    
+                    <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Dein PIN (4-stellig)</label>
+                    <div class="pin-input-container" style="justify-content:flex-start; margin:0;">
+                       <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
+                       <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
+                    </div>
+                </div>
+            `;
+        document.getElementById('modalBody').innerHTML = html;
+        const btn = document.getElementById('modalConfirm');
+        btn.textContent = "Speichern"; btn.disabled = true;
+
+        const inputs = el.querySelectorAll('.pin-digit');
+        const amountInp = document.getElementById('inp-amount');
+
+        const check = () => {
+          const code = Array.from(inputs).map(x => x.value).join('');
+          const amt = parseFloat(amountInp.value);
+          btn.disabled = code.length !== 4 || isNaN(amt) || amt <= 0;
+          return {
+            amount: amt,
+            name: document.getElementById('inp-name').value,
+            message: document.getElementById('inp-msg').value,
+            pin: code
+          };
+        };
+
+        amountInp.oninput = check;
+
+        inputs.forEach((inp, i) => {
+          inp.value = "";
+          inp.oninput = (e) => {
+            if (!/^\d$/.test(inp.value)) inp.value = "";
+            if (inp.value && i < 3) inputs[i + 1].focus();
+            check();
+          };
+          inp.onkeydown = (e) => { if (e.key === "Backspace" && !inp.value && i > 0) inputs[i - 1].focus(); };
+        });
+
+        const close = (val) => { el.classList.remove('active'); resolve(val); };
+        btn.onclick = () => close(check());
+        document.getElementById('modalCancel').onclick = () => close(null);
+
+        el.classList.add('active');
+        setTimeout(() => amountInp.focus(), 100);
+      });
+    }
+
     /* --- Loader --- */
     async function loadData() {
       // Toggle Admin Mode
@@ -835,27 +991,30 @@
       if (gErr) { document.getElementById('list').innerHTML = `<div class="empty-state">Fehler.</div>`; return; }
       state.gifts = gs;
 
-      // Load Reservations (Dual Logic)
+      // Group Gifts Logic: Always fetch all contributions to show progress
+      const { data: contribs } = await sb.from("contributions").select("*");
+      state.contributions = contribs || [];
+
+      // Load Reservations
       if (state.isAdmin) {
-        // Admin: Load ALL reservations for the dashboard
-        // Note: RLS must allow SELECT for anon (which we enabled).
-        const { data: allRes, error } = await sb.from("reservations").select("*, gifts(title)").order("created_at", { ascending: false });
-        if (allRes) {
-          state.allReservations = allRes;
-          renderAdmin();
-          document.getElementById('admin-dashboard').style.display = 'block';
-        }
-        // Flatten for local user checks (optional, but good for consistency)
+        const { data: allRes } = await sb.from("reservations").select("*, gifts(title)").order("created_at", { ascending: false });
+        // Also fetch enriched contributions
+        const { data: allContribs } = await sb.from("contributions").select("*, gifts(title)").order("created_at", { ascending: false });
+
+        state.allReservations = allRes || [];
+        state.allContributions = allContribs || [];
+
+        renderAdmin();
+        document.getElementById('admin-dashboard').style.display = 'block';
+
+        // Admin sees all as "state.reservations" for main listing? No, keep separate.
         state.reservations = allRes || [];
       } else {
-        // Normal User: Load relevant (filtered by stored PINs OR just load all and filter locally for "Mine"?)
-        // RLS policy: "ENABLE SELECT FOR EVERYONE". 
-        // So we can technically fetch all. 
-        // But privacy? If we fetch all, a savvy user can inspect network logs to see other PINs.
-        // Ideally RLS blocks seeing others. But our policy was generic.
-        // For now, let's fetch only if we have pins, or fetch all if simplistic policy.
-        // Let's assume generic fetch is okay for this emergency fix, or ideally use .in('pin', ...) if possible.
-        // If we use .in('pin', ...), we only get ours.
+        // Normal User
+        // RLS policy allows read all for contributions (for progress bar), so state.contributions is populated.
+        // For reservations, fetch relevant if pin exists.
+        // Or if RLS is public read, fetch all?
+        // Let's assume public read for now as per previous policy.
         if (state.userPins.length > 0) {
           const { data: rs } = await sb.from("reservations").select("*").in("pin", state.userPins);
           state.reservations = rs || [];
@@ -869,28 +1028,57 @@
 
     function renderAdmin() {
       const list = document.getElementById('admin-list');
-      if (!state.allReservations || state.allReservations.length === 0) {
-        list.innerHTML = `<tr><td colspan="4" style="padding:15px;text-align:center;">Keine Reservierungen gefunden.</td></tr>`;
-        return;
+
+      let html = "";
+
+      // Reservations
+      if (state.allReservations.length > 0) {
+        html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:bold;">Reservierungen</td></tr>`;
+        html += state.allReservations.map(r => {
+          const title = r.gifts ? r.gifts.title : "???";
+          return `<tr style="border-bottom:1px solid #EEE;">
+                     <td style="padding:8px; font-weight:500;">${escape(title)}</td>
+                     <td style="padding:8px; font-family:monospace;">${escape(r.pin)}</td>
+                     <td style="padding:8px;">${r.qty}x</td>
+                     <td style="padding:8px;">
+                         <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;" onclick="app.adminDelete('${r.id}', '${r.gift_id}', ${r.qty})">Löschen</button>
+                     </td>
+                 </tr>`;
+        }).join("");
       }
 
-      list.innerHTML = state.allReservations.map(r => {
-        const title = r.gifts ? r.gifts.title : "???";
-        return `<tr style="border-bottom:1px solid #EEE;">
-                 <td style="padding:8px; font-weight:500;">${escape(title)}</td>
-                 <td style="padding:8px; font-family:monospace;">${escape(r.pin)}</td>
-                 <td style="padding:8px;">${r.qty}</td>
-                 <td style="padding:8px;">
-                     <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;" onclick="app.adminDelete('${r.id}', '${r.gift_id}', ${r.qty})">Löschen</button>
-                 </td>
-             </tr>`;
-      }).join("");
+      // Contributions
+      if (state.allContributions.length > 0) {
+        html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:bold; margin-top:10px;">Beiträge (Gruppe)</td></tr>`;
+        html += state.allContributions.map(c => {
+          const title = c.gifts ? c.gifts.title : "???";
+          const msg = c.message ? `<div style="font-size:10px;color:#666;max-width:200px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">"${escape(c.message)}"</div>` : "";
+          return `<tr style="border-bottom:1px solid #EEE;">
+                     <td style="padding:8px; font-weight:500;">${escape(title)}<br><span style="font-size:11px;color:#555">${escape(c.name || "-")}</span></td>
+                     <td style="padding:8px; font-family:monospace;">${escape(c.pin)}</td>
+                     <td style="padding:8px;">${c.amount}€</td>
+                     <td style="padding:8px;">
+                        ${msg}
+                         <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;" onclick="app.adminDelete('${c.id}', '${c.gift_id}', 0, true)">Löschen</button>
+                     </td>
+                 </tr>`;
+        }).join("");
+      }
+
+      if (!html) html = `<tr><td colspan="4" style="padding:15px;text-align:center;">Keine Einträge.</td></tr>`;
+
+      list.innerHTML = html;
     }
 
     function render() {
       // Stats
       const total = state.gifts.length;
-      const fulfilled = state.gifts.filter(g => getAvailable(g) === 0).length;
+      // Fulfillment: For group gifts, fulfilled if >= target?
+      const fulfilled = state.gifts.filter(g => {
+        if (g.is_group_gift) return getContributionTotal(g.id) >= (g.target_amount || 1);
+        return getAvailable(g) === 0;
+      }).length;
+
       document.getElementById('progress-fill').style.width = (total > 0 ? (fulfilled / total) * 100 : 0) + "%";
       document.getElementById('progress-text').textContent = `${fulfilled} von ${total} Wünschen erfüllt`;
 
@@ -899,7 +1087,17 @@
       const filtered = state.gifts.filter(g => {
         const has = g.title.toLowerCase().includes(sLower);
         const my = isReservedByMe(g);
-        if (state.filter.showFreeOnly && getAvailable(g) === 0) return false;
+
+        // Free Only:
+        if (state.filter.showFreeOnly) {
+          if (g.is_group_gift) {
+            // Hide if fully funded?
+            if (getContributionTotal(g.id) >= (g.target_amount || 1)) return false;
+          } else {
+            if (getAvailable(g) === 0) return false;
+          }
+        }
+
         if (state.filter.showMineOnly && !my) return false;
         return has;
       });
@@ -946,13 +1144,15 @@
       const mySec = document.getElementById('my-reservations-section');
       if (mine.length > 0) {
         mySec.style.display = 'block';
-        document.getElementById('my-reservations-list').innerHTML = mine.map(renderItem).join('');
+        document.getElementById('my-reservations-list').innerHTML = mine.map(g => renderItem(g, true)).join('');
       } else {
         mySec.style.display = 'none';
       }
     }
 
-    function renderItem(g) {
+    function renderItem(g, isMySection = false) {
+      if (g.is_group_gift) return renderGroupGiftItem(g, isMySection);
+
       const avail = getAvailable(g);
       const my = isReservedByMe(g);
       const price = g.Preis ? `<span>${escape(g.Preis)}</span><div class="sep"></div>` : "";
@@ -966,6 +1166,11 @@
         act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
       }
 
+      // If rendering in "My Section", show distinct Unreserve button
+      if (isMySection) {
+        act = `<button class="undo" onclick="app.unreserve('${g.id}')">Freigeben</button>`;
+      }
+
       // Status
       let st = "";
       if (g.quantity > 1) {
@@ -973,7 +1178,6 @@
         else st = `<div style="color:#2E7D32; font-size:12px;">${avail} von ${g.quantity} verfügbar</div>`;
       }
 
-      // Keep small admin reset button for emergencies
       const admin = state.isAdmin ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>` : "";
 
       return `<div class="item ${my ? 'my-reservation' : ''} ${my ? 'reserved-by-me' : ''}">
@@ -985,6 +1189,45 @@
            <div style="flex-direction:column; display:flex; align-items:flex-end; gap:6px;">
               ${act}
               ${admin}
+           </div>
+        </div>`;
+    }
+
+    function renderGroupGiftItem(g, isMySection = false) {
+      const current = getContributionTotal(g.id);
+      const target = parseFloat(g.target_amount) || 1; // Avoid div/0
+      const percent = Math.min(100, (current / target) * 100);
+      const my = isReservedByMe(g); // Means I have contributed
+
+      // Progress Bar
+      const bar = `
+            <div style="margin-top:8px;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; color:#555; margin-bottom:4px;">
+                    <span>${current}€ gesammelt</span>
+                    <span>Ziel: ${target}€</span>
+                </div>
+                <div style="height:6px; background:#EEE; border-radius:4px; overflow:hidden;">
+                    <div style="height:100%; width:${percent}%; background:#4CAF50;"></div>
+                </div>
+            </div>
+        `;
+
+      let act = `<button style="background:#2E7D32;" onclick="app.contribute('${g.id}')">Beteiligen</button>`;
+
+      if (isMySection) {
+        act = `<button class="undo" onclick="app.removeContribution('${g.id}')">Beitrag zurückziehen</button>`;
+      }
+
+      const priceStr = g.Preis ? `<span>${escape(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
+
+      return `<div class="item ${my ? 'my-reservation' : ''}" style="border-left:4px solid #4CAF50;">
+           <div class="item-content" style="width:100%">
+              <div class="item-title">${escape(g.title)} <span style="font-size:12px; font-weight:normal; color:#4CAF50; background:#E8F5E9; padding:2px 6px; border-radius:4px; margin-left:6px;">Sammelgeschenk</span></div>
+              <div class="meta">${priceStr} <a href="${escape(g.url)}" target="_blank" rel="noopener">Details ↗</a></div>
+              ${bar}
+           </div>
+           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:100px;">
+              ${act}
            </div>
         </div>`;
     }
