@@ -986,11 +986,11 @@
           if (max > 0 && count >= max) {
             coordUI = `<span style="font-size:11px;color:#999;">Organisation voll (${count}/${max})</span>`;
           } else {
-            coordUI = `<a href="javascript:void(0)"
-              onclick="app.joinCoordination('${group.id}')"
-              style="font-size:11px;color:#666;text-decoration:underline">
-              Zur Abstimmung (${count}/${max || "∞"})
-            </a>`;
+            coordUI = `<a href="#"
+   onclick="app.joinCoordination('${group.id}', '${escape(group.whatsapp_invite_url)}')"
+   style="font-size:11px;color:#666;text-decoration:underline">
+  An Gruppengeschenk beteiligen (${count}/${group.max_members})
+</a>`;
           }
         }
       }
