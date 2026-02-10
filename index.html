@@ -39,11 +39,7 @@
       padding-bottom:120px;
     }
 
-    .wrap{
-      max-width:680px;
-      margin:0 auto;
-      padding:60px 24px;
-    }
+    .wrap{ max-width:680px; margin:0 auto; padding:60px 24px; }
 
     h1{
       font-size:26px;
@@ -87,17 +83,15 @@
       background:var(--bg-card);
       border-radius:var(--radius-card);
       padding:24px;
-      margin:0 0 32px 0;
+      margin:0 0 24px 0;
       box-shadow:var(--shadow-soft);
     }
-
     .group-gift p{
       margin:12px 0 16px 0;
       color:var(--text-secondary);
       font-size:15px;
       line-height:1.6;
     }
-
     .iban-container{
       display:inline-flex;
       align-items:center;
@@ -111,15 +105,12 @@
       user-select:none;
       width:fit-content;
     }
-
     .iban-container:hover{
       border-color:#CCC;
       transform:translateY(-1px);
       box-shadow:0 4px 12px rgba(0,0,0,0.05);
     }
-
     .iban-container:active{ transform:translateY(0); }
-
     .iban-text{
       font-size:15px;
       letter-spacing:0.02em;
@@ -127,34 +118,32 @@
       font-weight:500;
       white-space:nowrap;
     }
-
     .copy-icon{ width:16px; height:16px; fill:#888; }
 
-    /* Progress */
-    .progress-container{
-      margin-bottom:40px;
-      text-align:center;
+    /* Admin badge */
+    .admin-badge{
       display:none;
+      margin:0 0 16px 0;
+      text-align:center;
+      font-size:12px;
+      color:#fff;
     }
-    .progress-text{
-      font-size:13px;
-      color:var(--text-secondary);
-      margin-bottom:8px;
-      font-weight:500;
+    .admin-badge span{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#1D1D1F;
+      box-shadow:0 10px 20px rgba(0,0,0,0.08);
+      letter-spacing:0.02em;
     }
-    .progress-track{
-      width:100%;
-      height:4px;
-      background:#E5E5E5;
-      border-radius:2px;
-      overflow:hidden;
-    }
-    .progress-fill{
-      height:100%;
-      background:var(--text-secondary);
-      width:0%;
-      transition:width 0.8s var(--ease);
-    }
+
+    /* Progress */
+    .progress-container{ margin:18px 0 28px 0; text-align:center; display:none; }
+    .progress-text{ font-size:13px; color:var(--text-secondary); margin-bottom:8px; font-weight:500; }
+    .progress-track{ width:100%; height:4px; background:#E5E5E5; border-radius:2px; overflow:hidden; }
+    .progress-fill{ height:100%; background:var(--text-secondary); width:0%; transition:width 0.8s var(--ease); }
 
     /* Controls */
     .controls{
@@ -162,12 +151,11 @@
       padding:20px;
       border-radius:var(--radius-card);
       box-shadow:var(--shadow-soft);
-      margin-bottom:32px;
+      margin-bottom:20px;
       display:flex;
       flex-direction:column;
       gap:16px;
     }
-
     .search-row{ position:relative; }
     .search-input{
       width:100%;
@@ -178,36 +166,24 @@
       background:#FCFCFC;
       transition:all 0.2s;
     }
-    .search-input:focus{
-      border-color:#CCC;
-      background:#FFF;
-    }
+    .search-input:focus{ border-color:#CCC; background:#FFF; }
     .search-icon{
-      position:absolute;
-      left:12px;
-      top:50%;
+      position:absolute; left:12px; top:50%;
       transform:translateY(-50%);
-      width:16px;
-      height:16px;
+      width:16px; height:16px;
       fill:var(--text-secondary);
       pointer-events:none;
     }
-
     .filter-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
+      display:flex; flex-wrap:wrap; gap:12px;
+      align-items:center; justify-content:space-between;
     }
-
     .toggles{ display:flex; gap:12px; }
-
     .toggle-btn{
       background:transparent;
       border:1px solid #E5E5E5;
       padding:8px 14px;
-      border-radius:99px;
+      border-radius:999px;
       font-size:13px;
       color:var(--text-secondary);
       cursor:pointer;
@@ -221,7 +197,6 @@
       color:#FFF;
       border-color:var(--text-primary);
     }
-
     .sort-select{
       border:none;
       background:transparent;
@@ -234,7 +209,69 @@
       appearance:none;
     }
 
-    /* Section */
+    /* Manage release section */
+    .manage{
+      background:var(--bg-card);
+      border-radius:var(--radius-card);
+      padding:20px;
+      box-shadow:var(--shadow-soft);
+      margin-bottom:28px;
+    }
+    .manage p{
+      margin:10px 0 14px 0;
+      color:var(--text-secondary);
+      font-size:14px;
+      line-height:1.6;
+    }
+    .pin-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .pin-inputs{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .pin-box{
+      width:44px;
+      height:48px;
+      border-radius:12px;
+      border:1px solid #E5E5E5;
+      background:#FCFCFC;
+      text-align:center;
+      font-size:18px;
+      font-weight:600;
+      color:var(--text-primary);
+      transition:all 0.2s;
+    }
+    .pin-box:focus{
+      border-color:#BDBDBD;
+      background:#FFF;
+      box-shadow:0 0 0 3px rgba(0,0,0,0.05);
+    }
+    .manage .btn-inline{
+      min-width:auto;
+      padding:12px 16px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:600;
+    }
+    .inline-error{
+      margin-top:10px;
+      font-size:13px;
+      color:#9B1C1C;
+      display:none;
+    }
+    .inline-success{
+      margin-top:10px;
+      font-size:13px;
+      color:#0F5132;
+      display:none;
+    }
+
+    /* Section headers */
     .section-title{
       display:flex;
       justify-content:space-between;
@@ -246,21 +283,16 @@
     }
     .section-title:hover{ opacity:0.85; }
     .section-chevron{
-      width:12px;
-      height:12px;
+      width:12px; height:12px;
       fill:var(--text-secondary);
       transition:transform 0.3s;
     }
     .section-title.collapsed .section-chevron{ transform:rotate(-90deg); }
-
     .gift-group{
       transition:height 0.3s var(--ease), opacity 0.3s var(--ease);
       overflow:hidden;
     }
-    .gift-group.collapsed{
-      height:0 !important;
-      opacity:0;
-    }
+    .gift-group.collapsed{ height:0 !important; opacity:0; }
 
     /* Items */
     .item{
@@ -281,26 +313,21 @@
       transform:translateY(-1px);
       border-color:rgba(0,0,0,0.03);
     }
-
-    /* Highlight if reserved by me */
     .item.my-reservation{
       border:1px solid #E0E0E0;
       background:#FFFEFA;
     }
-
     .item-content{
       display:flex;
       flex-direction:column;
       gap:6px;
       min-width:0;
     }
-
     .item-title{
       font-size:17px;
       font-weight:500;
       color:var(--text-primary);
     }
-
     .meta{
       font-size:14px;
       color:var(--text-secondary);
@@ -309,7 +336,6 @@
       gap:10px;
       flex-wrap:wrap;
     }
-
     .meta a{
       color:var(--text-secondary);
       text-decoration:none;
@@ -327,16 +353,13 @@
       background:currentColor;
       opacity:0.25;
     }
-
     .sep{
-      width:2px;
-      height:2px;
+      width:2px; height:2px;
       background:#CCC;
       border-radius:50%;
       display:inline-block;
     }
 
-    /* Buttons */
     button{
       background:var(--btn-bg);
       color:var(--btn-text);
@@ -344,29 +367,34 @@
       padding:10px 18px;
       border-radius:var(--radius-btn);
       font-size:13px;
-      font-weight:500;
+      font-weight:600;
       cursor:pointer;
       transition:background 0.2s;
-      min-width:120px;
+      min-width:130px;
       text-align:center;
     }
     button:hover:not(:disabled){ background:var(--btn-bg-hover); }
-
-    /* Reserved-by-me button (still clickable to undo) */
     button.reserved{
       background:transparent;
       color:var(--text-secondary);
       border:1px solid #E5E5E5;
     }
     button.reserved:hover{ border-color:#CCC; color:var(--text-primary); }
-
+    button.admin{
+      background:transparent;
+      color:#7A7A7A;
+      border:1px dashed #D9D9D9;
+      min-width:auto;
+      padding:8px 12px;
+      font-weight:600;
+    }
+    button.admin:hover{ border-color:#BDBDBD; color:var(--text-primary); }
     button:disabled{
       background:#F5F5F5;
       color:#CCC;
       cursor:default;
     }
 
-    /* Empty + skeleton */
     .empty-state{
       text-align:center;
       padding:40px;
@@ -387,12 +415,11 @@
       100%{ opacity:0.55; }
     }
 
-    /* My reservations section */
     #my-reservations-section{
       background:#F4F4F4;
       border-radius:var(--radius-card);
       padding:24px;
-      margin-bottom:40px;
+      margin-bottom:30px;
       display:none;
     }
     #my-reservations-section h2{
@@ -419,37 +446,32 @@
       pointer-events:none;
       transition:opacity 0.25s var(--ease);
     }
-    .modal-overlay.active{
-      opacity:1;
-      pointer-events:auto;
-    }
-
+    .modal-overlay.active{ opacity:1; pointer-events:auto; }
     .modal{
       background:#FFF;
-      width:90%;
-      max-width:360px;
-      padding:28px;
+      width:92%;
+      max-width:420px;
+      padding:26px;
       border-radius:20px;
       box-shadow:0 20px 40px rgba(0,0,0,0.10);
-      text-align:center;
+      text-align:left;
       transform:scale(0.96);
       transition:transform 0.25s var(--ease);
     }
     .modal-overlay.active .modal{ transform:scale(1); }
-
-    .modal h3{
-      font-size:18px;
-      margin:0 0 12px 0;
-    }
+    .modal h3{ font-size:18px; margin:0 0 10px 0; }
     .modal p{
-      font-size:15px;
+      font-size:14.5px;
       color:#666;
-      margin:0 0 22px 0;
-      line-height:1.5;
+      margin:0 0 16px 0;
+      line-height:1.6;
     }
+    .modal .pin-inputs{ margin:10px 0 6px 0; }
+    .modal .inline-error{ display:none; margin:8px 0 0 0; }
     .modal-actions{
       display:flex;
       gap:10px;
+      margin-top:18px;
     }
     .modal-btn{
       flex:1;
@@ -458,14 +480,8 @@
       font-size:15px;
       min-width:auto;
     }
-    .modal-btn.primary{
-      background:var(--text-primary);
-      color:#FFF;
-    }
-    .modal-btn.secondary{
-      background:#F5F5F5;
-      color:#333;
-    }
+    .modal-btn.primary{ background:var(--text-primary); color:#FFF; }
+    .modal-btn.secondary{ background:#F5F5F5; color:#333; }
 
     /* Toast */
     .toast{
@@ -475,80 +491,67 @@
       transform:translateX(-50%) translateY(18px);
       background:#222;
       color:#FFF;
-      padding:12px 22px;
-      border-radius:99px;
+      padding:12px 16px;
+      border-radius:999px;
       font-size:14px;
       opacity:0;
       transition:all 0.35s var(--ease);
       z-index:1000;
       pointer-events:none;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      max-width:92%;
     }
-    .toast.active{
-      opacity:1;
-      transform:translateX(-50%) translateY(0);
+    .toast.active{ opacity:1; transform:translateX(-50%) translateY(0); }
+    .toast .toast-action{
+      pointer-events:auto;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.25);
+      color:#fff;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      cursor:pointer;
     }
+    .toast .toast-action:hover{ border-color:rgba(255,255,255,0.45); }
 
     @media (max-width:600px){
       .wrap{ padding:40px 20px; }
       .hero{ height:280px; }
 
-      .item{
-        grid-template-columns:1fr;
-        gap:16px;
-        padding:20px;
-      }
-
+      .item{ grid-template-columns:1fr; gap:16px; padding:20px; }
       button{ width:100%; }
 
-      .filter-row{
-        flex-direction:column;
-        align-items:stretch;
-      }
-      .toggles{
-        justify-content:space-between;
-        flex-wrap:wrap;
-      }
-      .toggle-btn{
-        flex:1;
-        min-width:0;
-      }
-      .sort-select{
-        text-align:left;
-        margin-top:6px;
-      }
+      .filter-row{ flex-direction:column; align-items:stretch; }
+      .toggles{ justify-content:space-between; flex-wrap:wrap; }
+      .toggle-btn{ flex:1; min-width:0; }
+      .sort-select{ text-align:left; margin-top:6px; }
 
-      .iban-container{
-        width:100%;
-        justify-content:center;
-      }
-      .iban-text{
-        font-size:13px;
-        overflow:hidden;
-        text-overflow:ellipsis;
-      }
+      .iban-container{ width:100%; justify-content:center; }
+      .iban-text{ font-size:13px; overflow:hidden; text-overflow:ellipsis; }
+
+      .pin-row{ align-items:stretch; }
+      .pin-inputs{ justify-content:space-between; width:100%; }
+      .pin-box{ flex:1; width:auto; }
+      .manage .btn-inline{ width:100%; }
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <img
-      src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000"
-      alt="Brautpaar"
-      class="hero"
-    >
+    <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" alt="Brautpaar" class="hero">
 
     <h1>Unsere Hochzeitswunschliste</h1>
-    <p class="intro">
-      Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind natürlich kein Muss.
-    </p>
+    <p class="intro">Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind natürlich kein Muss.</p>
 
     <div class="group-gift">
       <h2>Sammelgeschenk – KPM Kurland</h2>
       <p>
         Wer sich an dem KPM Kurland Sammelgeschenk beteiligen möchte, kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.
       </p>
-
       <div class="iban-container" onclick="window.app.copyIBAN()" title="IBAN kopieren">
         <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
@@ -557,6 +560,8 @@
       </div>
       <div style="font-size:13px; color:#888; margin-top:8px;">Max Tiefenbacher</div>
     </div>
+
+    <div class="admin-badge" id="adminBadge"><span>Admin-Modus aktiv</span></div>
 
     <div class="progress-container" id="progress-container">
       <div class="progress-text" id="progress-text">0 von 0 Wünschen vergeben</div>
@@ -586,6 +591,24 @@
       </div>
     </div>
 
+    <div class="manage">
+      <h2>Reservierung freigeben</h2>
+      <p>Wenn du deine Reservierung auf einem anderen Gerät ändern möchtest, gib hier deinen 4-stelligen Code ein.</p>
+
+      <div class="pin-row">
+        <div class="pin-inputs" id="releasePinInputs" aria-label="PIN eingeben">
+          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 1">
+          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 2">
+          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 3">
+          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 4">
+        </div>
+        <button class="btn-inline" type="button" id="releaseBtn">Freigeben</button>
+      </div>
+
+      <div class="inline-error" id="releaseError"></div>
+      <div class="inline-success" id="releaseSuccess"></div>
+    </div>
+
     <div id="my-reservations-section">
       <h2>Deine Reservierungen</h2>
       <div id="my-reservations-list"></div>
@@ -602,6 +625,20 @@
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <h3 id="modalTitle">Titel</h3>
       <p id="modalText">Text</p>
+
+      <div id="modalPinBlock" style="display:none;">
+        <div class="pin-inputs" id="reservePinInputs" aria-label="PIN wählen">
+          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 1">
+          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 2">
+          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 3">
+          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 4">
+        </div>
+        <div class="inline-error" id="modalPinError" style="display:none;"></div>
+        <div style="margin-top:10px; font-size:13px; color:#888;">
+          Bitte notiere dir den Code, falls du später etwas ändern möchtest.
+        </div>
+      </div>
+
       <div class="modal-actions">
         <button class="modal-btn secondary" id="modalCancel" type="button">Abbrechen</button>
         <button class="modal-btn primary" id="modalConfirm" type="button">Bestätigen</button>
@@ -609,39 +646,28 @@
     </div>
   </div>
 
-  <div class="toast" id="toast" aria-live="polite">Aktion erfolgreich</div>
+  <div class="toast" id="toast" aria-live="polite">
+    <span id="toastText">Aktion erfolgreich</span>
+    <button class="toast-action" id="toastAction" type="button" style="display:none;">Kopieren</button>
+  </div>
 
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
     const SUPABASE_URL = "https://tpfovcyqqhqlyzcopiwt.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwZm92Y3lxcWhxbHl6Y29waXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyMzQ0NDgsImV4cCI6MjA4MTgxMDQ0OH0.UBAnfI_s7vQkPMDmwZHLVTYUkmZIAMvS6sK0w60Cvps";
+
+    const ADMIN_SECRET = "Callmemaybe1";
+
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const state = {
       gifts: [],
       filter: { search: "", showFreeOnly: false, showMineOnly: false },
-      sort: "cat", // cat, status, price_asc, price_desc
-      categoryState: {} // collapsed: true/false
+      sort: "cat",
+      categoryState: {},
+      isAdmin: false
     };
-
-    function getLocalToken(id){ return localStorage.getItem("gift_token_" + id); }
-    function setLocalToken(id, token){ localStorage.setItem("gift_token_" + id, token); }
-    function clearLocalToken(id){ localStorage.removeItem("gift_token_" + id); }
-    function randomToken(){
-      const arr = new Uint8Array(16);
-      crypto.getRandomValues(arr);
-      return Array.from(arr).map(b => b.toString(16).padStart(2,"0")).join("");
-    }
-
-    function parsePrice(priceStr){
-      if (!priceStr) return Infinity;
-      const m = String(priceStr).match(/[\d.,]+/);
-      if (!m) return Infinity;
-      const numStr = m[0].replace(/\./g, "").replace(",", ".");
-      const n = parseFloat(numStr);
-      return Number.isFinite(n) ? n : Infinity;
-    }
 
     function escapeHtml(s){
       return String(s ?? "")
@@ -652,8 +678,205 @@
         .replaceAll("'","&#39;");
     }
 
+    function parsePrice(priceStr){
+      if (!priceStr) return Infinity;
+      const m = String(priceStr).match(/[\d.,]+/);
+      if (!m) return Infinity;
+      const numStr = m[0].replace(/\./g,"").replace(",",".");
+      const n = parseFloat(numStr);
+      return Number.isFinite(n) ? n : Infinity;
+    }
+
     function catKey(c){ return encodeURIComponent(String(c ?? "")); }
 
+    function lsKey(id){ return "gift_pin_" + id; }
+    function getLocalPIN(id){ return localStorage.getItem(lsKey(id)); }
+    function setLocalPIN(id, pin){ localStorage.setItem(lsKey(id), pin); }
+    function clearLocalPIN(id){ localStorage.removeItem(lsKey(id)); }
+
+    function isValidPin(pin){
+      return /^[0-9]{4}$/.test(pin);
+    }
+
+    function getAdminMode(){
+      const url = new URL(window.location.href);
+      return url.searchParams.get("admin") === ADMIN_SECRET;
+    }
+
+    function setInline(el, msg, type){
+      // type: "error" | "success"
+      if (!el) return;
+      if (!msg){
+        el.style.display = "none";
+        el.textContent = "";
+        return;
+      }
+      el.textContent = msg;
+      el.style.display = "block";
+      if (type === "error"){
+        el.style.color = "#9B1C1C";
+      } else {
+        el.style.color = "#0F5132";
+      }
+    }
+
+    // Toast with optional copy action
+    function showToast(msg, copyText = null){
+      const t = document.getElementById("toast");
+      const tt = document.getElementById("toastText");
+      const action = document.getElementById("toastAction");
+      tt.textContent = msg;
+
+      if (copyText){
+        action.style.display = "inline-flex";
+        action.onclick = async () => {
+          await copyToClipboard(copyText);
+          // subtle feedback: keep toast, just change text briefly
+          tt.textContent = "Code kopiert";
+          setTimeout(() => { tt.textContent = msg; }, 900);
+        };
+      } else {
+        action.style.display = "none";
+        action.onclick = null;
+      }
+
+      t.classList.add("active");
+      setTimeout(() => t.classList.remove("active"), 2800);
+    }
+
+    async function copyToClipboard(text){
+      try{
+        await navigator.clipboard.writeText(text);
+      } catch {
+        // fallback: best effort
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try{ document.execCommand("copy"); } catch {}
+        document.body.removeChild(ta);
+      }
+    }
+
+    // PIN inputs helper (4 boxes)
+    function wirePinInputs(containerEl){
+      const inputs = Array.from(containerEl.querySelectorAll("input"));
+      const onlyDigit = (v) => v.replace(/[^0-9]/g,"");
+
+      inputs.forEach((inp, idx) => {
+        inp.addEventListener("input", (e) => {
+          const v = onlyDigit(inp.value);
+          inp.value = v.slice(-1);
+          if (inp.value && idx < inputs.length - 1){
+            inputs[idx + 1].focus();
+            inputs[idx + 1].select?.();
+          }
+        });
+
+        inp.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && !inp.value && idx > 0){
+            inputs[idx - 1].focus();
+            inputs[idx - 1].value = "";
+            e.preventDefault();
+          }
+          if (e.key === "ArrowLeft" && idx > 0){
+            inputs[idx - 1].focus();
+            e.preventDefault();
+          }
+          if (e.key === "ArrowRight" && idx < inputs.length - 1){
+            inputs[idx + 1].focus();
+            e.preventDefault();
+          }
+        });
+
+        inp.addEventListener("paste", (e) => {
+          const text = onlyDigit((e.clipboardData || window.clipboardData).getData("text") || "");
+          if (text.length >= 4){
+            for (let i = 0; i < 4; i++){
+              inputs[i].value = text[i] || "";
+            }
+            inputs[3].focus();
+            e.preventDefault();
+          }
+        });
+
+        inp.addEventListener("focus", () => {
+          inp.select?.();
+        });
+      });
+
+      return {
+        get: () => inputs.map(i => i.value || "").join(""),
+        set: (pin) => {
+          const p = String(pin || "");
+          for (let i = 0; i < 4; i++) inputs[i].value = p[i] || "";
+        },
+        clear: () => inputs.forEach(i => i.value = ""),
+        focusFirst: () => inputs[0]?.focus()
+      };
+    }
+
+    // Modal system (supports optional PIN block)
+    let modalResolver = null;
+    let modalKeyHandler = null;
+
+    function openModal({ title, text, confirmText = "Bestätigen", cancelText = "Abbrechen", showPin = false }){
+      const overlay = document.getElementById("modalOverlay");
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalText").textContent = text;
+      document.getElementById("modalConfirm").textContent = confirmText;
+      document.getElementById("modalCancel").textContent = cancelText;
+
+      const pinBlock = document.getElementById("modalPinBlock");
+      const pinError = document.getElementById("modalPinError");
+
+      pinBlock.style.display = showPin ? "block" : "none";
+      pinError.style.display = "none";
+      pinError.textContent = "";
+
+      overlay.classList.add("active");
+
+      // ESC / Enter handling
+      if (modalKeyHandler) window.removeEventListener("keydown", modalKeyHandler);
+      modalKeyHandler = (e) => {
+        if (e.key === "Escape") closeModal(false);
+        if (e.key === "Enter") closeModal(true);
+      };
+      window.addEventListener("keydown", modalKeyHandler);
+
+      return new Promise((resolve) => {
+        modalResolver = resolve;
+      });
+    }
+
+    function closeModal(val){
+      const overlay = document.getElementById("modalOverlay");
+      overlay.classList.remove("active");
+      if (modalKeyHandler) window.removeEventListener("keydown", modalKeyHandler);
+      modalKeyHandler = null;
+      if (modalResolver){
+        const r = modalResolver;
+        modalResolver = null;
+        r(val);
+      }
+    }
+
+    document.getElementById("modalCancel").addEventListener("click", () => closeModal(false));
+    document.getElementById("modalConfirm").addEventListener("click", () => closeModal(true));
+
+    // PIN components
+    const reservePin = wirePinInputs(document.getElementById("reservePinInputs"));
+    const releasePin = wirePinInputs(document.getElementById("releasePinInputs"));
+
+    // Admin UI init
+    state.isAdmin = getAdminMode();
+    if (state.isAdmin){
+      document.getElementById("adminBadge").style.display = "block";
+    }
+
+    // Render
     function render(){
       const searchLower = state.filter.search.trim().toLowerCase();
 
@@ -661,8 +884,8 @@
         const title = String(g.title ?? "");
         const matchesSearch = !searchLower || title.toLowerCase().includes(searchLower);
 
-        const myToken = getLocalToken(g.id);
-        const isMine = g.reserved && g.reserved_token && myToken && g.reserved_token === myToken;
+        const localPin = getLocalPIN(g.id);
+        const isMine = g.reserved && g.reserved_token && localPin && String(g.reserved_token) === String(localPin);
 
         if (state.filter.showFreeOnly && g.reserved) return false;
         if (state.filter.showMineOnly && !isMine) return false;
@@ -675,7 +898,7 @@
         if (state.sort === "price_desc") return parsePrice(b.Preis) - parsePrice(a.Preis);
         if (state.sort === "status"){
           if (!!a.reserved === !!b.reserved) return String(a.title).localeCompare(String(b.title), "de");
-          return a.reserved ? 1 : -1; // free first
+          return a.reserved ? 1 : -1;
         }
         if (String(a.category) !== String(b.category)) return String(a.category).localeCompare(String(b.category), "de");
         return String(a.title).localeCompare(String(b.title), "de");
@@ -691,8 +914,8 @@
 
       // My reservations
       const myGifts = state.gifts.filter(g => {
-        const t = getLocalToken(g.id);
-        return g.reserved && g.reserved_token && t && g.reserved_token === t;
+        const localPin = getLocalPIN(g.id);
+        return g.reserved && g.reserved_token && localPin && String(g.reserved_token) === String(localPin);
       });
 
       const myResSection = document.getElementById("my-reservations-section");
@@ -706,6 +929,7 @@
         myResList.innerHTML = "";
       }
 
+      // Main list
       const listContainer = document.getElementById("list");
 
       if (state.sort === "cat"){
@@ -714,7 +938,6 @@
           const c = String(g.category ?? "Sonstiges");
           (cats[c] ??= []).push(g);
         }
-
         const catNames = Object.keys(cats);
         if (catNames.length === 0){
           listContainer.innerHTML = `<div class="empty-state">Keine Geschenke gefunden.</div>`;
@@ -725,6 +948,7 @@
         for (const c of catNames){
           const key = catKey(c);
           const isCollapsed = state.categoryState[key] === true;
+
           html += `
             <div class="section-title ${isCollapsed ? "collapsed" : ""}" onclick="window.app.toggleCat('${key}')">
               <h2>${escapeHtml(c)}</h2>
@@ -746,21 +970,24 @@
     }
 
     function renderItem(g, isMySection = false){
-      const myToken = getLocalToken(g.id);
-      const isMine = g.reserved && g.reserved_token && myToken && g.reserved_token === myToken;
+      const localPin = getLocalPIN(g.id);
+      const isMine = g.reserved && g.reserved_token && localPin && String(g.reserved_token) === String(localPin);
 
       let btnHtml = "";
       if (!g.reserved){
         btnHtml = `<button type="button" onclick="window.app.reserve('${escapeHtml(g.id)}')">Reservieren</button>`;
       } else if (isMine){
-        // Button label requested: not "Bearbeiten"
-        // Still clickable to undo (modal explains)
-        btnHtml = `<button type="button" class="reserved" onclick="window.app.unreserve('${escapeHtml(g.id)}')">Reserviert</button>`;
+        // label requested: not "Bearbeiten"
+        btnHtml = `<button type="button" class="reserved" onclick="window.app.unreserveMine('${escapeHtml(g.id)}')">Reserviert</button>`;
       } else {
         btnHtml = `<button type="button" disabled>Vergeben</button>`;
       }
 
       const priceHtml = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><span class="sep"></span>` : "";
+
+      const adminHtml = (state.isAdmin && g.reserved)
+        ? `<button type="button" class="admin" onclick="window.app.adminUnreserve('${escapeHtml(g.id)}')">Admin freigeben</button>`
+        : "";
 
       return `
         <div class="item ${isMine ? "my-reservation" : ""}">
@@ -770,52 +997,11 @@
               ${priceHtml}
               <a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a>
             </div>
+            ${adminHtml ? `<div style="margin-top:10px;">${adminHtml}</div>` : ``}
           </div>
           ${btnHtml}
         </div>
       `;
-    }
-
-    function confirmAction(title, text, confirmBtnText){
-      return new Promise((resolve) => {
-        const overlay = document.getElementById("modalOverlay");
-        const confirmBtn = document.getElementById("modalConfirm");
-        const cancelBtn = document.getElementById("modalCancel");
-
-        document.getElementById("modalTitle").textContent = title;
-        document.getElementById("modalText").textContent = text;
-        confirmBtn.textContent = confirmBtnText;
-
-        const cleanup = () => {
-          confirmBtn.onclick = null;
-          cancelBtn.onclick = null;
-          window.removeEventListener("keydown", onKey);
-        };
-
-        const close = (val) => {
-          overlay.classList.remove("active");
-          cleanup();
-          resolve(val);
-        };
-
-        const onKey = (e) => {
-          if (e.key === "Escape") close(false);
-          if (e.key === "Enter") close(true);
-        };
-
-        confirmBtn.onclick = () => close(true);
-        cancelBtn.onclick = () => close(false);
-
-        window.addEventListener("keydown", onKey);
-        overlay.classList.add("active");
-      });
-    }
-
-    function showToast(msg){
-      const t = document.getElementById("toast");
-      t.textContent = msg;
-      t.classList.add("active");
-      setTimeout(() => t.classList.remove("active"), 2400);
     }
 
     async function loadData(){
@@ -829,72 +1015,224 @@
       render();
     }
 
+    async function checkPinAvailable(pin){
+      // returns true if no reserved row currently has this pin
+      const { data, error } = await sb
+        .from("gifts")
+        .select("id")
+        .eq("reserved", true)
+        .eq("reserved_token", pin)
+        .limit(1);
+
+      if (error) return false; // treat as not available to be safe
+      return !data || data.length === 0;
+    }
+
+    // --- Actions ---
     window.app = {
       toggleCat: (key) => {
         state.categoryState[key] = !state.categoryState[key];
         render();
       },
 
-      reserve: async (id) => {
-        const ok = await confirmAction("Reservieren?", "Möchtest du diesen Wunsch für dich reservieren?", "Ja, reservieren");
-        if (!ok) return;
-
-        const token = randomToken();
-
-        // optimistic UI
-        const idx = state.gifts.findIndex(g => String(g.id) === String(id));
-        if (idx !== -1){
-          state.gifts[idx].reserved = true;
-          state.gifts[idx].reserved_token = token;
-          setLocalToken(id, token);
-          render();
-        }
-
-        await sb.from("gifts")
-          .update({ reserved:true, reserved_token:token, reserved_at:new Date().toISOString() })
-          .eq("id", id)
-          .eq("reserved", false);
-
-        await loadData();
-        showToast("Reserviert");
+      copyIBAN: async () => {
+        const raw = "DE89 2007 0024 0191 3888 02";
+        const iban = raw.replace(/\s/g,"");
+        await copyToClipboard(iban);
+        showToast("IBAN kopiert");
       },
 
-      unreserve: async (id) => {
-        const ok = await confirmAction("Freigeben?", "Möchtest du diese Reservierung wieder freigeben?", "Ja, freigeben");
-        if (!ok) return;
+      reserve: async (id) => {
+        // open PIN modal
+        reservePin.clear();
+        const ok = await openModal({
+          title: "Reservieren",
+          text: "Bitte wähle einen 4-stelligen Code. Damit kannst du die Reservierung später wieder freigeben – auch auf einem anderen Gerät.",
+          confirmText: "Reservieren",
+          cancelText: "Abbrechen",
+          showPin: true
+        });
 
-        const token = getLocalToken(id);
+        const pinError = document.getElementById("modalPinError");
+        const overlay = document.getElementById("modalOverlay");
 
-        // optimistic UI
-        const idx = state.gifts.findIndex(g => String(g.id) === String(id));
-        if (idx !== -1){
-          state.gifts[idx].reserved = false;
-          state.gifts[idx].reserved_token = null;
-          clearLocalToken(id);
-          render();
+        if (!ok){
+          // closed with cancel or ESC
+          // ensure error hidden
+          pinError.style.display = "none";
+          pinError.textContent = "";
+          return;
         }
 
-        await sb.from("gifts")
+        const pin = reservePin.get();
+        if (!isValidPin(pin)){
+          pinError.textContent = "Bitte 4 Ziffern eingeben.";
+          pinError.style.display = "block";
+          // keep modal open by re-opening quickly: simplest approach is to reopen modal.
+          // better: do not close until valid. We'll handle by reopening and not losing input.
+          overlay.classList.add("active");
+          return;
+        }
+
+        // Uniqueness check
+        const available = await checkPinAvailable(pin);
+        if (!available){
+          pinError.textContent = "Dieser Code ist bereits vergeben. Bitte wähle einen anderen.";
+          pinError.style.display = "block";
+          overlay.classList.add("active");
+          return;
+        }
+
+        // Attempt update with race protection: id AND reserved=false
+        const now = new Date().toISOString();
+        const { data, error } = await sb
+          .from("gifts")
+          .update({ reserved:true, reserved_token:pin, reserved_at:now })
+          .eq("id", id)
+          .eq("reserved", false)
+          .select("id");
+
+        if (error || !data || data.length === 0){
+          pinError.textContent = "Leider hat es nicht geklappt. Bitte versuche es erneut.";
+          pinError.style.display = "block";
+          overlay.classList.add("active");
+          await loadData();
+          return;
+        }
+
+        setLocalPIN(id, pin);
+        await loadData();
+        showToast(`Reserviert. Code: ${pin}`, pin);
+      },
+
+      unreserveMine: async (id) => {
+        const localPin = getLocalPIN(id);
+        if (!localPin){
+          showToast("Kein Code auf diesem Gerät gefunden");
+          return;
+        }
+
+        const ok = await openModal({
+          title: "Freigeben",
+          text: "Möchtest du diese Reservierung wieder freigeben?",
+          confirmText: "Freigeben",
+          cancelText: "Abbrechen",
+          showPin: false
+        });
+        if (!ok) return;
+
+        const { data, error } = await sb
+          .from("gifts")
           .update({ reserved:false, reserved_token:null, reserved_at:null })
           .eq("id", id)
-          .eq("reserved_token", token);
+          .eq("reserved_token", localPin)
+          .select("id");
 
+        if (error || !data || data.length === 0){
+          showToast("Konnte nicht freigeben. Bitte Code nutzen.");
+          await loadData();
+          return;
+        }
+
+        clearLocalPIN(id);
         await loadData();
         showToast("Freigegeben");
       },
 
-      copyIBAN: () => {
-        const raw = "DE89 2007 0024 0191 3888 02";
-        const iban = raw.replace(/\s/g, "");
-        navigator.clipboard.writeText(iban).then(() => {
-          showToast("IBAN kopiert");
-        }).catch(() => {
-          // fallback: still show success message
-          showToast("IBAN kopiert");
+      releaseByPin: async () => {
+        setInline(document.getElementById("releaseError"), "", "error");
+        setInline(document.getElementById("releaseSuccess"), "", "success");
+
+        const pin = releasePin.get();
+        if (!isValidPin(pin)){
+          setInline(document.getElementById("releaseError"), "Bitte 4 Ziffern eingeben.", "error");
+          return;
+        }
+
+        const { data, error } = await sb
+          .from("gifts")
+          .select("id,title,url,reserved_token")
+          .eq("reserved", true)
+          .eq("reserved_token", pin)
+          .limit(2);
+
+        if (error){
+          setInline(document.getElementById("releaseError"), "Leider hat es nicht geklappt. Bitte später erneut versuchen.", "error");
+          return;
+        }
+
+        if (!data || data.length === 0){
+          setInline(document.getElementById("releaseError"), "Kein reservierter Wunsch mit diesem Code gefunden.", "error");
+          return;
+        }
+
+        if (data.length > 1){
+          setInline(document.getElementById("releaseError"), "Mehrere Reservierungen mit diesem Code gefunden. Bitte kontaktiert uns kurz.", "error");
+          return;
+        }
+
+        const gift = data[0];
+        const ok = await openModal({
+          title: "Freigeben",
+          text: `Reservierung für „${gift.title}“ freigeben?`,
+          confirmText: "Freigeben",
+          cancelText: "Abbrechen",
+          showPin: false
         });
+        if (!ok) return;
+
+        const upd = await sb
+          .from("gifts")
+          .update({ reserved:false, reserved_token:null, reserved_at:null })
+          .eq("id", gift.id)
+          .eq("reserved_token", pin)
+          .select("id");
+
+        if (upd.error || !upd.data || upd.data.length === 0){
+          setInline(document.getElementById("releaseError"), "Konnte nicht freigeben. Bitte später erneut versuchen.", "error");
+          await loadData();
+          return;
+        }
+
+        // try clear any local pins that match this pin
+        try{
+          for (const g of state.gifts){
+            if (getLocalPIN(g.id) === pin) clearLocalPIN(g.id);
+          }
+        } catch {}
+
+        releasePin.clear();
+        setInline(document.getElementById("releaseSuccess"), "Freigegeben.", "success");
+        showToast("Freigegeben");
+        await loadData();
+      },
+
+      adminUnreserve: async (id) => {
+        if (!state.isAdmin) return;
+
+        const ok = await openModal({
+          title: "Admin",
+          text: "Möchtest du diese Reservierung wirklich freigeben?",
+          confirmText: "Freigeben",
+          cancelText: "Abbrechen",
+          showPin: false
+        });
+        if (!ok) return;
+
+        await sb
+          .from("gifts")
+          .update({ reserved:false, reserved_token:null, reserved_at:null })
+          .eq("id", id);
+
+        await loadData();
+        showToast("Admin: freigegeben");
       }
     };
 
+    // Release button
+    document.getElementById("releaseBtn").addEventListener("click", () => window.app.releaseByPin());
+
+    // Filters and sort
     document.getElementById("search-input").addEventListener("input", (e) => {
       state.filter.search = e.target.value;
       render();
@@ -917,7 +1255,8 @@
       render();
     });
 
-    loadData();
+    // Initial load
+    await loadData();
   </script>
 </body>
 </html>
