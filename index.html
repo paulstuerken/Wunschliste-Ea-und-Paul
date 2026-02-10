@@ -864,7 +864,7 @@ function isValidWhatsAppInvite(url) {
         await sb.from("reservations").delete().eq("gift_id", id);
         await sb.from("gifts").update({ reserved_quantity: 0, reserved: false }).eq("id", id);
         loadData();
-      }
+      },
       createCoordination: async (giftId) => {
   const pin = await requestPin(
     "Organisation übernehmen",
