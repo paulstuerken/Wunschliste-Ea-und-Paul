@@ -648,10 +648,10 @@
     }
 
     function isReservedByMe(g) {
-      if (g.is_group_gift) {
+      if (g.is_group_gift && state.contributions) {
         return state.contributions.some(c => c.gift_id === g.id && state.userPins.includes(c.pin));
       }
-      return state.reservations.some(r => r.gift_id === g.id && state.userPins.includes(r.pin));
+      return state.reservations && state.reservations.some(r => r.gift_id === g.id && state.userPins.includes(r.pin));
     }
 
     function parsePrice(s) {
@@ -992,8 +992,15 @@
       state.gifts = gs;
 
       // Group Gifts Logic: Always fetch all contributions to show progress
-      const { data: contribs } = await sb.from("contributions").select("*");
-      state.contributions = contribs || [];
+      // Wrap in try-catch in case table doesn't exist yet (SQL failure)
+      try {
+        const { data: contribs, error: cErr } = await sb.from("contributions").select("*");
+        if (cErr) throw cErr;
+        state.contributions = contribs || [];
+      } catch (e) {
+        console.warn("Contributions table missing or error:", e);
+        state.contributions = [];
+      }
 
       // Load Reservations
       if (state.isAdmin) {
