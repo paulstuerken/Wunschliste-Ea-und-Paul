@@ -42,7 +42,6 @@
       padding: 60px 24px;
     }
 
-    /* Hero */
     .hero {
       width: 100%;
       height: 360px;
@@ -68,7 +67,15 @@
       margin-right: auto;
     }
 
-    /* Group Gift */
+    .empty-state {
+      text-align: center;
+      color: var(--text-secondary);
+      padding: 40px 16px;
+      background: transparent;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
     .group-gift {
       background: #FFF;
       border: 1px solid #EAEAEA;
@@ -106,7 +113,6 @@
       fill: #888;
     }
 
-    /* Release Section */
     .release-section {
       background: #FFF;
       border: 1px solid #EAEAEA;
@@ -127,7 +133,6 @@
       margin-bottom: 20px;
     }
 
-    /* Progress */
     .progress-container {
       margin-bottom: 32px;
     }
@@ -153,7 +158,6 @@
       transition: width 0.8s var(--ease);
     }
 
-    /* Controls */
     .controls {
       display: flex;
       flex-direction: column;
@@ -220,7 +224,6 @@
       cursor: pointer;
     }
 
-    /* Sections & Items */
     .section-title {
       display: flex;
       justify-content: space-between;
@@ -293,7 +296,6 @@
       border-radius: 50%;
     }
 
-    /* Buttons */
     button {
       background: var(--btn-bg);
       color: var(--btn-text);
@@ -323,7 +325,6 @@
       border: 1px solid #4CAF50;
     }
 
-    /* My Reservations */
     #my-reservations-section {
       background: #F4F4F4;
       border-radius: var(--radius-card);
@@ -337,7 +338,6 @@
       margin: 0 0 16px 0;
     }
 
-    /* Modal & Pin */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -421,7 +421,6 @@
       outline: none;
     }
 
-    /* Admin */
     .admin-badge {
       position: fixed;
       top: 10px;
@@ -439,7 +438,6 @@
       display: block;
     }
 
-    /* Toast */
     .toast {
       position: fixed;
       bottom: 30px;
@@ -460,7 +458,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Responsive */
     @media(max-width:600px) {
       .wrap {
         padding: 40px 20px;
@@ -496,7 +493,6 @@
     <h1>Unsere Hochzeitswunschliste</h1>
     <p class="intro">Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind kein Muss.</p>
 
-    <!-- ADMIN DASHBOARD -->
     <div id="admin-dashboard"
       style="display:none; background:#FFF0F0; border:2px solid #D32F2F; padding:20px; margin-bottom:40px; border-radius:16px;">
       <h2 style="color:#D32F2F; margin-top:0; font-size:18px;">Admin Dashboard</h2>
@@ -516,7 +512,6 @@
       </div>
     </div>
 
-    <!-- Group Gift -->
     <div class="group-gift">
       <h2>Sammelgeschenk – KPM Kurland</h2>
       <p>Wer sich beteiligen möchte, kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.</p>
@@ -530,7 +525,6 @@
       <div style="font-size:13px; color:#888; margin-top:8px;">Max Tiefenbacher</div>
     </div>
 
-    <!-- Release Reservation -->
     <div class="release-section">
       <h2>Reservierung freigeben</h2>
       <p>Falls du einen Wunsch reserviert hast, kannst du ihn mit deinem Code hier freigeben.</p>
@@ -538,7 +532,6 @@
         Code freigeben</button>
     </div>
 
-    <!-- Progress -->
     <div class="progress-container" id="progress-container">
       <div class="progress-text" id="progress-text">Lade Status...</div>
       <div class="progress-track">
@@ -546,7 +539,6 @@
       </div>
     </div>
 
-    <!-- Controls -->
     <div class="controls">
       <div class="search-row">
         <svg class="search-icon" viewBox="0 0 24 24">
@@ -569,23 +561,20 @@
       </div>
     </div>
 
-    <!-- My Reservations -->
     <div id="my-reservations-section">
       <h2>Deine Reservierungen</h2>
       <div id="my-reservations-list"></div>
     </div>
 
-    <!-- List -->
     <div id="list">
       <div class="empty-state">Lade Liste...</div>
     </div>
   </div>
 
-  <!-- Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
       <h3 id="modalTitle"></h3>
-      <div id="modalBody"></div> <!-- Need div for innerHTML -->
+      <div id="modalBody"></div>
       <div class="modal-actions">
         <button class="modal-btn secondary" id="modalCancel">Abbrechen</button>
         <button class="modal-btn primary" id="modalConfirm">Bestätigen</button>
@@ -604,13 +593,12 @@
 
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    /* --- State --- */
     const state = {
       gifts: [],
       reservations: [],
-      contributions: [], // New for group gifts
+      contributions: [],
       allReservations: [],
-      allContributions: [], // Admin only
+      allContributions: [],
       userPins: [],
       filter: { search: "", showFreeOnly: false, showMineOnly: false },
       sort: "cat",
@@ -618,13 +606,22 @@
       isAdmin: false
     };
 
-    /* --- Helpers --- */
-    function loadPins() { try { state.userPins = JSON.parse(localStorage.getItem("user_pins") || "[]"); } catch (e) { state.userPins = []; } }
+    function loadPins() {
+      try { state.userPins = JSON.parse(localStorage.getItem("user_pins") || "[]"); }
+      catch (e) { state.userPins = []; }
+    }
+
     function savePin(pin) {
       if (!state.userPins.includes(pin)) {
         state.userPins.push(pin);
         localStorage.setItem("user_pins", JSON.stringify(state.userPins));
       }
+    }
+
+    function getContributionTotal(giftId) {
+      return (state.contributions || [])
+        .filter(c => c.gift_id === giftId)
+        .reduce((sum, c) => sum + (parseFloat(c.amount) || 0), 0);
     }
 
     function getAvailable(g) {
@@ -634,25 +631,16 @@
         if (target > 0 && current >= target) return 0;
         return 1;
       }
-      // Robust Math: Force integers
       const q = parseInt(g.quantity) || 1;
       const r = parseInt(g.reserved_quantity) || 0;
       return Math.max(0, q - r);
     }
 
-    function getContributionTotal(giftId) {
-      const list = state.isAdmin ? state.allContributions : state.contributions;
-      // Note: Normal user usually only fetches their own if we filter? 
-      // Wait, for progress bar we need ALL contributions sum.
-      // So standard fetch must get all contributions (public info).
-      return state.contributions.filter(c => c.gift_id === giftId).reduce((sum, c) => sum + (parseFloat(c.amount) || 0), 0);
-    }
-
     function isReservedByMe(g) {
-      if (g.is_group_gift && state.contributions) {
-        return state.contributions.some(c => c.gift_id === g.id && state.userPins.includes(c.pin));
+      if (g.is_group_gift) {
+        return (state.contributions || []).some(c => c.gift_id === g.id && state.userPins.includes(c.pin));
       }
-      return state.reservations && state.reservations.some(r => r.gift_id === g.id && state.userPins.includes(r.pin));
+      return (state.reservations || []).some(r => r.gift_id === g.id && state.userPins.includes(r.pin));
     }
 
     function parsePrice(s) {
@@ -662,54 +650,64 @@
       return parseFloat(m[0].replace(/\./g, "").replace(",", "."));
     }
 
-    function escape(s) { return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    function escape(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
     function catKey(c) { return encodeURIComponent(String(c || "")); }
 
     function showToast(msg) {
       const t = document.getElementById('toast');
-      t.textContent = msg; t.classList.add('active');
+      t.textContent = msg;
+      t.classList.add('active');
       setTimeout(() => t.classList.remove('active'), 2500);
     }
 
-    /* --- Logic --- */
     window.app = {
-
       toggleCat: (k) => { state.categoryState[k] = !state.categoryState[k]; render(); },
-      copyIBAN: () => navigator.clipboard.writeText("DE89200700240191388802").then(() => showToast("IBAN kopiert")),
+
+      copyIBAN: () => navigator.clipboard
+        .writeText("DE89200700240191388802")
+        .then(() => showToast("IBAN kopiert"))
+        .catch(() => showToast("IBAN kopiert")),
 
       reserve: async (id) => {
         const g = state.gifts.find(x => x.id === id);
         if (!g) return;
 
-        // Check if available first locally
         if (getAvailable(g) < 1) { showToast("Nicht mehr verfügbar."); return; }
 
         const pin = await requestPin("Wunsch reservieren", "Bitte wähle einen 4-stelligen Code.");
         if (!pin) return;
 
-        // Critical Path: Re-check Availability from DB
-        const { data: fresh, error: fErr } = await sb.from("gifts").select("quantity, reserved_quantity").eq("id", id).single();
+        const { data: fresh, error: fErr } = await sb.from("gifts")
+          .select("quantity, reserved_quantity")
+          .eq("id", id)
+          .single();
+
         if (fErr || !fresh) { showToast("Fehler beim Prüfen."); return; }
 
-        if (Math.max(0, fresh.quantity - (fresh.reserved_quantity || 0)) < 1) {
+        const availableNow = Math.max(0, (parseInt(fresh.quantity) || 1) - (parseInt(fresh.reserved_quantity) || 0));
+        if (availableNow < 1) {
           showToast("Leider war jemand schneller.");
           loadData();
           return;
         }
 
-        // 1. Insert Reservation
         const { error: insErr } = await sb.from("reservations").insert({ gift_id: id, pin: pin, qty: 1 });
         if (insErr) {
           console.error(insErr);
-          if (insErr.code === '23505') showToast("Code bereits vergeben? Bitte ändern.");
-          else showToast("Fehler beim Speichern. (Policy?)");
+          if (insErr.code === '23505') showToast("PIN bereits vergeben. Bitte anderen Code wählen.");
+          else showToast("Fehler beim Speichern.");
           return;
         }
 
-        // 2. Increment Gift Counter
-        const newQ = (fresh.reserved_quantity || 0) + 1;
+        const newQ = (parseInt(fresh.reserved_quantity) || 0) + 1;
         const { error: upErr } = await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
-
         if (upErr) console.error("Update failed", upErr);
 
         savePin(pin);
@@ -718,20 +716,19 @@
       },
 
       unreserve: async (id) => {
-        const myRes = state.reservations.filter(r => r.gift_id === id && state.userPins.includes(r.pin));
+        const myRes = (state.reservations || []).filter(r => r.gift_id === id && state.userPins.includes(r.pin));
         if (myRes.length === 0) return;
-        const r = myRes[0]; // Take first
 
-        if (!(await confirm("Freigeben?", "Möchtest du diese Reservierung freigeben?"))) return;
+        const r = myRes[0];
 
-        // 1. Delete
+        if (!(await confirmModal("Freigeben?", "Möchtest du diese Reservierung freigeben?"))) return;
+
         const { error: delErr } = await sb.from("reservations").delete().match({ gift_id: id, pin: r.pin });
         if (delErr) { showToast("Fehler beim Löschen."); return; }
 
-        // 2. Decrement
         const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", id).single();
         if (fresh) {
-          const newQ = Math.max(0, (fresh.reserved_quantity || 0) - r.qty);
+          const newQ = Math.max(0, (parseInt(fresh.reserved_quantity) || 0) - (parseInt(r.qty) || 1));
           await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
         }
 
@@ -739,18 +736,15 @@
         loadData();
       },
 
-      // Group Gift: Contribute
       contribute: async (id) => {
         const g = state.gifts.find(x => x.id === id);
         if (!g) return;
 
-        // Custom Input Modal
         const input = await requestContributionInput(g.title);
-        if (!input) return; // Cancelled
+        if (!input) return;
 
         const { amount, name, message, pin } = input;
 
-        // Insert
         const { error } = await sb.from("contributions").insert({
           gift_id: id,
           amount: amount,
@@ -770,17 +764,13 @@
         loadData();
       },
 
-      // Group Gift: Remove Contribution
       removeContribution: async (id) => {
-        // Check which contributions are mine
-        const myContribs = state.contributions.filter(c => c.gift_id === id && state.userPins.includes(c.pin));
+        const myContribs = (state.contributions || []).filter(c => c.gift_id === id && state.userPins.includes(c.pin));
         if (myContribs.length === 0) return;
 
-        // If multiple, maybe ask which one? For simplicity, just list them or take latest?
-        // Simplest: Just remove the most recent one.
         const c = myContribs[myContribs.length - 1];
 
-        if (!(await confirm("Beitrag zurückziehen?", `Deinen Beitrag von ${c.amount}€ entfernen?`))) return;
+        if (!(await confirmModal("Beitrag zurückziehen?", `Deinen Beitrag von ${c.amount}€ entfernen?`))) return;
 
         const { error } = await sb.from("contributions").delete().eq("id", c.id);
         if (error) { showToast("Fehler beim Entfernen."); return; }
@@ -793,30 +783,31 @@
         const pin = await requestPin("Reservierung finden", "Bitte gib deinen Code ein.");
         if (!pin) return;
 
-        // Check remote reservations
-        const { data: list, error } = await sb.from("reservations").select("*, gifts(title)").eq("pin", pin);
-
-        // Check remote contributions
+        const { data: list } = await sb.from("reservations").select("*, gifts(title)").eq("pin", pin);
         const { data: cList } = await sb.from("contributions").select("*, gifts(title)").eq("pin", pin);
 
         if ((!list || list.length === 0) && (!cList || cList.length === 0)) {
-          showToast("Keine Einträge gefunden."); return;
+          showToast("Keine Einträge gefunden.");
+          return;
         }
 
-        // Prioritize Reservations first, then Contributions
         if (list && list.length > 0) {
           const item = list[0];
           const title = item.gifts ? item.gifts.title : "Unbekannt";
-          if (!(await confirm("Gefunden", `Freigeben: "${escape(title)}"?`))) return;
+          if (!(await confirmModal("Gefunden", `Freigeben: "${escape(title)}"?`))) return;
+
           await sb.from("reservations").delete().eq("id", item.id);
           const { data: g } = await sb.from("gifts").select("reserved_quantity").eq("id", item.gift_id).single();
           if (g) {
-            await sb.from("gifts").update({ reserved_quantity: Math.max(0, g.reserved_quantity - item.qty) }).eq("id", item.gift_id);
+            await sb.from("gifts").update({
+              reserved_quantity: Math.max(0, (parseInt(g.reserved_quantity) || 0) - (parseInt(item.qty) || 1))
+            }).eq("id", item.gift_id);
           }
+
         } else if (cList && cList.length > 0) {
           const item = cList[0];
           const title = item.gifts ? item.gifts.title : "Unbekannt";
-          if (!(await confirm("Beitrag gefunden", `Beitrag für "${escape(title)}" (${item.amount}€) entfernen?`))) return;
+          if (!(await confirmModal("Beitrag gefunden", `Beitrag für "${escape(title)}" (${item.amount}€) entfernen?`))) return;
           await sb.from("contributions").delete().eq("id", item.id);
         }
 
@@ -825,9 +816,8 @@
         loadData();
       },
 
-      // Admin Action: Delete a specific reservation by ID
       adminDelete: async (resId, giftId, qty, isContribution = false) => {
-        if (!(await confirm("ADMIN LÖSCHEN", "Wirklich löschen?"))) return;
+        if (!(await confirmModal("ADMIN LÖSCHEN", "Wirklich löschen?"))) return;
 
         const table = isContribution ? "contributions" : "reservations";
         const { error } = await sb.from(table).delete().eq("id", resId);
@@ -839,10 +829,9 @@
         }
 
         if (!isContribution) {
-          // Decrement reserved qty only for reservations
           const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", giftId).single();
           if (fresh) {
-            const newQ = Math.max(0, (fresh.reserved_quantity || 0) - qty);
+            const newQ = Math.max(0, (parseInt(fresh.reserved_quantity) || 0) - (parseInt(qty) || 1));
             await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", giftId);
           }
         }
@@ -852,15 +841,14 @@
       },
 
       adminReset: async (id) => {
-        if (!(await confirm("ADMIN", "Reset completely?"))) return;
+        if (!(await confirmModal("ADMIN", "Reset completely?"))) return;
         await sb.from("reservations").delete().eq("gift_id", id);
         await sb.from("gifts").update({ reserved_quantity: 0, reserved: false }).eq("id", id);
         loadData();
       }
     };
 
-    /* --- Modal --- */
-    function confirm(title, text) {
+    function confirmModal(title, text) {
       return new Promise(resolve => {
         const el = document.getElementById('modalOverlay');
         document.getElementById('modalTitle').textContent = title;
@@ -877,33 +865,38 @@
     function requestPin(title, txt) {
       return new Promise(resolve => {
         const html = `<p>${txt}</p>
-            <div class="pin-input-container">
-               <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
-               <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
-            </div>`;
+          <div class="pin-input-container">
+            <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
+            <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
+          </div>`;
 
         const el = document.getElementById('modalOverlay');
         document.getElementById('modalTitle').textContent = title;
         document.getElementById('modalBody').innerHTML = html;
+
         const btn = document.getElementById('modalConfirm');
-        btn.textContent = "Bestätigen"; btn.disabled = true;
+        btn.textContent = "Bestätigen";
+        btn.disabled = true;
 
         const inputs = el.querySelectorAll('.pin-digit');
-        inputs.forEach((inp, i) => {
-          inp.value = "";
-          inp.oninput = (e) => {
-            if (!/^\d$/.test(inp.value)) inp.value = "";
-            if (inp.value && i < 3) inputs[i + 1].focus();
-            check();
-          };
-          inp.onkeydown = (e) => { if (e.key === "Backspace" && !inp.value && i > 0) inputs[i - 1].focus(); };
-        });
 
         const check = () => {
           const code = Array.from(inputs).map(x => x.value).join('');
           btn.disabled = code.length !== 4;
           return code;
         };
+
+        inputs.forEach((inp, i) => {
+          inp.value = "";
+          inp.oninput = () => {
+            if (!/^\d$/.test(inp.value)) inp.value = "";
+            if (inp.value && i < 3) inputs[i + 1].focus();
+            check();
+          };
+          inp.onkeydown = (e) => {
+            if (e.key === "Backspace" && !inp.value && i > 0) inputs[i - 1].focus();
+          };
+        });
 
         const close = (val) => { el.classList.remove('active'); resolve(val); };
         btn.onclick = () => close(check());
@@ -920,26 +913,26 @@
         document.getElementById('modalTitle').textContent = "Beteiligen an: " + giftTitle;
 
         const html = `
-                <div style="text-align:left; margin-bottom:20px;">
-                    <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Betrag (€)</label>
-                    <input type="number" id="inp-amount" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:16px; margin-bottom:12px;" placeholder="z.B. 50">
-                    
-                    <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Name (optional)</label>
-                    <input type="text" id="inp-name" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:16px; margin-bottom:12px;" placeholder="Dein Name">
-                    
-                    <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Nachricht (optional)</label>
-                    <textarea id="inp-msg" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:14px; resize:none; margin-bottom:12px;" rows="2" placeholder="Deine Nachricht an das Brautpaar..."></textarea>
-                    
-                    <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Dein PIN (4-stellig)</label>
-                    <div class="pin-input-container" style="justify-content:flex-start; margin:0;">
-                       <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
-                       <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
-                    </div>
-                </div>
-            `;
+          <div style="text-align:left; margin-bottom:20px;">
+            <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Betrag (€)</label>
+            <input type="number" id="inp-amount" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:16px; margin-bottom:12px;" placeholder="z.B. 50">
+            <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Name (optional)</label>
+            <input type="text" id="inp-name" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:16px; margin-bottom:12px;" placeholder="Dein Name">
+            <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Nachricht (optional)</label>
+            <textarea id="inp-msg" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:14px; resize:none; margin-bottom:12px;" rows="2" placeholder="Deine Nachricht an das Brautpaar..."></textarea>
+            <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Dein PIN (4-stellig)</label>
+            <div class="pin-input-container" style="justify-content:flex-start; margin:0;">
+              <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
+              <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
+            </div>
+          </div>
+        `;
+
         document.getElementById('modalBody').innerHTML = html;
+
         const btn = document.getElementById('modalConfirm');
-        btn.textContent = "Speichern"; btn.disabled = true;
+        btn.textContent = "Speichern";
+        btn.disabled = true;
 
         const inputs = el.querySelectorAll('.pin-digit');
         const amountInp = document.getElementById('inp-amount');
@@ -960,12 +953,14 @@
 
         inputs.forEach((inp, i) => {
           inp.value = "";
-          inp.oninput = (e) => {
+          inp.oninput = () => {
             if (!/^\d$/.test(inp.value)) inp.value = "";
             if (inp.value && i < 3) inputs[i + 1].focus();
             check();
           };
-          inp.onkeydown = (e) => { if (e.key === "Backspace" && !inp.value && i > 0) inputs[i - 1].focus(); };
+          inp.onkeydown = (e) => {
+            if (e.key === "Backspace" && !inp.value && i > 0) inputs[i - 1].focus();
+          };
         });
 
         const close = (val) => { el.classList.remove('active'); resolve(val); };
@@ -977,23 +972,22 @@
       });
     }
 
-    /* --- Loader --- */
     async function loadData() {
-      // Toggle Admin Mode
       const params = new URLSearchParams(window.location.search);
       if (params.get("admin") === ADMIN_SECRET || window.location.hash.includes("master") || window.location.href.includes("/master")) {
-        state.isAdmin = true; document.body.classList.add('admin-mode');
+        state.isAdmin = true;
+        document.body.classList.add('admin-mode');
       }
 
       loadPins();
 
-      // Load Gifts
       const { data: gs, error: gErr } = await sb.from("gifts").select("*").order("category").order("title");
-      if (gErr) { document.getElementById('list').innerHTML = `<div class="empty-state">Fehler.</div>`; return; }
-      state.gifts = gs;
+      if (gErr) {
+        document.getElementById('list').innerHTML = `<div class="empty-state">Fehler beim Laden.</div>`;
+        return;
+      }
+      state.gifts = gs || [];
 
-      // Group Gifts Logic: Always fetch all contributions to show progress
-      // Wrap in try-catch in case table doesn't exist yet (SQL failure)
       try {
         const { data: contribs, error: cErr } = await sb.from("contributions").select("*");
         if (cErr) throw cErr;
@@ -1003,26 +997,18 @@
         state.contributions = [];
       }
 
-      // Load Reservations
       if (state.isAdmin) {
         const { data: allRes } = await sb.from("reservations").select("*, gifts(title)").order("created_at", { ascending: false });
-        // Also fetch enriched contributions
         const { data: allContribs } = await sb.from("contributions").select("*, gifts(title)").order("created_at", { ascending: false });
 
         state.allReservations = allRes || [];
         state.allContributions = allContribs || [];
 
-        renderAdmin();
         document.getElementById('admin-dashboard').style.display = 'block';
+        renderAdmin();
 
-        // Admin sees all as "state.reservations" for main listing? No, keep separate.
         state.reservations = allRes || [];
       } else {
-        // Normal User
-        // RLS policy allows read all for contributions (for progress bar), so state.contributions is populated.
-        // For reservations, fetch relevant if pin exists.
-        // Or if RLS is public read, fetch all?
-        // Let's assume public read for now as per previous policy.
         if (state.userPins.length > 0) {
           const { data: rs } = await sb.from("reservations").select("*").in("pin", state.userPins);
           state.reservations = rs || [];
@@ -1036,71 +1022,71 @@
 
     function renderAdmin() {
       const list = document.getElementById('admin-list');
-
       let html = "";
 
-      // Reservations
       if (state.allReservations.length > 0) {
         html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:bold;">Reservierungen</td></tr>`;
         html += state.allReservations.map(r => {
           const title = r.gifts ? r.gifts.title : "???";
           return `<tr style="border-bottom:1px solid #EEE;">
-                     <td style="padding:8px; font-weight:500;">${escape(title)}</td>
-                     <td style="padding:8px; font-family:monospace;">${escape(r.pin)}</td>
-                     <td style="padding:8px;">${r.qty}x</td>
-                     <td style="padding:8px;">
-                         <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;" onclick="app.adminDelete('${r.id}', '${r.gift_id}', ${r.qty})">Löschen</button>
-                     </td>
-                 </tr>`;
+            <td style="padding:8px; font-weight:500;">${escape(title)}</td>
+            <td style="padding:8px; font-family:monospace;">${escape(r.pin)}</td>
+            <td style="padding:8px;">${r.qty}x</td>
+            <td style="padding:8px;">
+              <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;"
+                onclick="app.adminDelete('${r.id}', '${r.gift_id}', ${r.qty})">Löschen</button>
+            </td>
+          </tr>`;
         }).join("");
       }
 
-      // Contributions
       if (state.allContributions.length > 0) {
-        html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:bold; margin-top:10px;">Beiträge (Gruppe)</td></tr>`;
+        html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:bold;">Beiträge (Gruppe)</td></tr>`;
         html += state.allContributions.map(c => {
           const title = c.gifts ? c.gifts.title : "???";
           const msg = c.message ? `<div style="font-size:10px;color:#666;max-width:200px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">"${escape(c.message)}"</div>` : "";
           return `<tr style="border-bottom:1px solid #EEE;">
-                     <td style="padding:8px; font-weight:500;">${escape(title)}<br><span style="font-size:11px;color:#555">${escape(c.name || "-")}</span></td>
-                     <td style="padding:8px; font-family:monospace;">${escape(c.pin)}</td>
-                     <td style="padding:8px;">${c.amount}€</td>
-                     <td style="padding:8px;">
-                        ${msg}
-                         <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;" onclick="app.adminDelete('${c.id}', '${c.gift_id}', 0, true)">Löschen</button>
-                     </td>
-                 </tr>`;
+            <td style="padding:8px; font-weight:500;">${escape(title)}<br><span style="font-size:11px;color:#555">${escape(c.name || "-")}</span></td>
+            <td style="padding:8px; font-family:monospace;">${escape(c.pin)}</td>
+            <td style="padding:8px;">${c.amount}€</td>
+            <td style="padding:8px;">
+              ${msg}
+              <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;"
+                onclick="app.adminDelete('${c.id}', '${c.gift_id}', 0, true)">Löschen</button>
+            </td>
+          </tr>`;
         }).join("");
       }
 
       if (!html) html = `<tr><td colspan="4" style="padding:15px;text-align:center;">Keine Einträge.</td></tr>`;
-
       list.innerHTML = html;
     }
 
     function render() {
-      // Stats
       const total = state.gifts.length;
-      // Fulfillment: For group gifts, fulfilled if >= target?
+
       const fulfilled = state.gifts.filter(g => {
-        if (g.is_group_gift) return getContributionTotal(g.id) >= (g.target_amount || 1);
+        if (g.is_group_gift) {
+          const target = parseFloat(g.target_amount) || 1;
+          return getContributionTotal(g.id) >= target;
+        }
         return getAvailable(g) === 0;
       }).length;
 
       document.getElementById('progress-fill').style.width = (total > 0 ? (fulfilled / total) * 100 : 0) + "%";
       document.getElementById('progress-text').textContent = `${fulfilled} von ${total} Wünschen erfüllt`;
 
-      // Render Lists
-      const sLower = state.filter.search.toLowerCase();
+      const sLower = (state.filter.search || "").toLowerCase();
+
       const filtered = state.gifts.filter(g => {
-        const has = g.title.toLowerCase().includes(sLower);
+        const title = (g.title || "").toLowerCase();
+        const has = title.includes(sLower);
         const my = isReservedByMe(g);
 
-        // Free Only:
         if (state.filter.showFreeOnly) {
           if (g.is_group_gift) {
-            // Hide if fully funded?
-            if (getContributionTotal(g.id) >= (g.target_amount || 1)) return false;
+            const target = parseFloat(g.target_amount) || 1;
+            if (getContributionTotal(g.id) >= target) return false;
           } else {
             if (getAvailable(g) === 0) return false;
           }
@@ -1110,7 +1096,6 @@
         return has;
       });
 
-      // Sort
       filtered.sort((a, b) => {
         if (state.sort.includes('price')) {
           const pa = parsePrice(a.Preis), pb = parsePrice(b.Preis);
@@ -1118,38 +1103,43 @@
         }
         if (state.sort === 'status') {
           const aa = getAvailable(a) > 0, bb = getAvailable(b) > 0;
-          if (aa === bb) return a.title.localeCompare(b.title);
+          if (aa === bb) return (a.title || "").localeCompare(b.title || "");
           return aa ? -1 : 1;
         }
-        if (a.category !== b.category) return (a.category || "").localeCompare(b.category || "");
-        return a.title.localeCompare(b.title);
+        if ((a.category || "") !== (b.category || "")) return (a.category || "").localeCompare(b.category || "");
+        return (a.title || "").localeCompare(b.title || "");
       });
 
-      // HTML Gen
       let html = "";
-      let cats = {};
+      const cats = {};
 
-      // Grouping
       if (state.sort === 'cat') {
         filtered.forEach(g => (cats[g.category] ||= []).push(g));
-        for (let c in cats) {
+
+        for (const c in cats) {
           const key = catKey(c);
           const open = !state.categoryState[key];
-          html += `<div class="section-title ${!open ? 'collapsed' : ''}" onclick="app.toggleCat('${key}')">
-                   <h2>${escape(c)}</h2><svg class="section-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                </div>
-                <div class="gift-group ${!open ? 'collapsed' : ''}" style="${!open ? 'height:0' : ''}">${cats[c].map(renderItem).join('')}</div>`;
+
+          html += `
+            <div class="section-title ${!open ? 'collapsed' : ''}" onclick="app.toggleCat('${key}')">
+              <h2>${escape(c)}</h2>
+              <svg class="section-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+            </div>
+            <div class="gift-group ${!open ? 'collapsed' : ''}" style="${!open ? 'height:0' : ''}">
+              ${cats[c].map(g => renderItem(g, false)).join('')}
+            </div>
+          `;
         }
       } else {
-        html = filtered.map(renderItem).join('');
+        html = filtered.map(g => renderItem(g, false)).join('');
       }
 
       if (!html) html = `<div class="empty-state">Nichts gefunden.</div>`;
       document.getElementById('list').innerHTML = html;
 
-      // My Res Section
-      const mine = state.gifts.filter(isReservedByMe);
+      const mine = state.gifts.filter(g => isReservedByMe(g));
       const mySec = document.getElementById('my-reservations-section');
+
       if (mine.length > 0) {
         mySec.style.display = 'block';
         document.getElementById('my-reservations-list').innerHTML = mine.map(g => renderItem(g, true)).join('');
@@ -1159,15 +1149,16 @@
     }
 
     function renderItem(g, isMySection = false) {
-      if (g.is_group_gift) return renderGroupGiftItem(g, isMySection);
+      const inMySection = (isMySection === true);
+
+      if (g.is_group_gift) return renderGroupGiftItem(g, inMySection);
 
       const avail = getAvailable(g);
       const my = isReservedByMe(g);
+
       const price = g.Preis ? `<span>${escape(g.Preis)}</span><div class="sep"></div>` : "";
 
       let act = "";
-      // DEBUG: Log if something weird happens
-      if (isNaN(avail)) console.warn("NaN avail for", g.title, g);
 
       if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
       else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`;
@@ -1177,80 +1168,93 @@
         act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
       }
 
-      // If rendering in "My Section", show distinct Unreserve button
-      if (isMySection) {
+      if (inMySection) {
         act = `<button class="undo" onclick="app.unreserve('${g.id}')">Freigeben</button>`;
       }
 
-      // Status
       let st = "";
-      if (g.quantity > 1) {
-        if (avail === 0) st = `<div style="color:#D32F2F; font-size:12px;">Alle ${g.quantity} V.</div>`;
-        else st = `<div style="color:#2E7D32; font-size:12px;">${avail} von ${g.quantity} verfügbar</div>`;
+      const qty = parseInt(g.quantity) || 1;
+      if (qty > 1) {
+        if (avail === 0) st = `<div style="color:#D32F2F; font-size:12px;">Alle ${qty} vergeben</div>`;
+        else st = `<div style="color:#2E7D32; font-size:12px;">${avail} von ${qty} verfügbar</div>`;
       }
 
-      const admin = state.isAdmin ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>` : "";
+      const admin = state.isAdmin
+        ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>`
+        : "";
 
-      return `<div class="item ${my ? 'my-reservation' : ''} ${my ? 'reserved-by-me' : ''}">
-           <div class="item-content">
-              <div class="item-title">${escape(g.title)}</div>
-              <div class="meta">${price} <a href="${escape(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
-              ${st}
-           </div>
-           <div style="flex-direction:column; display:flex; align-items:flex-end; gap:6px;">
-              ${act}
-              ${admin}
-           </div>
-        </div>`;
+      return `
+        <div class="item ${my ? 'my-reservation' : ''}">
+          <div class="item-content">
+            <div class="item-title">${escape(g.title)}</div>
+            <div class="meta">${price} <a href="${escape(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
+            ${st}
+          </div>
+          <div style="flex-direction:column; display:flex; align-items:flex-end; gap:6px;">
+            ${act}
+            ${admin}
+          </div>
+        </div>
+      `;
     }
 
     function renderGroupGiftItem(g, isMySection = false) {
-      const current = getContributionTotal(g.id);
-      const target = parseFloat(g.target_amount) || 1; // Avoid div/0
-      const percent = Math.min(100, (current / target) * 100);
-      const my = isReservedByMe(g); // Means I have contributed
+      const inMySection = (isMySection === true);
 
-      // Progress Bar
+      const current = getContributionTotal(g.id);
+      const target = parseFloat(g.target_amount) || 1;
+      const percent = Math.min(100, (current / target) * 100);
+
       const bar = `
-            <div style="margin-top:8px;">
-                <div style="display:flex; justify-content:space-between; font-size:12px; color:#555; margin-bottom:4px;">
-                    <span>${current}€ gesammelt</span>
-                    <span>Ziel: ${target}€</span>
-                </div>
-                <div style="height:6px; background:#EEE; border-radius:4px; overflow:hidden;">
-                    <div style="height:100%; width:${percent}%; background:#4CAF50;"></div>
-                </div>
-            </div>
-        `;
+        <div style="margin-top:8px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:#555; margin-bottom:4px;">
+            <span>${current}€ gesammelt</span>
+            <span>Ziel: ${target}€</span>
+          </div>
+          <div style="height:6px; background:#EEE; border-radius:4px; overflow:hidden;">
+            <div style="height:100%; width:${percent}%; background:#4CAF50;"></div>
+          </div>
+        </div>
+      `;
 
       let act = `<button style="background:#2E7D32;" onclick="app.contribute('${g.id}')">Beteiligen</button>`;
-
-      if (isMySection) {
+      if (inMySection) {
         act = `<button class="undo" onclick="app.removeContribution('${g.id}')">Beitrag zurückziehen</button>`;
       }
 
       const priceStr = g.Preis ? `<span>${escape(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
 
-      return `<div class="item ${my ? 'my-reservation' : ''}" style="border-left:4px solid #4CAF50;">
-           <div class="item-content" style="width:100%">
-              <div class="item-title">${escape(g.title)} <span style="font-size:12px; font-weight:normal; color:#4CAF50; background:#E8F5E9; padding:2px 6px; border-radius:4px; margin-left:6px;">Sammelgeschenk</span></div>
-              <div class="meta">${priceStr} <a href="${escape(g.url)}" target="_blank" rel="noopener">Details ↗</a></div>
-              ${bar}
-           </div>
-           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:100px;">
-              ${act}
-           </div>
-        </div>`;
+      return `
+        <div class="item ${isReservedByMe(g) ? 'my-reservation' : ''}" style="border-left:4px solid #4CAF50;">
+          <div class="item-content" style="width:100%">
+            <div class="item-title">
+              ${escape(g.title)}
+              <span style="font-size:12px; font-weight:normal; color:#4CAF50; background:#E8F5E9; padding:2px 6px; border-radius:4px; margin-left:6px;">Sammelgeschenk</span>
+            </div>
+            <div class="meta">${priceStr} <a href="${escape(g.url)}" target="_blank" rel="noopener">Details ↗</a></div>
+            ${bar}
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:100px;">
+            ${act}
+          </div>
+        </div>
+      `;
     }
 
-    // Init
     document.getElementById('search-input').oninput = (e) => { state.filter.search = e.target.value; render(); };
-    document.getElementById('filter-free').onclick = (e) => { state.filter.showFreeOnly = !state.filter.showFreeOnly; e.target.classList.toggle('active'); render(); };
-    document.getElementById('filter-mine').onclick = (e) => { state.filter.showMineOnly = !state.filter.showMineOnly; e.target.classList.toggle('active'); render(); };
+    document.getElementById('filter-free').onclick = (e) => {
+      state.filter.showFreeOnly = !state.filter.showFreeOnly;
+      e.target.classList.toggle('active', state.filter.showFreeOnly);
+      render();
+    };
+    document.getElementById('filter-mine').onclick = (e) => {
+      state.filter.showMineOnly = !state.filter.showMineOnly;
+      e.target.classList.toggle('active', state.filter.showMineOnly);
+      render();
+    };
     document.getElementById('sort-select').onchange = (e) => { state.sort = e.target.value; render(); };
 
     loadData();
-
   </script>
 </body>
 
