@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg-body: #FAFAFA;
@@ -23,18 +23,17 @@
       --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
       margin: 0;
-      font-family: 'Outfit', sans-serif;
+      font-family: "Outfit", sans-serif;
       background: var(--bg-body);
       color: var(--text-primary);
       line-height: 1.5;
     }
+
+    a { color: inherit; }
 
     .wrap {
       max-width: 720px;
@@ -49,6 +48,7 @@
       border-radius: var(--radius-card);
       margin-bottom: 40px;
       background: #EEE;
+      display: block;
     }
 
     h1 {
@@ -61,18 +61,14 @@
     .intro {
       text-align: center;
       color: var(--text-secondary);
-      margin-bottom: 48px;
+      margin: 0 auto 48px auto;
       max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     .empty-state {
       text-align: center;
       color: var(--text-secondary);
       padding: 40px 16px;
-      background: transparent;
-      border-radius: 12px;
       font-size: 14px;
     }
 
@@ -92,7 +88,7 @@
 
     .group-gift p {
       color: #555;
-      margin-bottom: 24px;
+      margin: 0 0 24px 0;
     }
 
     .iban-container {
@@ -101,17 +97,14 @@
       gap: 10px;
       background: #F9F9F9;
       padding: 10px 18px;
-      border-radius: 99px;
+      border-radius: 999px;
       border: 1px solid #EEE;
       cursor: pointer;
-      font-family: monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      user-select: none;
     }
 
-    .copy-icon {
-      width: 16px;
-      height: 16px;
-      fill: #888;
-    }
+    .copy-icon { width: 16px; height: 16px; fill: #888; }
 
     .release-section {
       background: #FFF;
@@ -124,18 +117,16 @@
 
     .release-section h2 {
       font-size: 14px;
-      margin-bottom: 12px;
+      margin: 0 0 12px 0;
     }
 
     .release-section p {
       font-size: 13px;
       color: #666;
-      margin-bottom: 20px;
+      margin: 0 0 20px 0;
     }
 
-    .progress-container {
-      margin-bottom: 32px;
-    }
+    .progress-container { margin-bottom: 32px; }
 
     .progress-text {
       text-align: center;
@@ -147,7 +138,7 @@
     .progress-track {
       height: 6px;
       background: #EEE;
-      border-radius: 99px;
+      border-radius: 999px;
       overflow: hidden;
     }
 
@@ -165,19 +156,20 @@
       margin-bottom: 40px;
     }
 
-    .search-row {
-      position: relative;
-    }
+    .search-row { position: relative; }
 
     .search-input {
       width: 100%;
       padding: 14px 14px 14px 44px;
-      border: none;
+      border: 1px solid transparent;
       background: #FFF;
       border-radius: var(--radius-btn);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
       font-size: 15px;
+      outline: none;
     }
+
+    .search-input:focus { border-color: #E5E5E5; }
 
     .search-icon {
       position: absolute;
@@ -194,12 +186,10 @@
       justify-content: space-between;
       gap: 10px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
-    .toggles {
-      display: flex;
-      gap: 8px;
-    }
+    .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
 
     .toggle-btn {
       background: transparent;
@@ -209,6 +199,7 @@
       font-size: 13px;
       border-radius: var(--radius-btn);
       cursor: pointer;
+      font-family: inherit;
     }
 
     .toggle-btn.active {
@@ -218,48 +209,45 @@
     }
 
     .sort-select {
-      border: none;
+      border: 1px solid transparent;
       background: transparent;
       font-size: 13px;
       cursor: pointer;
+      padding: 8px 0;
+      font-family: inherit;
     }
-.section-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 40px 0 16px;
-  cursor: pointer;
-}
 
-.section-title h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.2;
-}
     .section-title {
-  margin: 32px 0 14px;
-}
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 32px 0 14px;
+      cursor: pointer;
+      user-select: none;
+      gap: 12px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
 
     .section-chevron {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       fill: var(--text-secondary);
-      transition: transform 0.3s;
+      flex: 0 0 auto;
+      transition: transform 0.25s;
     }
 
-    .section-title.collapsed .section-chevron {
-      transform: rotate(-90deg);
-    }
+    .section-title.collapsed .section-chevron { transform: rotate(-90deg); }
 
-    .gift-group {
-      overflow: hidden;
-      transition: height 0.3s var(--ease);
-    }
-
-    .gift-group.collapsed {
-      height: 0 !important;
-    }
+    /* Stabiler Collapse ohne height Messung */
+    .gift-group { display: block; }
+    .gift-group.collapsed { display: none; }
 
     .item {
       background: var(--bg-card);
@@ -270,7 +258,8 @@
       grid-template-columns: 1fr auto;
       gap: 20px;
       align-items: center;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      overflow: hidden;
     }
 
     .item.my-reservation {
@@ -282,6 +271,7 @@
       font-size: 17px;
       font-weight: 500;
       margin-bottom: 6px;
+      overflow-wrap: anywhere;
     }
 
     .meta {
@@ -290,12 +280,12 @@
       display: flex;
       gap: 10px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .meta a {
-      color: inherit;
       text-decoration: none;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(0,0,0,0.2);
     }
 
     .sep {
@@ -303,6 +293,7 @@
       height: 2px;
       background: #CCC;
       border-radius: 50%;
+      flex: 0 0 auto;
     }
 
     button {
@@ -314,7 +305,11 @@
       font-size: 13px;
       cursor: pointer;
       font-family: inherit;
+      transition: background 0.2s;
+      white-space: nowrap;
     }
+
+    button:hover { background: var(--btn-bg-hover); }
 
     button:disabled {
       background: #F5F5F5;
@@ -328,11 +323,15 @@
       border: 1px solid #E5E5E5;
     }
 
+    button.reserved:hover { background: transparent; }
+
     button.undo {
-      background: rgba(76, 175, 80, 0.05);
+      background: rgba(76,175,80,0.06);
       color: #2E7D32;
       border: 1px solid #4CAF50;
     }
+
+    button.undo:hover { background: rgba(76,175,80,0.10); }
 
     #my-reservations-section {
       background: #F4F4F4;
@@ -350,7 +349,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0,0,0,0.3);
       backdrop-filter: blur(4px);
       display: flex;
       justify-content: center;
@@ -361,10 +360,7 @@
       transition: opacity 0.2s;
     }
 
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
     .modal {
       background: #FFF;
@@ -377,35 +373,16 @@
       transition: transform 0.2s;
     }
 
-    .modal-overlay.active .modal {
-      transform: scale(1);
-    }
+    .modal-overlay.active .modal { transform: scale(1); }
 
-    .modal h3 {
-      margin: 0 0 12px;
-    }
+    .modal h3 { margin: 0 0 12px; }
+    .modal p { color: #666; font-size: 15px; margin: 0 0 20px; }
 
-    .modal p {
-      color: #666;
-      font-size: 15px;
-      margin: 0 0 20px;
-    }
+    .modal-actions { display: flex; gap: 10px; }
 
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-    }
+    .modal-btn { flex: 1; padding: 12px; border-radius: 12px; }
 
-    .modal-btn {
-      flex: 1;
-      padding: 12px;
-      border-radius: 12px;
-    }
-
-    .modal-btn.secondary {
-      background: #F5F5F5;
-      color: #333;
-    }
+    .modal-btn.secondary { background: #F5F5F5; color: #333; }
 
     .pin-input-container {
       display: flex;
@@ -443,9 +420,7 @@
       z-index: 2000;
     }
 
-    body.admin-mode .admin-badge {
-      display: block;
-    }
+    body.admin-mode .admin-badge { display: block; }
 
     .toast {
       position: fixed;
@@ -455,11 +430,14 @@
       background: #222;
       color: #FFF;
       padding: 12px 24px;
-      border-radius: 99px;
+      border-radius: 999px;
       opacity: 0;
       pointer-events: none;
       transition: all 0.3s;
       z-index: 1000;
+      max-width: calc(100% - 24px);
+      text-align: center;
+      overflow-wrap: anywhere;
     }
 
     .toast.active {
@@ -467,38 +445,23 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    @media(max-width:600px) {
-      .wrap {
-        padding: 40px 20px;
-      }
-
-      .hero {
-        height: 260px;
-      }
-
-      .item {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-
-      .filter-row {
-        flex-direction: column;
-      }
-
-      button {
-        width: 100%;
-      }
+    @media (max-width: 600px) {
+      .wrap { padding: 40px 20px; }
+      .hero { height: 260px; }
+      .item { grid-template-columns: 1fr; gap: 16px; }
+      .filter-row { flex-direction: column; align-items: stretch; }
+      button { width: 100%; }
+      button.reserved { width: 100%; }
+      .sort-select { width: 100%; }
     }
   </style>
 </head>
 
 <body>
-
   <div class="admin-badge">ADMIN</div>
 
   <div class="wrap">
-    <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" class="hero"
-      alt="Cover">
+    <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" class="hero" alt="Cover">
     <h1>Unsere Hochzeitswunschliste</h1>
     <p class="intro">Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind kein Muss.</p>
 
@@ -526,8 +489,7 @@
       <p>Wer sich beteiligen möchte, kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.</p>
       <div class="iban-container" onclick="app.copyIBAN()">
         <svg class="copy-icon" viewBox="0 0 24 24">
-          <path
-            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
         </svg>
         <span>DE89 2007 0024 0191 3888 02</span>
       </div>
@@ -537,8 +499,7 @@
     <div class="release-section">
       <h2>Reservierung freigeben</h2>
       <p>Falls du einen Wunsch reserviert hast, kannst du ihn mit deinem Code hier freigeben.</p>
-      <button class="modal-btn secondary" style="width:auto; padding:8px 16px;" onclick="app.openReleaseModal()">Mit
-        Code freigeben</button>
+      <button class="modal-btn secondary" style="width:auto; padding:8px 16px;" onclick="app.openReleaseModal()">Mit Code freigeben</button>
     </div>
 
     <div class="progress-container" id="progress-container">
@@ -551,11 +512,11 @@
     <div class="controls">
       <div class="search-row">
         <svg class="search-icon" viewBox="0 0 24 24">
-          <path
-            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
         </svg>
         <input type="text" id="search-input" class="search-input" placeholder="Wunsch suchen...">
       </div>
+
       <div class="filter-row">
         <div class="toggles">
           <button class="toggle-btn" id="filter-free">Nur Verfügbare</button>
@@ -604,7 +565,7 @@
 
     const state = {
       coordGroups: [],
-coordMembers: [],
+      coordMembers: [],
       gifts: [],
       reservations: [],
       contributions: [],
@@ -619,7 +580,7 @@ coordMembers: [],
 
     function loadPins() {
       try { state.userPins = JSON.parse(localStorage.getItem("user_pins") || "[]"); }
-      catch (e) { state.userPins = []; }
+      catch { state.userPins = []; }
     }
 
     function savePin(pin) {
@@ -661,38 +622,38 @@ coordMembers: [],
       return parseFloat(m[0].replace(/\./g, "").replace(",", "."));
     }
 
-    function escape(s) {
+    function escapeHtml(s) {
       return String(s || "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
     }
-// ===== Geschenk-Koordinations-Helper =====
 
-function getGroupForGift(giftId) {
-  return (state.coordGroups || []).find(g => g.gift_id === giftId) || null;
-}
+    function getGroupForGift(giftId) {
+      return (state.coordGroups || []).find(g => g.gift_id === giftId) || null;
+    }
 
-function getMemberCount(groupId) {
-  return (state.coordMembers || []).filter(m => m.group_id === groupId).length;
-}
+    function getMemberCount(groupId) {
+      return (state.coordMembers || []).filter(m => m.group_id === groupId).length;
+    }
 
-function isValidWhatsAppInvite(url) {
-  try {
-    const u = new URL(url);
-    return u.hostname === "chat.whatsapp.com" && u.pathname.length > 2;
-  } catch {
-    return false;
-  }
-}
+    function isValidWhatsAppInvite(url) {
+      try {
+        const u = new URL(url);
+        return u.hostname === "chat.whatsapp.com" && u.pathname.length > 2;
+      } catch {
+        return false;
+      }
+    }
+
     function catKey(c) { return encodeURIComponent(String(c || "")); }
 
     function showToast(msg) {
-      const t = document.getElementById('toast');
+      const t = document.getElementById("toast");
       t.textContent = msg;
-      t.classList.add('active');
-      setTimeout(() => t.classList.remove('active'), 2500);
+      t.classList.add("active");
+      setTimeout(() => t.classList.remove("active"), 2500);
     }
 
     window.app = {
@@ -720,23 +681,17 @@ function isValidWhatsAppInvite(url) {
         if (fErr || !fresh) { showToast("Fehler beim Prüfen."); return; }
 
         const availableNow = Math.max(0, (parseInt(fresh.quantity) || 1) - (parseInt(fresh.reserved_quantity) || 0));
-        if (availableNow < 1) {
-          showToast("Leider war jemand schneller.");
-          loadData();
-          return;
-        }
+        if (availableNow < 1) { showToast("Leider war jemand schneller."); loadData(); return; }
 
         const { error: insErr } = await sb.from("reservations").insert({ gift_id: id, pin: pin, qty: 1 });
         if (insErr) {
-          console.error(insErr);
-          if (insErr.code === '23505') showToast("PIN bereits vergeben. Bitte anderen Code wählen.");
+          if (insErr.code === "23505") showToast("PIN bereits vergeben. Bitte anderen Code wählen.");
           else showToast("Fehler beim Speichern.");
           return;
         }
 
         const newQ = (parseInt(fresh.reserved_quantity) || 0) + 1;
-        const { error: upErr } = await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
-        if (upErr) console.error("Update failed", upErr);
+        await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
 
         savePin(pin);
         showToast("Reserviert!");
@@ -748,7 +703,6 @@ function isValidWhatsAppInvite(url) {
         if (myRes.length === 0) return;
 
         const r = myRes[0];
-
         if (!(await confirmModal("Freigeben?", "Möchtest du diese Reservierung freigeben?"))) return;
 
         const { error: delErr } = await sb.from("reservations").delete().match({ gift_id: id, pin: r.pin });
@@ -774,18 +728,10 @@ function isValidWhatsAppInvite(url) {
         const { amount, name, message, pin } = input;
 
         const { error } = await sb.from("contributions").insert({
-          gift_id: id,
-          amount: amount,
-          name: name,
-          message: message,
-          pin: pin
+          gift_id: id, amount, name, message, pin
         });
 
-        if (error) {
-          console.error(error);
-          showToast("Fehler beim Speichern.");
-          return;
-        }
+        if (error) { showToast("Fehler beim Speichern."); return; }
 
         savePin(pin);
         showToast("Beitrag gespeichert!");
@@ -797,7 +743,6 @@ function isValidWhatsAppInvite(url) {
         if (myContribs.length === 0) return;
 
         const c = myContribs[myContribs.length - 1];
-
         if (!(await confirmModal("Beitrag zurückziehen?", `Deinen Beitrag von ${c.amount}€ entfernen?`))) return;
 
         const { error } = await sb.from("contributions").delete().eq("id", c.id);
@@ -814,15 +759,12 @@ function isValidWhatsAppInvite(url) {
         const { data: list } = await sb.from("reservations").select("*, gifts(title)").eq("pin", pin);
         const { data: cList } = await sb.from("contributions").select("*, gifts(title)").eq("pin", pin);
 
-        if ((!list || list.length === 0) && (!cList || cList.length === 0)) {
-          showToast("Keine Einträge gefunden.");
-          return;
-        }
+        if ((!list || list.length === 0) && (!cList || cList.length === 0)) { showToast("Keine Einträge gefunden."); return; }
 
         if (list && list.length > 0) {
           const item = list[0];
           const title = item.gifts ? item.gifts.title : "Unbekannt";
-          if (!(await confirmModal("Gefunden", `Freigeben: "${escape(title)}"?`))) return;
+          if (!(await confirmModal("Gefunden", `Freigeben: "${escapeHtml(title)}"?`))) return;
 
           await sb.from("reservations").delete().eq("id", item.id);
           const { data: g } = await sb.from("gifts").select("reserved_quantity").eq("id", item.gift_id).single();
@@ -831,11 +773,10 @@ function isValidWhatsAppInvite(url) {
               reserved_quantity: Math.max(0, (parseInt(g.reserved_quantity) || 0) - (parseInt(item.qty) || 1))
             }).eq("id", item.gift_id);
           }
-
         } else if (cList && cList.length > 0) {
           const item = cList[0];
           const title = item.gifts ? item.gifts.title : "Unbekannt";
-          if (!(await confirmModal("Beitrag gefunden", `Beitrag für "${escape(title)}" (${item.amount}€) entfernen?`))) return;
+          if (!(await confirmModal("Beitrag gefunden", `Beitrag für "${escapeHtml(title)}" (${item.amount}€) entfernen?`))) return;
           await sb.from("contributions").delete().eq("id", item.id);
         }
 
@@ -849,12 +790,7 @@ function isValidWhatsAppInvite(url) {
 
         const table = isContribution ? "contributions" : "reservations";
         const { error } = await sb.from(table).delete().eq("id", resId);
-
-        if (error) {
-          console.error(error);
-          showToast("Fehler.");
-          return;
-        }
+        if (error) { showToast("Fehler."); return; }
 
         if (!isContribution) {
           const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", giftId).single();
@@ -874,55 +810,44 @@ function isValidWhatsAppInvite(url) {
         await sb.from("gifts").update({ reserved_quantity: 0, reserved: false }).eq("id", id);
         loadData();
       },
+
       createCoordination: async (giftId) => {
-  const pin = await requestPin(
-    "Organisation übernehmen",
-    "Bitte lege einen 4-stelligen Code fest."
-  );
-  if (!pin) return;
+        const pin = await requestPin("Organisation übernehmen", "Bitte lege einen 4-stelligen Code fest.");
+        if (!pin) return;
 
-  const link = prompt("WhatsApp-Gruppenlink einfügen:");
-  if (!isValidWhatsAppInvite(link)) {
-    showToast("Ungültiger WhatsApp-Link.");
-    return;
-  }
+        const link = prompt("WhatsApp-Gruppenlink einfügen:");
+        if (!isValidWhatsAppInvite(link)) { showToast("Ungültiger WhatsApp-Link."); return; }
 
-  const max = parseInt(prompt("Maximale Teilnehmerzahl? (z.B. 3)"), 10);
-  if (!max || max < 2) {
-    showToast("Ungültige Anzahl.");
-    return;
-  }
+        const max = parseInt(prompt("Maximale Teilnehmerzahl? (z.B. 3)"), 10);
+        if (!max || max < 2) { showToast("Ungültige Anzahl."); return; }
 
-  const { error } = await sb.from("gift_coordination_groups").insert({
-    gift_id: giftId,
-    creator_pin: pin,
-    whatsapp_link: link,
-    max_members: max
-  });
+        const { error } = await sb.from("gift_coordination_groups").insert({
+          gift_id: giftId,
+          creator_pin: pin,
+          whatsapp_link: link,
+          max_members: max
+        });
 
-  if (error) {
-    console.error(error);
-    showToast("Fehler beim Anlegen.");
-    return;
-  }
+        if (error) { showToast("Fehler beim Anlegen."); return; }
 
-  savePin(pin);
-  showToast("Organisation angelegt.");
-  loadData();
-}
+        savePin(pin);
+        showToast("Organisation angelegt.");
+        loadData();
+      }
     };
 
     function confirmModal(title, text) {
       return new Promise(resolve => {
-        const el = document.getElementById('modalOverlay');
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalBody').innerHTML = `<p>${text}</p>`;
-        document.getElementById('modalConfirm').textContent = "Ja";
+        const el = document.getElementById("modalOverlay");
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalBody").innerHTML = `<p>${text}</p>`;
+        document.getElementById("modalConfirm").textContent = "Ja";
 
-        const close = (v) => { el.classList.remove('active'); resolve(v); };
-        document.getElementById('modalConfirm').onclick = () => close(true);
-        document.getElementById('modalCancel').onclick = () => close(false);
-        el.classList.add('active');
+        const close = (v) => { el.classList.remove("active"); resolve(v); };
+        document.getElementById("modalConfirm").onclick = () => close(true);
+        document.getElementById("modalCancel").onclick = () => close(false);
+
+        el.classList.add("active");
       });
     }
 
@@ -930,22 +855,24 @@ function isValidWhatsAppInvite(url) {
       return new Promise(resolve => {
         const html = `<p>${txt}</p>
           <div class="pin-input-container">
-            <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
-            <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
+            <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+            <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+            <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+            <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
           </div>`;
 
-        const el = document.getElementById('modalOverlay');
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalBody').innerHTML = html;
+        const el = document.getElementById("modalOverlay");
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalBody").innerHTML = html;
 
-        const btn = document.getElementById('modalConfirm');
+        const btn = document.getElementById("modalConfirm");
         btn.textContent = "Bestätigen";
         btn.disabled = true;
 
-        const inputs = el.querySelectorAll('.pin-digit');
+        const inputs = el.querySelectorAll(".pin-digit");
 
         const check = () => {
-          const code = Array.from(inputs).map(x => x.value).join('');
+          const code = Array.from(inputs).map(x => x.value).join("");
           btn.disabled = code.length !== 4;
           return code;
         };
@@ -962,19 +889,19 @@ function isValidWhatsAppInvite(url) {
           };
         });
 
-        const close = (val) => { el.classList.remove('active'); resolve(val); };
+        const close = (val) => { el.classList.remove("active"); resolve(val); };
         btn.onclick = () => close(check());
-        document.getElementById('modalCancel').onclick = () => close(null);
+        document.getElementById("modalCancel").onclick = () => close(null);
 
-        el.classList.add('active');
+        el.classList.add("active");
         setTimeout(() => inputs[0].focus(), 100);
       });
     }
 
     function requestContributionInput(giftTitle) {
       return new Promise(resolve => {
-        const el = document.getElementById('modalOverlay');
-        document.getElementById('modalTitle').textContent = "Beteiligen an: " + giftTitle;
+        const el = document.getElementById("modalOverlay");
+        document.getElementById("modalTitle").textContent = "Beteiligen an: " + giftTitle;
 
         const html = `
           <div style="text-align:left; margin-bottom:20px;">
@@ -986,29 +913,32 @@ function isValidWhatsAppInvite(url) {
             <textarea id="inp-msg" style="width:100%; padding:10px; border:1px solid #CCC; border-radius:8px; font-size:14px; resize:none; margin-bottom:12px;" rows="2" placeholder="Deine Nachricht an das Brautpaar..."></textarea>
             <label style="display:block; font-size:13px; margin-bottom:4px; color:#666;">Dein PIN (4-stellig)</label>
             <div class="pin-input-container" style="justify-content:flex-start; margin:0;">
-              <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
-              <input class="pin-digit" type="tel" maxlength="1"><input class="pin-digit" type="tel" maxlength="1">
+              <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+              <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+              <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+              <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
             </div>
           </div>
         `;
 
-        document.getElementById('modalBody').innerHTML = html;
+        document.getElementById("modalBody").innerHTML = html;
 
-        const btn = document.getElementById('modalConfirm');
+        const btn = document.getElementById("modalConfirm");
         btn.textContent = "Speichern";
         btn.disabled = true;
 
-        const inputs = el.querySelectorAll('.pin-digit');
-        const amountInp = document.getElementById('inp-amount');
+        const inputs = el.querySelectorAll(".pin-digit");
+        const amountInp = document.getElementById("inp-amount");
 
         const check = () => {
-          const code = Array.from(inputs).map(x => x.value).join('');
+          const code = Array.from(inputs).map(x => x.value).join("");
           const amt = parseFloat(amountInp.value);
           btn.disabled = code.length !== 4 || isNaN(amt) || amt <= 0;
+
           return {
             amount: amt,
-            name: document.getElementById('inp-name').value,
-            message: document.getElementById('inp-msg').value,
+            name: document.getElementById("inp-name").value,
+            message: document.getElementById("inp-msg").value,
             pin: code
           };
         };
@@ -1027,11 +957,11 @@ function isValidWhatsAppInvite(url) {
           };
         });
 
-        const close = (val) => { el.classList.remove('active'); resolve(val); };
+        const close = (val) => { el.classList.remove("active"); resolve(val); };
         btn.onclick = () => close(check());
-        document.getElementById('modalCancel').onclick = () => close(null);
+        document.getElementById("modalCancel").onclick = () => close(null);
 
-        el.classList.add('active');
+        el.classList.add("active");
         setTimeout(() => amountInp.focus(), 100);
       });
     }
@@ -1040,42 +970,37 @@ function isValidWhatsAppInvite(url) {
       const params = new URLSearchParams(window.location.search);
       if (params.get("admin") === ADMIN_SECRET || window.location.hash.includes("master") || window.location.href.includes("/master")) {
         state.isAdmin = true;
-        document.body.classList.add('admin-mode');
+        document.body.classList.add("admin-mode");
       }
 
       loadPins();
 
       const { data: gs, error: gErr } = await sb.from("gifts").select("*").order("category").order("title");
       if (gErr) {
-        document.getElementById('list').innerHTML = `<div class="empty-state">Fehler beim Laden.</div>`;
+        document.getElementById("list").innerHTML = `<div class="empty-state">Fehler beim Laden.</div>`;
         return;
       }
       state.gifts = gs || [];
-// Coordination (WhatsApp Gruppen)
-try {
-  const { data: groups, error: ggErr } = await sb
-    .from("gift_coordination_groups")
-    .select("*");
-  if (ggErr) throw ggErr;
 
-  const { data: members, error: gmErr } = await sb
-    .from("gift_coordination_members")
-    .select("*");
-  if (gmErr) throw gmErr;
+      try {
+        const { data: groups, error: ggErr } = await sb.from("gift_coordination_groups").select("*");
+        if (ggErr) throw ggErr;
 
-  state.coordGroups = groups || [];
-  state.coordMembers = members || [];
-} catch (e) {
-  console.warn("Coordination tables missing or error:", e);
-  state.coordGroups = [];
-  state.coordMembers = [];
-}
+        const { data: members, error: gmErr } = await sb.from("gift_coordination_members").select("*");
+        if (gmErr) throw gmErr;
+
+        state.coordGroups = groups || [];
+        state.coordMembers = members || [];
+      } catch {
+        state.coordGroups = [];
+        state.coordMembers = [];
+      }
+
       try {
         const { data: contribs, error: cErr } = await sb.from("contributions").select("*");
         if (cErr) throw cErr;
         state.contributions = contribs || [];
-      } catch (e) {
-        console.warn("Contributions table missing or error:", e);
+      } catch {
         state.contributions = [];
       }
 
@@ -1086,9 +1011,8 @@ try {
         state.allReservations = allRes || [];
         state.allContributions = allContribs || [];
 
-        document.getElementById('admin-dashboard').style.display = 'block';
+        document.getElementById("admin-dashboard").style.display = "block";
         renderAdmin();
-
         state.reservations = allRes || [];
       } else {
         if (state.userPins.length > 0) {
@@ -1103,16 +1027,16 @@ try {
     }
 
     function renderAdmin() {
-      const list = document.getElementById('admin-list');
+      const list = document.getElementById("admin-list");
       let html = "";
 
       if (state.allReservations.length > 0) {
-        html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:bold;">Reservierungen</td></tr>`;
+        html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:600;">Reservierungen</td></tr>`;
         html += state.allReservations.map(r => {
           const title = r.gifts ? r.gifts.title : "???";
           return `<tr style="border-bottom:1px solid #EEE;">
-            <td style="padding:8px; font-weight:500;">${escape(title)}</td>
-            <td style="padding:8px; font-family:monospace;">${escape(r.pin)}</td>
+            <td style="padding:8px; font-weight:500;">${escapeHtml(title)}</td>
+            <td style="padding:8px; font-family:monospace;">${escapeHtml(r.pin)}</td>
             <td style="padding:8px;">${r.qty}x</td>
             <td style="padding:8px;">
               <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;"
@@ -1123,13 +1047,13 @@ try {
       }
 
       if (state.allContributions.length > 0) {
-        html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:bold;">Beiträge (Gruppe)</td></tr>`;
+        html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:600;">Beiträge (Gruppe)</td></tr>`;
         html += state.allContributions.map(c => {
           const title = c.gifts ? c.gifts.title : "???";
-          const msg = c.message ? `<div style="font-size:10px;color:#666;max-width:200px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">"${escape(c.message)}"</div>` : "";
+          const msg = c.message ? `<div style="font-size:10px;color:#666;max-width:200px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">"${escapeHtml(c.message)}"</div>` : "";
           return `<tr style="border-bottom:1px solid #EEE;">
-            <td style="padding:8px; font-weight:500;">${escape(title)}<br><span style="font-size:11px;color:#555">${escape(c.name || "-")}</span></td>
-            <td style="padding:8px; font-family:monospace;">${escape(c.pin)}</td>
+            <td style="padding:8px; font-weight:500;">${escapeHtml(title)}<br><span style="font-size:11px;color:#555">${escapeHtml(c.name || "-")}</span></td>
+            <td style="padding:8px; font-family:monospace;">${escapeHtml(c.pin)}</td>
             <td style="padding:8px;">${c.amount}€</td>
             <td style="padding:8px;">
               ${msg}
@@ -1155,8 +1079,8 @@ try {
         return getAvailable(g) === 0;
       }).length;
 
-      document.getElementById('progress-fill').style.width = (total > 0 ? (fulfilled / total) * 100 : 0) + "%";
-      document.getElementById('progress-text').textContent = `${fulfilled} von ${total} Wünschen erfüllt`;
+      document.getElementById("progress-fill").style.width = (total > 0 ? (fulfilled / total) * 100 : 0) + "%";
+      document.getElementById("progress-text").textContent = `${fulfilled} von ${total} Wünschen erfüllt`;
 
       const sLower = (state.filter.search || "").toLowerCase();
 
@@ -1179,11 +1103,11 @@ try {
       });
 
       filtered.sort((a, b) => {
-        if (state.sort.includes('price')) {
+        if (state.sort.includes("price")) {
           const pa = parsePrice(a.Preis), pb = parsePrice(b.Preis);
-          return state.sort === 'price_asc' ? pa - pb : pb - pa;
+          return state.sort === "price_asc" ? pa - pb : pb - pa;
         }
-        if (state.sort === 'status') {
+        if (state.sort === "status") {
           const aa = getAvailable(a) > 0, bb = getAvailable(b) > 0;
           if (aa === bb) return (a.title || "").localeCompare(b.title || "");
           return aa ? -1 : 1;
@@ -1195,7 +1119,7 @@ try {
       let html = "";
       const cats = {};
 
-      if (state.sort === 'cat') {
+      if (state.sort === "cat") {
         filtered.forEach(g => (cats[g.category] ||= []).push(g));
 
         for (const c in cats) {
@@ -1203,30 +1127,30 @@ try {
           const open = !state.categoryState[key];
 
           html += `
-            <div class="section-title ${!open ? 'collapsed' : ''}" onclick="app.toggleCat('${key}')">
-              <h2>${escape(c)}</h2>
+            <div class="section-title ${!open ? "collapsed" : ""}" onclick="app.toggleCat('${key}')">
+              <h2>${escapeHtml(c)}</h2>
               <svg class="section-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
             </div>
-            <div class="gift-group ${!open ? 'collapsed' : ''}" style="${!open ? 'height:0' : ''}">
-              ${cats[c].map(g => renderItem(g, false)).join('')}
+            <div class="gift-group ${!open ? "collapsed" : ""}">
+              ${cats[c].map(g => renderItem(g, false)).join("")}
             </div>
           `;
         }
       } else {
-        html = filtered.map(g => renderItem(g, false)).join('');
+        html = filtered.map(g => renderItem(g, false)).join("");
       }
 
       if (!html) html = `<div class="empty-state">Nichts gefunden.</div>`;
-      document.getElementById('list').innerHTML = html;
+      document.getElementById("list").innerHTML = html;
 
       const mine = state.gifts.filter(g => isReservedByMe(g));
-      const mySec = document.getElementById('my-reservations-section');
+      const mySec = document.getElementById("my-reservations-section");
 
       if (mine.length > 0) {
-        mySec.style.display = 'block';
-        document.getElementById('my-reservations-list').innerHTML = mine.map(g => renderItem(g, true)).join('');
+        mySec.style.display = "block";
+        document.getElementById("my-reservations-list").innerHTML = mine.map(g => renderItem(g, true)).join("");
       } else {
-        mySec.style.display = 'none';
+        mySec.style.display = "none";
       }
     }
 
@@ -1238,21 +1162,14 @@ try {
       const avail = getAvailable(g);
       const my = isReservedByMe(g);
 
-      const price = g.Preis ? `<span>${escape(g.Preis)}</span><div class="sep"></div>` : "";
+      const price = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
 
       let act = "";
-
       if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
       else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`;
       else act = `<button disabled>Vergeben</button>`;
 
-      if (avail > 0 && my) {
-        act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
-      }
-
-      if (inMySection) {
-        act = `<button class="undo" onclick="app.unreserve('${g.id}')">Freigeben</button>`;
-      }
+      if (inMySection) act = `<button class="undo" onclick="app.unreserve('${g.id}')">Freigeben</button>`;
 
       let st = "";
       const qty = parseInt(g.quantity) || 1;
@@ -1260,45 +1177,36 @@ try {
         if (avail === 0) st = `<div style="color:#D32F2F; font-size:12px;">Alle ${qty} vergeben</div>`;
         else st = `<div style="color:#2E7D32; font-size:12px;">${avail} von ${qty} verfügbar</div>`;
       }
-// --- Koordination (dezent) ---
-let coordUI = "";
-const group = getGroupForGift(g.id);
 
-if (!g.is_group_gift && g.allow_coordination) {
-  if (!group) {
-    coordUI = `
-      <button class="reserved" style="font-size:11px"
-        onclick="app.createCoordination('${g.id}')">
-        Organisation übernehmen
-      </button>
-    `;
-  } else {
-    const count = getMemberCount(group.id);
-    coordUI = `
-      <a href="${escape(group.whatsapp_link)}"
-         target="_blank"
-         style="font-size:11px;color:#666;text-decoration:underline">
-        Zur Abstimmung (${count}/${group.max_members})
-      </a>
-    `;
-  }
-}
+      let coordUI = "";
+      const group = getGroupForGift(g.id);
+
+      if (!g.is_group_gift && g.allow_coordination) {
+        if (!group) {
+          coordUI = `<button class="reserved" style="font-size:11px" onclick="app.createCoordination('${g.id}')">Organisation übernehmen</button>`;
+        } else {
+          const count = getMemberCount(group.id);
+          coordUI = `<a href="${escapeHtml(group.whatsapp_link)}" target="_blank" style="font-size:11px;color:#666;text-decoration:underline">Zur Abstimmung (${count}/${group.max_members})</a>`;
+        }
+      }
+
       const admin = state.isAdmin
         ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>`
         : "";
 
       return `
-        <div class="item ${my ? 'my-reservation' : ''}">
+        <div class="item ${my ? "my-reservation" : ""}">
           <div class="item-content">
-            <div class="item-title">${escape(g.title)}</div>
-            <div class="meta">${price} <a href="${escape(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
+            <div class="item-title">${escapeHtml(g.title)}</div>
+            <div class="meta">${price}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
             ${st}
           </div>
-          <div style="flex-direction:column; display:flex; align-items:flex-end; gap:6px;">
-  ${act}
-  ${coordUI}
-  ${admin}
-</div>
+          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+            ${act}
+            ${coordUI}
+            ${admin}
+          </div>
+        </div>
       `;
     }
 
@@ -1322,20 +1230,18 @@ if (!g.is_group_gift && g.allow_coordination) {
       `;
 
       let act = `<button style="background:#2E7D32;" onclick="app.contribute('${g.id}')">Beteiligen</button>`;
-      if (inMySection) {
-        act = `<button class="undo" onclick="app.removeContribution('${g.id}')">Beitrag zurückziehen</button>`;
-      }
+      if (inMySection) act = `<button class="undo" onclick="app.removeContribution('${g.id}')">Beitrag zurückziehen</button>`;
 
-      const priceStr = g.Preis ? `<span>${escape(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
+      const priceStr = g.Preis ? `<span>${escapeHtml(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
 
       return `
-        <div class="item ${isReservedByMe(g) ? 'my-reservation' : ''}" style="border-left:4px solid #4CAF50;">
+        <div class="item ${isReservedByMe(g) ? "my-reservation" : ""}" style="border-left:4px solid #4CAF50;">
           <div class="item-content" style="width:100%">
             <div class="item-title">
-              ${escape(g.title)}
-              <span style="font-size:12px; font-weight:normal; color:#4CAF50; background:#E8F5E9; padding:2px 6px; border-radius:4px; margin-left:6px;">Sammelgeschenk</span>
+              ${escapeHtml(g.title)}
+              <span style="font-size:12px; font-weight:400; color:#4CAF50; background:#E8F5E9; padding:2px 6px; border-radius:4px; margin-left:6px;">Sammelgeschenk</span>
             </div>
-            <div class="meta">${priceStr} <a href="${escape(g.url)}" target="_blank" rel="noopener">Details ↗</a></div>
+            <div class="meta">${priceStr}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Details ↗</a></div>
             ${bar}
           </div>
           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:100px;">
@@ -1345,21 +1251,20 @@ if (!g.is_group_gift && g.allow_coordination) {
       `;
     }
 
-    document.getElementById('search-input').oninput = (e) => { state.filter.search = e.target.value; render(); };
-    document.getElementById('filter-free').onclick = (e) => {
+    document.getElementById("search-input").oninput = (e) => { state.filter.search = e.target.value; render(); };
+    document.getElementById("filter-free").onclick = (e) => {
       state.filter.showFreeOnly = !state.filter.showFreeOnly;
-      e.target.classList.toggle('active', state.filter.showFreeOnly);
+      e.target.classList.toggle("active", state.filter.showFreeOnly);
       render();
     };
-    document.getElementById('filter-mine').onclick = (e) => {
+    document.getElementById("filter-mine").onclick = (e) => {
       state.filter.showMineOnly = !state.filter.showMineOnly;
-      e.target.classList.toggle('active', state.filter.showMineOnly);
+      e.target.classList.toggle("active", state.filter.showMineOnly);
       render();
     };
-    document.getElementById('sort-select').onchange = (e) => { state.sort = e.target.value; render(); };
+    document.getElementById("sort-select").onchange = (e) => { state.sort = e.target.value; render(); };
 
     loadData();
   </script>
 </body>
-
 </html>
