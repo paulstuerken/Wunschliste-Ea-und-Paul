@@ -976,24 +976,32 @@
       let coordUI = "";
       const group = getGroupForGift(g.id);
 
-      if (!g.is_group_gift && g.allow_coordination) {
-        if (!group) {
-          coordUI = `<button class="reserved" style="font-size:11px"
-  onclick="app.createCoordination('${g.id}')">
-  Organisation eines Gruppengeschenkes übernehmen
-</button>`;
-        } else {
-          const count = getMemberCount(group.id);
-          const max = parseInt(group.max_members) || 0;
+      // Gruppengeschenk-Koordination nur erlauben,
+// wenn das Geschenk NOCH NICHT reserviert ist
+const isGiftReserved =
+  (parseInt(g.reserved_quantity || 0) > 0) ||
+  (getAvailable(g) === 0);
 
-          if (max > 0 && count >= max) {
-            coordUI = `<span style="font-size:11px;color:#999;">Organisation voll (${count}/${max})</span>`;
-          } else {
-            coordUI = `<a href="#"
-   onclick="app.joinCoordination('${group.id}', '${escape(group.whatsapp_invite_url)}')"
-   style="font-size:11px;color:#666;text-decoration:underline">
-  An Gruppengeschenk beteiligen (${count}/${group.max_members})
-</a>`;
+if (!g.is_group_gift && g.allow_coordination && !isGiftReserved) {
+  if (!group) {
+    coordUI = `
+      <button class="reserved" style="font-size:11px"
+        onclick="app.createCoordination('${g.id}')">
+        Organisation eines Gruppengeschenkes übernehmen
+      </button>
+    `;
+  } else {
+    const count = getMemberCount(group.id);
+    coordUI = `
+      <a href="${group.whatsapp_link}"
+         target="_blank"
+         rel="noopener"
+         style="font-size:11px;color:#666;text-decoration:underline">
+        An Gruppengeschenk beteiligen (${count}/${group.max_members})
+      </a>
+    `;
+  }
+}
           }
         }
       }
