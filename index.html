@@ -659,7 +659,24 @@ coordMembers: [],
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
     }
+// ===== Geschenk-Koordinations-Helper =====
 
+function getGroupForGift(giftId) {
+  return (state.coordGroups || []).find(g => g.gift_id === giftId) || null;
+}
+
+function getMemberCount(groupId) {
+  return (state.coordMembers || []).filter(m => m.group_id === groupId).length;
+}
+
+function isValidWhatsAppInvite(url) {
+  try {
+    const u = new URL(url);
+    return u.hostname === "chat.whatsapp.com" && u.pathname.length > 2;
+  } catch {
+    return false;
+  }
+}
     function catKey(c) { return encodeURIComponent(String(c || "")); }
 
     function showToast(msg) {
