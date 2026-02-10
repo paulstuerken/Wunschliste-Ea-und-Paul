@@ -704,7 +704,6 @@
     }
 
     function setInline(el, msg, type){
-      // type: "error" | "success"
       if (!el) return;
       if (!msg){
         el.style.display = "none";
@@ -720,7 +719,6 @@
       }
     }
 
-    // Toast with optional copy action
     function showToast(msg, copyText = null){
       const t = document.getElementById("toast");
       const tt = document.getElementById("toastText");
@@ -731,7 +729,6 @@
         action.style.display = "inline-flex";
         action.onclick = async () => {
           await copyToClipboard(copyText);
-          // subtle feedback: keep toast, just change text briefly
           tt.textContent = "Code kopiert";
           setTimeout(() => { tt.textContent = msg; }, 900);
         };
@@ -748,7 +745,6 @@
       try{
         await navigator.clipboard.writeText(text);
       } catch {
-        // fallback: best effort
         const ta = document.createElement("textarea");
         ta.value = text;
         ta.style.position = "fixed";
@@ -760,7 +756,6 @@
       }
     }
 
-    // PIN inputs helper (4 boxes)
     function wirePinInputs(containerEl){
       const inputs = Array.from(containerEl.querySelectorAll("input"));
       const onlyDigit = (v) => v.replace(/[^0-9]/g,"");
@@ -818,9 +813,9 @@
       };
     }
 
-    // Modal system (supports optional PIN block)
     let modalResolver = null;
     let modalKeyHandler = null;
+    let reserveModalActive = false;
 
     function openModal({ title, text, confirmText = "Bestätigen", cancelText = "Abbrechen", showPin = false }){
       const overlay = document.getElementById("modalOverlay");
@@ -838,11 +833,10 @@
 
       overlay.classList.add("active");
 
-      // ESC / Enter handling
       if (modalKeyHandler) window.removeEventListener("keydown", modalKeyHandler);
       modalKeyHandler = (e) => {
         if (e.key === "Escape") closeModal(false);
-        if (e.key === "Enter") closeModal(true);
+        if (e.key === "Enter" && !showPin) closeModal(true);
       };
       window.addEventListener("keydown", modalKeyHandler);
 
@@ -863,20 +857,27 @@
       }
     }
 
-    document.getElementById("modalCancel").addEventListener("click", () => closeModal(false));
-    document.getElementById("modalConfirm").addEventListener("click", () => closeModal(true));
+    document.getElementById("modalCancel").addEventListener("click", () => {
+      reserveModalActive = false;
+      closeModal(false);
+    });
 
-    // PIN components
+    document.getElementById("modalConfirm").addEventListener("click", async () => {
+      if (reserveModalActive){
+        await handleReservationConfirm();
+      } else {
+        closeModal(true);
+      }
+    });
+
     const reservePin = wirePinInputs(document.getElementById("reservePinInputs"));
     const releasePin = wirePinInputs(document.getElementById("releasePinInputs"));
 
-    // Admin UI init
     state.isAdmin = getAdminMode();
     if (state.isAdmin){
       document.getElementById("adminBadge").style.display = "block";
     }
 
-    // Render
     function render(){
       const searchLower = state.filter.search.trim().toLowerCase();
 
@@ -904,7 +905,6 @@
         return String(a.title).localeCompare(String(b.title), "de");
       });
 
-      // Progress
       const total = state.gifts.length;
       const reservedCount = state.gifts.filter(g => g.reserved).length;
       const width = total > 0 ? (reservedCount / total) * 100 : 0;
@@ -912,7 +912,6 @@
       document.getElementById("progress-text").textContent = `${reservedCount} von ${total} Wünschen vergeben`;
       document.getElementById("progress-container").style.display = "block";
 
-      // My reservations
       const myGifts = state.gifts.filter(g => {
         const localPin = getLocalPIN(g.id);
         return g.reserved && g.reserved_token && localPin && String(g.reserved_token) === String(localPin);
@@ -929,7 +928,6 @@
         myResList.innerHTML = "";
       }
 
-      // Main list
       const listContainer = document.getElementById("list");
 
       if (state.sort === "cat"){
@@ -977,7 +975,6 @@
       if (!g.reserved){
         btnHtml = `<button type="button" onclick="window.app.reserve('${escapeHtml(g.id)}')">Reservieren</button>`;
       } else if (isMine){
-        // label requested: not "Bearbeiten"
         btnHtml = `<button type="button" class="reserved" onclick="window.app.unreserveMine('${escapeHtml(g.id)}')">Reserviert</button>`;
       } else {
         btnHtml = `<button type="button" disabled>Vergeben</button>`;
@@ -1016,7 +1013,6 @@
     }
 
     async function checkPinAvailable(pin){
-      // returns true if no reserved row currently has this pin
       const { data, error } = await sb
         .from("gifts")
         .select("id")
@@ -1024,11 +1020,52 @@
         .eq("reserved_token", pin)
         .limit(1);
 
-      if (error) return false; // treat as not available to be safe
+      if (error) return false;
       return !data || data.length === 0;
     }
 
-    // --- Actions ---
+    let currentReservationId = null;
+
+    async function handleReservationConfirm(){
+      const pinError = document.getElementById("modalPinError");
+      const pin = reservePin.get();
+
+      if (!isValidPin(pin)){
+        pinError.textContent = "Bitte 4 Ziffern eingeben.";
+        pinError.style.display = "block";
+        return;
+      }
+
+      const available = await checkPinAvailable(pin);
+      if (!available){
+        pinError.textContent = "Dieser Code ist bereits vergeben. Bitte wähle einen anderen.";
+        pinError.style.display = "block";
+        return;
+      }
+
+      const now = new Date().toISOString();
+      const { data, error } = await sb
+        .from("gifts")
+        .update({ reserved:true, reserved_token:pin, reserved_at:now })
+        .eq("id", currentReservationId)
+        .eq("reserved", false)
+        .select("id");
+
+      if (error || !data || data.length === 0){
+        pinError.textContent = "Leider hat es nicht geklappt. Bitte versuche es erneut.";
+        pinError.style.display = "block";
+        await loadData();
+        return;
+      }
+
+      setLocalPIN(currentReservationId, pin);
+      reserveModalActive = false;
+      currentReservationId = null;
+      closeModal(true);
+      await loadData();
+      showToast(`Reserviert. Code: ${pin}`, pin);
+    }
+
     window.app = {
       toggleCat: (key) => {
         state.categoryState[key] = !state.categoryState[key];
@@ -1043,9 +1080,11 @@
       },
 
       reserve: async (id) => {
-        // open PIN modal
+        currentReservationId = id;
+        reserveModalActive = true;
         reservePin.clear();
-        const ok = await openModal({
+        
+        await openModal({
           title: "Reservieren",
           text: "Bitte wähle einen 4-stelligen Code. Damit kannst du die Reservierung später wieder freigeben – auch auf einem anderen Gerät.",
           confirmText: "Reservieren",
@@ -1053,56 +1092,9 @@
           showPin: true
         });
 
-        const pinError = document.getElementById("modalPinError");
-        const overlay = document.getElementById("modalOverlay");
-
-        if (!ok){
-          // closed with cancel or ESC
-          // ensure error hidden
-          pinError.style.display = "none";
-          pinError.textContent = "";
-          return;
+        if (!reserveModalActive){
+          currentReservationId = null;
         }
-
-        const pin = reservePin.get();
-        if (!isValidPin(pin)){
-          pinError.textContent = "Bitte 4 Ziffern eingeben.";
-          pinError.style.display = "block";
-          // keep modal open by re-opening quickly: simplest approach is to reopen modal.
-          // better: do not close until valid. We'll handle by reopening and not losing input.
-          overlay.classList.add("active");
-          return;
-        }
-
-        // Uniqueness check
-        const available = await checkPinAvailable(pin);
-        if (!available){
-          pinError.textContent = "Dieser Code ist bereits vergeben. Bitte wähle einen anderen.";
-          pinError.style.display = "block";
-          overlay.classList.add("active");
-          return;
-        }
-
-        // Attempt update with race protection: id AND reserved=false
-        const now = new Date().toISOString();
-        const { data, error } = await sb
-          .from("gifts")
-          .update({ reserved:true, reserved_token:pin, reserved_at:now })
-          .eq("id", id)
-          .eq("reserved", false)
-          .select("id");
-
-        if (error || !data || data.length === 0){
-          pinError.textContent = "Leider hat es nicht geklappt. Bitte versuche es erneut.";
-          pinError.style.display = "block";
-          overlay.classList.add("active");
-          await loadData();
-          return;
-        }
-
-        setLocalPIN(id, pin);
-        await loadData();
-        showToast(`Reserviert. Code: ${pin}`, pin);
       },
 
       unreserveMine: async (id) => {
@@ -1174,7 +1166,7 @@
         const gift = data[0];
         const ok = await openModal({
           title: "Freigeben",
-          text: `Reservierung für „${gift.title}“ freigeben?`,
+          text: `Reservierung für „${gift.title}" freigeben?`,
           confirmText: "Freigeben",
           cancelText: "Abbrechen",
           showPin: false
@@ -1194,7 +1186,6 @@
           return;
         }
 
-        // try clear any local pins that match this pin
         try{
           for (const g of state.gifts){
             if (getLocalPIN(g.id) === pin) clearLocalPIN(g.id);
@@ -1229,10 +1220,8 @@
       }
     };
 
-    // Release button
     document.getElementById("releaseBtn").addEventListener("click", () => window.app.releaseByPin());
 
-    // Filters and sort
     document.getElementById("search-input").addEventListener("input", (e) => {
       state.filter.search = e.target.value;
       render();
@@ -1255,7 +1244,6 @@
       render();
     });
 
-    // Initial load
     await loadData();
   </script>
 </body>
