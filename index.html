@@ -1,458 +1,148 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Hochzeitswünsche | Ea & Paul</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    :root {
-      --bg-body: #FAFAFA;
-      --bg-card: #FFFFFF;
-      --text-primary: #1A1A1A;
-      --text-secondary: #666666;
-      --radius-card: 16px;
-      --radius-btn: 12px;
-      --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
-      --btn-bg: #1A1A1A;
-      --btn-text: #FFFFFF;
-      --btn-bg-hover: #333333;
-      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    :root{
+      --bg-body:#FAFAFA;
+      --bg-card:#FFFFFF;
+      --text-primary:#1A1A1A;
+      --text-secondary:#666666;
+      --radius-card:16px;
+      --radius-btn:12px;
+      --shadow-soft:0 8px 30px rgba(0,0,0,0.04);
+      --btn-bg:#1A1A1A;
+      --btn-text:#FFFFFF;
+      --btn-bg-hover:#333333;
+      --ease:cubic-bezier(0.2,0.8,0.2,1);
     }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    body{margin:0;font-family:"Outfit",sans-serif;background:var(--bg-body);color:var(--text-primary);line-height:1.5;}
+    a{color:inherit}
 
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    .wrap{max-width:720px;margin:0 auto;padding:60px 24px;}
+    .hero{width:100%;height:360px;object-fit:cover;border-radius:var(--radius-card);margin-bottom:40px;background:#EEE;display:block;}
+    h1{font-size:32px;font-weight:600;text-align:center;margin:0 0 16px 0;}
+    .intro{text-align:center;color:var(--text-secondary);margin:0 auto 48px auto;max-width:480px;}
+    .empty-state{text-align:center;color:var(--text-secondary);padding:40px 16px;font-size:14px;}
 
-    body {
-      margin: 0;
-      font-family: "Outfit", sans-serif;
-      background: var(--bg-body);
-      color: var(--text-primary);
-      line-height: 1.5;
+    .group-gift{background:#FFF;border:1px solid #EAEAEA;border-radius:var(--radius-card);padding:32px;margin-bottom:40px;text-align:center;}
+    .group-gift h2{font-size:18px;margin:0 0 12px 0;}
+    .group-gift p{color:#555;margin:0 0 24px 0;}
+    .iban-container{
+      display:inline-flex;align-items:center;gap:10px;background:#F9F9F9;padding:10px 18px;border-radius:999px;
+      border:1px solid #EEE;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      user-select:none;
     }
+    .copy-icon{width:16px;height:16px;fill:#888;}
 
-    a { color: inherit; }
+    .release-section{background:#FFF;border:1px solid #EAEAEA;border-radius:var(--radius-card);padding:24px;margin-bottom:32px;text-align:center;}
+    .release-section h2{font-size:14px;margin:0 0 12px 0;}
+    .release-section p{font-size:13px;color:#666;margin:0 0 20px 0;}
 
-    .wrap {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 60px 24px;
+    .progress-container{margin-bottom:32px;}
+    .progress-text{text-align:center;font-size:13px;color:var(--text-secondary);margin-bottom:8px;}
+    .progress-track{height:6px;background:#EEE;border-radius:999px;overflow:hidden;}
+    .progress-fill{height:100%;background:var(--text-primary);width:0;transition:width 0.8s var(--ease);}
+
+    .controls{display:flex;flex-direction:column;gap:16px;margin-bottom:40px;}
+    .search-row{position:relative;}
+    .search-input{
+      width:100%;padding:14px 14px 14px 44px;border:1px solid transparent;background:#FFF;border-radius:var(--radius-btn);
+      box-shadow:0 2px 8px rgba(0,0,0,0.03);font-size:15px;outline:none;
     }
+    .search-input:focus{border-color:#E5E5E5;}
+    .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;fill:#999;pointer-events:none;}
 
-    .hero {
-      width: 100%;
-      height: 360px;
-      object-fit: cover;
-      border-radius: var(--radius-card);
-      margin-bottom: 40px;
-      background: #EEE;
-      display: block;
+    .filter-row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;}
+    .toggles{display:flex;gap:8px;flex-wrap:wrap;}
+    .toggle-btn{
+      background:transparent;border:1px solid #E5E5E5;color:var(--text-secondary);padding:8px 14px;font-size:13px;border-radius:var(--radius-btn);
+      cursor:pointer;font-family:inherit;
     }
+    .toggle-btn.active{background:var(--text-primary);color:#FFF;border-color:var(--text-primary);}
+    .sort-select{border:1px solid transparent;background:transparent;font-size:13px;cursor:pointer;padding:8px 0;font-family:inherit;}
 
-    h1 {
-      font-size: 32px;
-      font-weight: 600;
-      text-align: center;
-      margin: 0 0 16px 0;
+    .section-title{
+      display:flex;justify-content:space-between;align-items:center;margin:32px 0 14px;cursor:pointer;user-select:none;gap:12px;
     }
+    .section-title h2{margin:0;font-size:16px;font-weight:600;line-height:1.2;overflow-wrap:anywhere;}
+    .section-chevron{width:14px;height:14px;fill:var(--text-secondary);flex:0 0 auto;transition:transform 0.25s;}
+    .section-title.collapsed .section-chevron{transform:rotate(-90deg);}
 
-    .intro {
-      text-align: center;
-      color: var(--text-secondary);
-      margin: 0 auto 48px auto;
-      max-width: 480px;
+    /* Stabiler Collapse */
+    .gift-group{display:block;}
+    .gift-group.collapsed{display:none;}
+
+    .item{
+      background:var(--bg-card);padding:24px;margin-bottom:12px;border-radius:var(--radius-card);
+      display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;
+      box-shadow:0 1px 3px rgba(0,0,0,0.02);overflow:hidden;
     }
+    .item.my-reservation{border:1px solid #E0E0E0;background:#FFFEFA;}
+    .item-title{font-size:17px;font-weight:500;margin-bottom:6px;overflow-wrap:anywhere;}
+    .meta{font-size:14px;color:var(--text-secondary);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+    .meta a{text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.2);}
+    .sep{width:2px;height:2px;background:#CCC;border-radius:50%;flex:0 0 auto;}
 
-    .empty-state {
-      text-align: center;
-      color: var(--text-secondary);
-      padding: 40px 16px;
-      font-size: 14px;
+    button{
+      background:var(--btn-bg);color:var(--btn-text);border:none;padding:10px 18px;border-radius:var(--radius-btn);
+      font-size:13px;cursor:pointer;font-family:inherit;transition:background 0.2s;white-space:nowrap;
     }
+    button:hover{background:var(--btn-bg-hover);}
+    button:disabled{background:#F5F5F5;color:#CCC;cursor:default;}
+    button.reserved{background:transparent;color:var(--text-secondary);border:1px solid #E5E5E5;}
+    button.reserved:hover{background:transparent;}
+    button.undo{background:rgba(76,175,80,0.06);color:#2E7D32;border:1px solid #4CAF50;}
+    button.undo:hover{background:rgba(76,175,80,0.10);}
 
-    .group-gift {
-      background: #FFF;
-      border: 1px solid #EAEAEA;
-      border-radius: var(--radius-card);
-      padding: 32px;
-      margin-bottom: 40px;
-      text-align: center;
+    #my-reservations-section{background:#F4F4F4;border-radius:var(--radius-card);padding:24px;margin-bottom:40px;display:none;}
+    #my-reservations-section h2{font-size:18px;margin:0 0 16px 0;}
+
+    .modal-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(4px);
+      display:flex;justify-content:center;align-items:center;z-index:999;opacity:0;pointer-events:none;transition:opacity 0.2s;
     }
+    .modal-overlay.active{opacity:1;pointer-events:auto;}
+    .modal{background:#FFF;width:90%;max-width:360px;padding:28px;border-radius:20px;text-align:center;transform:scale(0.96);transition:transform 0.2s;}
+    .modal-overlay.active .modal{transform:scale(1);}
+    .modal h3{margin:0 0 12px;}
+    .modal p{color:#666;font-size:15px;margin:0 0 20px;}
+    .modal-actions{display:flex;gap:10px;}
+    .modal-btn{flex:1;padding:12px;border-radius:12px;}
+    .modal-btn.secondary{background:#F5F5F5;color:#333;}
 
-    .group-gift h2 {
-      font-size: 18px;
-      margin: 0 0 12px 0;
+    .pin-input-container{display:flex;gap:12px;justify-content:center;margin:20px 0;}
+    .pin-digit{
+      width:48px;height:56px;font-size:24px;text-align:center;border:1px solid #E5E5E5;border-radius:12px;background:#FAFAFA;
     }
+    .pin-digit:focus{border-color:#333;background:#FFF;outline:none;}
 
-    .group-gift p {
-      color: #555;
-      margin: 0 0 24px 0;
+    .admin-badge{
+      position:fixed;top:10px;right:10px;background:#000;color:#FFF;padding:4px 8px;font-size:10px;border-radius:4px;display:none;z-index:2000;
     }
+    body.admin-mode .admin-badge{display:block;}
 
-    .iban-container {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #F9F9F9;
-      padding: 10px 18px;
-      border-radius: 999px;
-      border: 1px solid #EEE;
-      cursor: pointer;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      user-select: none;
+    .toast{
+      position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+      background:#222;color:#FFF;padding:12px 24px;border-radius:999px;opacity:0;pointer-events:none;transition:all 0.3s;
+      z-index:1000;max-width:calc(100% - 24px);text-align:center;overflow-wrap:anywhere;
     }
+    .toast.active{opacity:1;transform:translateX(-50%) translateY(0);}
 
-    .copy-icon { width: 16px; height: 16px; fill: #888; }
-
-    .release-section {
-      background: #FFF;
-      border: 1px solid #EAEAEA;
-      border-radius: var(--radius-card);
-      padding: 24px;
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
-    .release-section h2 {
-      font-size: 14px;
-      margin: 0 0 12px 0;
-    }
-
-    .release-section p {
-      font-size: 13px;
-      color: #666;
-      margin: 0 0 20px 0;
-    }
-
-    .progress-container { margin-bottom: 32px; }
-
-    .progress-text {
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-    }
-
-    .progress-track {
-      height: 6px;
-      background: #EEE;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: var(--text-primary);
-      width: 0;
-      transition: width 0.8s var(--ease);
-    }
-
-    .controls {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 40px;
-    }
-
-    .search-row { position: relative; }
-
-    .search-input {
-      width: 100%;
-      padding: 14px 14px 14px 44px;
-      border: 1px solid transparent;
-      background: #FFF;
-      border-radius: var(--radius-btn);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      font-size: 15px;
-      outline: none;
-    }
-
-    .search-input:focus { border-color: #E5E5E5; }
-
-    .search-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 18px;
-      fill: #999;
-      pointer-events: none;
-    }
-
-    .filter-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
-
-    .toggle-btn {
-      background: transparent;
-      border: 1px solid #E5E5E5;
-      color: var(--text-secondary);
-      padding: 8px 14px;
-      font-size: 13px;
-      border-radius: var(--radius-btn);
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .toggle-btn.active {
-      background: var(--text-primary);
-      color: #FFF;
-      border-color: var(--text-primary);
-    }
-
-    .sort-select {
-      border: 1px solid transparent;
-      background: transparent;
-      font-size: 13px;
-      cursor: pointer;
-      padding: 8px 0;
-      font-family: inherit;
-    }
-
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 32px 0 14px;
-      cursor: pointer;
-      user-select: none;
-      gap: 12px;
-    }
-
-    .section-title h2 {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 1.2;
-      overflow-wrap: anywhere;
-    }
-
-    .section-chevron {
-      width: 14px;
-      height: 14px;
-      fill: var(--text-secondary);
-      flex: 0 0 auto;
-      transition: transform 0.25s;
-    }
-
-    .section-title.collapsed .section-chevron { transform: rotate(-90deg); }
-
-    /* Stabiler Collapse ohne height Messung */
-    .gift-group { display: block; }
-    .gift-group.collapsed { display: none; }
-
-    .item {
-      background: var(--bg-card);
-      padding: 24px;
-      margin-bottom: 12px;
-      border-radius: var(--radius-card);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 20px;
-      align-items: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-      overflow: hidden;
-    }
-
-    .item.my-reservation {
-      border: 1px solid #E0E0E0;
-      background: #FFFEFA;
-    }
-
-    .item-title {
-      font-size: 17px;
-      font-weight: 500;
-      margin-bottom: 6px;
-      overflow-wrap: anywhere;
-    }
-
-    .meta {
-      font-size: 14px;
-      color: var(--text-secondary);
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .meta a {
-      text-decoration: none;
-      border-bottom: 1px solid rgba(0,0,0,0.2);
-    }
-
-    .sep {
-      width: 2px;
-      height: 2px;
-      background: #CCC;
-      border-radius: 50%;
-      flex: 0 0 auto;
-    }
-
-    button {
-      background: var(--btn-bg);
-      color: var(--btn-text);
-      border: none;
-      padding: 10px 18px;
-      border-radius: var(--radius-btn);
-      font-size: 13px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-
-    button:hover { background: var(--btn-bg-hover); }
-
-    button:disabled {
-      background: #F5F5F5;
-      color: #CCC;
-      cursor: default;
-    }
-
-    button.reserved {
-      background: transparent;
-      color: var(--text-secondary);
-      border: 1px solid #E5E5E5;
-    }
-
-    button.reserved:hover { background: transparent; }
-
-    button.undo {
-      background: rgba(76,175,80,0.06);
-      color: #2E7D32;
-      border: 1px solid #4CAF50;
-    }
-
-    button.undo:hover { background: rgba(76,175,80,0.10); }
-
-    #my-reservations-section {
-      background: #F4F4F4;
-      border-radius: var(--radius-card);
-      padding: 24px;
-      margin-bottom: 40px;
-      display: none;
-    }
-
-    #my-reservations-section h2 {
-      font-size: 18px;
-      margin: 0 0 16px 0;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(4px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-    }
-
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-    .modal {
-      background: #FFF;
-      width: 90%;
-      max-width: 360px;
-      padding: 28px;
-      border-radius: 20px;
-      text-align: center;
-      transform: scale(0.96);
-      transition: transform 0.2s;
-    }
-
-    .modal-overlay.active .modal { transform: scale(1); }
-
-    .modal h3 { margin: 0 0 12px; }
-    .modal p { color: #666; font-size: 15px; margin: 0 0 20px; }
-
-    .modal-actions { display: flex; gap: 10px; }
-
-    .modal-btn { flex: 1; padding: 12px; border-radius: 12px; }
-
-    .modal-btn.secondary { background: #F5F5F5; color: #333; }
-
-    .pin-input-container {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin: 20px 0;
-    }
-
-    .pin-digit {
-      width: 48px;
-      height: 56px;
-      font-size: 24px;
-      text-align: center;
-      border: 1px solid #E5E5E5;
-      border-radius: 12px;
-      background: #FAFAFA;
-    }
-
-    .pin-digit:focus {
-      border-color: #333;
-      background: #FFF;
-      outline: none;
-    }
-
-    .admin-badge {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: #000;
-      color: #FFF;
-      padding: 4px 8px;
-      font-size: 10px;
-      border-radius: 4px;
-      display: none;
-      z-index: 2000;
-    }
-
-    body.admin-mode .admin-badge { display: block; }
-
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: #222;
-      color: #FFF;
-      padding: 12px 24px;
-      border-radius: 999px;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s;
-      z-index: 1000;
-      max-width: calc(100% - 24px);
-      text-align: center;
-      overflow-wrap: anywhere;
-    }
-
-    .toast.active {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    @media (max-width: 600px) {
-      .wrap { padding: 40px 20px; }
-      .hero { height: 260px; }
-      .item { grid-template-columns: 1fr; gap: 16px; }
-      .filter-row { flex-direction: column; align-items: stretch; }
-      button { width: 100%; }
-      button.reserved { width: 100%; }
-      .sort-select { width: 100%; }
+    @media (max-width:600px){
+      .wrap{padding:40px 20px;}
+      .hero{height:260px;}
+      .item{grid-template-columns:1fr;gap:16px;}
+      .filter-row{flex-direction:column;align-items:stretch;}
+      button{width:100%;}
+      .sort-select{width:100%;}
     }
   </style>
 </head>
@@ -461,16 +151,15 @@
   <div class="admin-badge">ADMIN</div>
 
   <div class="wrap">
-    <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" class="hero" alt="Cover">
+    <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" class="hero" alt="Cover" />
     <h1>Unsere Hochzeitswunschliste</h1>
     <p class="intro">Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind kein Muss.</p>
 
-    <div id="admin-dashboard"
-      style="display:none; background:#FFF0F0; border:2px solid #D32F2F; padding:20px; margin-bottom:40px; border-radius:16px;">
-      <h2 style="color:#D32F2F; margin-top:0; font-size:18px;">Admin Dashboard</h2>
-      <p style="font-size:14px; color:#555; margin-bottom:15px;">Alle Reservierungen im Überblick.</p>
+    <div id="admin-dashboard" style="display:none;background:#FFF0F0;border:2px solid #D32F2F;padding:20px;margin-bottom:40px;border-radius:16px;">
+      <h2 style="color:#D32F2F;margin-top:0;font-size:18px;">Admin Dashboard</h2>
+      <p style="font-size:14px;color:#555;margin-bottom:15px;">Alle Reservierungen im Überblick.</p>
       <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;text-align:left;">
           <thead>
             <tr style="border-bottom:1px solid #CCC;">
               <th style="padding:8px;">Geschenk</th>
@@ -489,32 +178,30 @@
       <p>Wer sich beteiligen möchte, kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.</p>
       <div class="iban-container" onclick="app.copyIBAN()">
         <svg class="copy-icon" viewBox="0 0 24 24">
-          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
         </svg>
         <span>DE89 2007 0024 0191 3888 02</span>
       </div>
-      <div style="font-size:13px; color:#888; margin-top:8px;">Max Tiefenbacher</div>
+      <div style="font-size:13px;color:#888;margin-top:8px;">Max Tiefenbacher</div>
     </div>
 
     <div class="release-section">
       <h2>Reservierung freigeben</h2>
       <p>Falls du einen Wunsch reserviert hast, kannst du ihn mit deinem Code hier freigeben.</p>
-      <button class="modal-btn secondary" style="width:auto; padding:8px 16px;" onclick="app.openReleaseModal()">Mit Code freigeben</button>
+      <button class="modal-btn secondary" style="width:auto;padding:8px 16px;" onclick="app.openReleaseModal()">Mit Code freigeben</button>
     </div>
 
     <div class="progress-container" id="progress-container">
       <div class="progress-text" id="progress-text">Lade Status...</div>
-      <div class="progress-track">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
 
     <div class="controls">
       <div class="search-row">
         <svg class="search-icon" viewBox="0 0 24 24">
-          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
         </svg>
-        <input type="text" id="search-input" class="search-input" placeholder="Wunsch suchen...">
+        <input type="text" id="search-input" class="search-input" placeholder="Wunsch suchen..." />
       </div>
 
       <div class="filter-row">
@@ -536,9 +223,7 @@
       <div id="my-reservations-list"></div>
     </div>
 
-    <div id="list">
-      <div class="empty-state">Lade Liste...</div>
-    </div>
+    <div id="list"><div class="empty-state">Lade Liste...</div></div>
   </div>
 
   <div class="modal-overlay" id="modalOverlay">
@@ -578,6 +263,24 @@
       isAdmin: false
     };
 
+    // ---------- Utils ----------
+    function escapeHtml(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("active");
+      setTimeout(() => t.classList.remove("active"), 2500);
+    }
+
+    function catKey(c) { return encodeURIComponent(String(c || "")); }
+
     function loadPins() {
       try { state.userPins = JSON.parse(localStorage.getItem("user_pins") || "[]"); }
       catch { state.userPins = []; }
@@ -588,6 +291,60 @@
         state.userPins.push(pin);
         localStorage.setItem("user_pins", JSON.stringify(state.userPins));
       }
+    }
+
+    // WhatsApp: akzeptiert beide gängigen Formate
+    // - https://chat.whatsapp.com/XXXX
+    // - https://www.whatsapp.com/invite/XXXX
+    function normalizeWhatsAppLink(raw) {
+      let link = String(raw || "").trim();
+
+      if (!link) return "";
+
+      // User pasted without protocol
+      if (link.startsWith("chat.whatsapp.com/")) link = "https://" + link;
+      if (link.startsWith("www.chat.whatsapp.com/")) link = "https://" + link.replace(/^www\./, "");
+
+      if (link.startsWith("whatsapp.com/invite/")) link = "https://www." + link;
+      if (link.startsWith("www.whatsapp.com/invite/")) link = "https://" + link;
+
+      // remove surrounding spaces
+      link = link.trim();
+
+      return link;
+    }
+
+    function isValidWhatsAppInvite(raw) {
+      const link = normalizeWhatsAppLink(raw);
+      try {
+        const u = new URL(link);
+        const host = u.hostname.replace(/^www\./, "");
+        const path = u.pathname.replace(/\/+/g, "/");
+
+        const isChat = host === "chat.whatsapp.com" && path.length > 2;
+        const isInvite = host === "whatsapp.com" && path.startsWith("/invite/") && path.length > "/invite/".length;
+
+        return isChat || isInvite;
+      } catch {
+        return false;
+      }
+    }
+
+    function openWhatsApp(link) {
+      const url = normalizeWhatsAppLink(link);
+      if (!isValidWhatsAppInvite(url)) {
+        showToast("Ungültiger WhatsApp-Link.");
+        return;
+      }
+      window.open(url, "_blank", "noopener");
+    }
+
+    // ---------- Data helpers ----------
+    function parsePrice(s) {
+      if (!s) return Infinity;
+      const m = String(s).match(/[\d.,]+/);
+      if (!m) return Infinity;
+      return parseFloat(m[0].replace(/\./g, "").replace(",", "."));
     }
 
     function getContributionTotal(giftId) {
@@ -615,278 +372,25 @@
       return (state.reservations || []).some(r => r.gift_id === g.id && state.userPins.includes(r.pin));
     }
 
-    function parsePrice(s) {
-      if (!s) return Infinity;
-      const m = String(s).match(/[\d.,]+/);
-      if (!m) return Infinity;
-      return parseFloat(m[0].replace(/\./g, "").replace(",", "."));
-    }
-
-    function escapeHtml(s) {
-      return String(s || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-    }
-
+    // ---------- Coordination helpers ----------
     function getGroupForGift(giftId) {
-      return (state.coordGroups || []).find(g => g.gift_id === giftId) || null;
+      return (state.coordGroups || []).find(gr => gr.gift_id === giftId) || null;
+    }
+
+    function getMemberPinsForGroup(groupId) {
+      // Dedup per PIN
+      const pins = (state.coordMembers || [])
+        .filter(m => m.group_id === groupId)
+        .map(m => String(m.pin || "").trim())
+        .filter(Boolean);
+      return Array.from(new Set(pins));
     }
 
     function getMemberCount(groupId) {
-      return (state.coordMembers || []).filter(m => m.group_id === groupId).length;
+      return getMemberPinsForGroup(groupId).length;
     }
 
-    function isValidWhatsAppInvite(url) {
-      try {
-        const u = new URL(url);
-        return u.hostname === "chat.whatsapp.com" && u.pathname.length > 2;
-      } catch {
-        return false;
-      }
-    }
-function normalizeWhatsAppLink(raw) {
-  let link = String(raw || "").trim();
-
-  // Falls jemand nur "chat.whatsapp.com/XXXX" einfügt
-  if (link.startsWith("chat.whatsapp.com/")) {
-    link = "https://" + link;
-  }
-
-  // Falls jemand "www.chat.whatsapp.com/XXXX" einfügt
-  if (link.startsWith("www.chat.whatsapp.com/")) {
-    link = "https://" + link.replace(/^www\./, "");
-  }
-
-  return link;
-}
-
-function isValidWhatsAppInvite(raw) {
-  const link = normalizeWhatsAppLink(raw);
-
-  try {
-    const u = new URL(link);
-    // WhatsApp Invite Links sind hier
-    if (u.hostname !== "chat.whatsapp.com") return false;
-
-    // Muss einen Invite Code im Pfad haben
-    const path = u.pathname.replace(/\/+/g, "/");
-    return path.length > 2;
-  } catch {
-    return false;
-  }
-}
-    function catKey(c) { return encodeURIComponent(String(c || "")); }
-
-    function showToast(msg) {
-      const t = document.getElementById("toast");
-      t.textContent = msg;
-      t.classList.add("active");
-      setTimeout(() => t.classList.remove("active"), 2500);
-    }
-
-    window.app = {
-      toggleCat: (k) => { state.categoryState[k] = !state.categoryState[k]; render(); },
-
-      copyIBAN: () => navigator.clipboard
-        .writeText("DE89200700240191388802")
-        .then(() => showToast("IBAN kopiert"))
-        .catch(() => showToast("IBAN kopiert")),
-
-      reserve: async (id) => {
-        const g = state.gifts.find(x => x.id === id);
-        if (!g) return;
-
-        if (getAvailable(g) < 1) { showToast("Nicht mehr verfügbar."); return; }
-
-        const pin = await requestPin("Wunsch reservieren", "Bitte wähle einen 4-stelligen Code.");
-        if (!pin) return;
-
-        const { data: fresh, error: fErr } = await sb.from("gifts")
-          .select("quantity, reserved_quantity")
-          .eq("id", id)
-          .single();
-
-        if (fErr || !fresh) { showToast("Fehler beim Prüfen."); return; }
-
-        const availableNow = Math.max(0, (parseInt(fresh.quantity) || 1) - (parseInt(fresh.reserved_quantity) || 0));
-        if (availableNow < 1) { showToast("Leider war jemand schneller."); loadData(); return; }
-
-        const { error: insErr } = await sb.from("reservations").insert({ gift_id: id, pin: pin, qty: 1 });
-        if (insErr) {
-          if (insErr.code === "23505") showToast("PIN bereits vergeben. Bitte anderen Code wählen.");
-          else showToast("Fehler beim Speichern.");
-          return;
-        }
-
-        const newQ = (parseInt(fresh.reserved_quantity) || 0) + 1;
-        await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
-
-        savePin(pin);
-        showToast("Reserviert!");
-        loadData();
-      },
-
-      unreserve: async (id) => {
-        const myRes = (state.reservations || []).filter(r => r.gift_id === id && state.userPins.includes(r.pin));
-        if (myRes.length === 0) return;
-
-        const r = myRes[0];
-        if (!(await confirmModal("Freigeben?", "Möchtest du diese Reservierung freigeben?"))) return;
-
-        const { error: delErr } = await sb.from("reservations").delete().match({ gift_id: id, pin: r.pin });
-        if (delErr) { showToast("Fehler beim Löschen."); return; }
-
-        const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", id).single();
-        if (fresh) {
-          const newQ = Math.max(0, (parseInt(fresh.reserved_quantity) || 0) - (parseInt(r.qty) || 1));
-          await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
-        }
-
-        showToast("Freigegeben.");
-        loadData();
-      },
-
-      contribute: async (id) => {
-        const g = state.gifts.find(x => x.id === id);
-        if (!g) return;
-
-        const input = await requestContributionInput(g.title);
-        if (!input) return;
-
-        const { amount, name, message, pin } = input;
-
-        const { error } = await sb.from("contributions").insert({
-          gift_id: id, amount, name, message, pin
-        });
-
-        if (error) { showToast("Fehler beim Speichern."); return; }
-
-        savePin(pin);
-        showToast("Beitrag gespeichert!");
-        loadData();
-      },
-
-      removeContribution: async (id) => {
-        const myContribs = (state.contributions || []).filter(c => c.gift_id === id && state.userPins.includes(c.pin));
-        if (myContribs.length === 0) return;
-
-        const c = myContribs[myContribs.length - 1];
-        if (!(await confirmModal("Beitrag zurückziehen?", `Deinen Beitrag von ${c.amount}€ entfernen?`))) return;
-
-        const { error } = await sb.from("contributions").delete().eq("id", c.id);
-        if (error) { showToast("Fehler beim Entfernen."); return; }
-
-        showToast("Entfernt.");
-        loadData();
-      },
-
-      openReleaseModal: async () => {
-        const pin = await requestPin("Reservierung finden", "Bitte gib deinen Code ein.");
-        if (!pin) return;
-
-        const { data: list } = await sb.from("reservations").select("*, gifts(title)").eq("pin", pin);
-        const { data: cList } = await sb.from("contributions").select("*, gifts(title)").eq("pin", pin);
-
-        if ((!list || list.length === 0) && (!cList || cList.length === 0)) { showToast("Keine Einträge gefunden."); return; }
-
-        if (list && list.length > 0) {
-          const item = list[0];
-          const title = item.gifts ? item.gifts.title : "Unbekannt";
-          if (!(await confirmModal("Gefunden", `Freigeben: "${escapeHtml(title)}"?`))) return;
-
-          await sb.from("reservations").delete().eq("id", item.id);
-          const { data: g } = await sb.from("gifts").select("reserved_quantity").eq("id", item.gift_id).single();
-          if (g) {
-            await sb.from("gifts").update({
-              reserved_quantity: Math.max(0, (parseInt(g.reserved_quantity) || 0) - (parseInt(item.qty) || 1))
-            }).eq("id", item.gift_id);
-          }
-        } else if (cList && cList.length > 0) {
-          const item = cList[0];
-          const title = item.gifts ? item.gifts.title : "Unbekannt";
-          if (!(await confirmModal("Beitrag gefunden", `Beitrag für "${escapeHtml(title)}" (${item.amount}€) entfernen?`))) return;
-          await sb.from("contributions").delete().eq("id", item.id);
-        }
-
-        savePin(pin);
-        showToast("Erledigt.");
-        loadData();
-      },
-
-      adminDelete: async (resId, giftId, qty, isContribution = false) => {
-        if (!(await confirmModal("ADMIN LÖSCHEN", "Wirklich löschen?"))) return;
-
-        const table = isContribution ? "contributions" : "reservations";
-        const { error } = await sb.from(table).delete().eq("id", resId);
-        if (error) { showToast("Fehler."); return; }
-
-        if (!isContribution) {
-          const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", giftId).single();
-          if (fresh) {
-            const newQ = Math.max(0, (parseInt(fresh.reserved_quantity) || 0) - (parseInt(qty) || 1));
-            await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", giftId);
-          }
-        }
-
-        showToast("Gelöscht.");
-        loadData();
-      },
-
-      adminReset: async (id) => {
-        if (!(await confirmModal("ADMIN", "Reset completely?"))) return;
-        await sb.from("reservations").delete().eq("gift_id", id);
-        await sb.from("gifts").update({ reserved_quantity: 0, reserved: false }).eq("id", id);
-        loadData();
-      },
-createCoordination: async (giftId) => {
-  const pin = await requestPin(
-    "Organisation übernehmen",
-    "Bitte lege einen 4-stelligen Code fest."
-  );
-  if (!pin) return;
-
-  const linkRaw = prompt("WhatsApp Gruppenlink einfügen:") || "";
-  const link = normalizeWhatsAppLink(linkRaw);
-
-  if (!isValidWhatsAppInvite(link)) {
-    showToast("Ungültiger WhatsApp Gruppenlink. Bitte direkt aus WhatsApp kopieren.");
-    return;
-  }
-
-  const max = parseInt(prompt("Maximale Teilnehmerzahl? (z.B. 3)"), 10);
-  if (!max || max < 2) {
-    showToast("Ungültige Anzahl.");
-    return;
-  }
-
-  const { error } = await sb.from("gift_coordination_groups").insert({
-    gift_id: giftId,
-    creator_pin: pin,
-    whatsapp_link: link,
-    max_members: max
-  });
-
-  if (error) {
-    console.error(error);
-    showToast("Fehler beim Anlegen.");
-    return;
-  }
-
-  savePin(pin);
-  showToast("Organisation angelegt.");
-  loadData();
-}
-
-        if (error) { showToast("Fehler beim Anlegen."); return; }
-
-        savePin(pin);
-        showToast("Organisation angelegt.");
-        loadData();
-      }
-    };
-
+    // ---------- Modal helpers ----------
     function confirmModal(title, text) {
       return new Promise(resolve => {
         const el = document.getElementById("modalOverlay");
@@ -1017,6 +521,239 @@ createCoordination: async (giftId) => {
       });
     }
 
+    // ---------- App ----------
+    window.app = {
+      toggleCat: (k) => { state.categoryState[k] = !state.categoryState[k]; render(); },
+
+      copyIBAN: () => navigator.clipboard
+        .writeText("DE89200700240191388802")
+        .then(() => showToast("IBAN kopiert"))
+        .catch(() => showToast("IBAN kopiert")),
+
+      reserve: async (id) => {
+        const g = state.gifts.find(x => x.id === id);
+        if (!g) return;
+        if (getAvailable(g) < 1) { showToast("Nicht mehr verfügbar."); return; }
+
+        const pin = await requestPin("Wunsch reservieren", "Bitte wähle einen 4-stelligen Code.");
+        if (!pin) return;
+
+        const { data: fresh, error: fErr } = await sb.from("gifts").select("quantity, reserved_quantity").eq("id", id).single();
+        if (fErr || !fresh) { showToast("Fehler beim Prüfen."); return; }
+
+        const availableNow = Math.max(0, (parseInt(fresh.quantity) || 1) - (parseInt(fresh.reserved_quantity) || 0));
+        if (availableNow < 1) { showToast("Leider war jemand schneller."); await loadData(); return; }
+
+        const { error: insErr } = await sb.from("reservations").insert({ gift_id: id, pin: pin, qty: 1 });
+        if (insErr) {
+          if (insErr.code === "23505") showToast("PIN bereits vergeben. Bitte anderen Code wählen.");
+          else showToast("Fehler beim Speichern.");
+          return;
+        }
+
+        const newQ = (parseInt(fresh.reserved_quantity) || 0) + 1;
+        await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
+
+        savePin(pin);
+        showToast("Reserviert!");
+        await loadData();
+      },
+
+      unreserve: async (id) => {
+        const myRes = (state.reservations || []).filter(r => r.gift_id === id && state.userPins.includes(r.pin));
+        if (myRes.length === 0) return;
+
+        const r = myRes[0];
+        if (!(await confirmModal("Freigeben?", "Möchtest du diese Reservierung freigeben?"))) return;
+
+        const { error: delErr } = await sb.from("reservations").delete().match({ gift_id: id, pin: r.pin });
+        if (delErr) { showToast("Fehler beim Löschen."); return; }
+
+        const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", id).single();
+        if (fresh) {
+          const newQ = Math.max(0, (parseInt(fresh.reserved_quantity) || 0) - (parseInt(r.qty) || 1));
+          await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
+        }
+
+        showToast("Freigegeben.");
+        await loadData();
+      },
+
+      contribute: async (id) => {
+        const g = state.gifts.find(x => x.id === id);
+        if (!g) return;
+
+        const input = await requestContributionInput(g.title);
+        if (!input) return;
+
+        const { amount, name, message, pin } = input;
+        const { error } = await sb.from("contributions").insert({ gift_id: id, amount, name, message, pin });
+        if (error) { showToast("Fehler beim Speichern."); return; }
+
+        savePin(pin);
+        showToast("Beitrag gespeichert!");
+        await loadData();
+      },
+
+      removeContribution: async (id) => {
+        const myContribs = (state.contributions || []).filter(c => c.gift_id === id && state.userPins.includes(c.pin));
+        if (myContribs.length === 0) return;
+
+        const c = myContribs[myContribs.length - 1];
+        if (!(await confirmModal("Beitrag zurückziehen?", `Deinen Beitrag von ${c.amount}€ entfernen?`))) return;
+
+        const { error } = await sb.from("contributions").delete().eq("id", c.id);
+        if (error) { showToast("Fehler beim Entfernen."); return; }
+
+        showToast("Entfernt.");
+        await loadData();
+      },
+
+      openReleaseModal: async () => {
+        const pin = await requestPin("Reservierung finden", "Bitte gib deinen Code ein.");
+        if (!pin) return;
+
+        const { data: list } = await sb.from("reservations").select("*, gifts(title)").eq("pin", pin);
+        const { data: cList } = await sb.from("contributions").select("*, gifts(title)").eq("pin", pin);
+
+        if ((!list || list.length === 0) && (!cList || cList.length === 0)) {
+          showToast("Keine Einträge gefunden.");
+          return;
+        }
+
+        if (list && list.length > 0) {
+          const item = list[0];
+          const title = item.gifts ? item.gifts.title : "Unbekannt";
+          if (!(await confirmModal("Gefunden", `Freigeben: "${escapeHtml(title)}"?`))) return;
+
+          await sb.from("reservations").delete().eq("id", item.id);
+          const { data: g } = await sb.from("gifts").select("reserved_quantity").eq("id", item.gift_id).single();
+          if (g) {
+            await sb.from("gifts").update({
+              reserved_quantity: Math.max(0, (parseInt(g.reserved_quantity) || 0) - (parseInt(item.qty) || 1))
+            }).eq("id", item.gift_id);
+          }
+        } else if (cList && cList.length > 0) {
+          const item = cList[0];
+          const title = item.gifts ? item.gifts.title : "Unbekannt";
+          if (!(await confirmModal("Beitrag gefunden", `Beitrag für "${escapeHtml(title)}" (${item.amount}€) entfernen?`))) return;
+          await sb.from("contributions").delete().eq("id", item.id);
+        }
+
+        savePin(pin);
+        showToast("Erledigt.");
+        await loadData();
+      },
+
+      adminDelete: async (resId, giftId, qty, isContribution = false) => {
+        if (!(await confirmModal("ADMIN LÖSCHEN", "Wirklich löschen?"))) return;
+
+        const table = isContribution ? "contributions" : "reservations";
+        const { error } = await sb.from(table).delete().eq("id", resId);
+        if (error) { showToast("Fehler."); return; }
+
+        if (!isContribution) {
+          const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", giftId).single();
+          if (fresh) {
+            const newQ = Math.max(0, (parseInt(fresh.reserved_quantity) || 0) - (parseInt(qty) || 1));
+            await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", giftId);
+          }
+        }
+
+        showToast("Gelöscht.");
+        await loadData();
+      },
+
+      adminReset: async (id) => {
+        if (!(await confirmModal("ADMIN", "Reset completely?"))) return;
+        await sb.from("reservations").delete().eq("gift_id", id);
+        await sb.from("gifts").update({ reserved_quantity: 0, reserved: false }).eq("id", id);
+        await loadData();
+      },
+
+      // 1) Orga-Gruppe anlegen (pro Geschenk genau 1)
+      createCoordination: async (giftId) => {
+        const existing = getGroupForGift(giftId);
+        if (existing) {
+          showToast("Für dieses Geschenk gibt es bereits eine Organisation.");
+          return;
+        }
+
+        const pin = await requestPin("Organisation übernehmen", "Bitte lege einen 4-stelligen Code fest.");
+        if (!pin) return;
+
+        const linkRaw = prompt("WhatsApp Gruppenlink einfügen:") || "";
+        const link = normalizeWhatsAppLink(linkRaw);
+
+        if (!isValidWhatsAppInvite(link)) {
+          showToast("Ungültiger WhatsApp Gruppenlink. Bitte direkt aus WhatsApp kopieren.");
+          return;
+        }
+
+        const max = parseInt(prompt("Maximale Teilnehmerzahl? (z.B. 3)"), 10);
+        if (!max || max < 2) { showToast("Ungültige Anzahl."); return; }
+
+        const { data: created, error } = await sb
+          .from("gift_coordination_groups")
+          .insert({ gift_id: giftId, creator_pin: pin, whatsapp_link: link, max_members: max })
+          .select("*")
+          .single();
+
+        if (error || !created) {
+          console.error(error);
+          showToast("Fehler beim Anlegen.");
+          return;
+        }
+
+        // Creator als Member hinzufügen (damit count nicht 0 ist)
+        // Erwartete Spalten in gift_coordination_members: group_id, pin
+        const { error: mErr } = await sb
+          .from("gift_coordination_members")
+          .insert({ group_id: created.id, pin: pin });
+
+        // Wenn RLS/Spalten anders sind, soll es trotzdem nicht crashen
+        if (mErr) console.warn("Member insert failed (check columns/RLS):", mErr);
+
+        savePin(pin);
+        showToast("Organisation angelegt.");
+        await loadData();
+      },
+
+      // 2) Einer bestehenden Orga beitreten (PIN speichern, Member zählen, dann WhatsApp öffnen)
+      joinCoordination: async (groupId) => {
+        const group = (state.coordGroups || []).find(g => g.id === groupId);
+        if (!group) { showToast("Gruppe nicht gefunden."); return; }
+
+        const currentPins = getMemberPinsForGroup(groupId);
+        const max = parseInt(group.max_members) || 0;
+
+        if (max > 0 && currentPins.length >= max) {
+          showToast("Diese Organisation ist bereits voll.");
+          return;
+        }
+
+        const pin = await requestPin("Zur Abstimmung", "Bitte gib einen 4-stelligen Code ein.");
+        if (!pin) return;
+
+        // Wenn Pin schon drin ist, nicht nochmal speichern
+        if (!currentPins.includes(pin)) {
+          const { error } = await sb
+            .from("gift_coordination_members")
+            .insert({ group_id: groupId, pin: pin });
+
+          if (error) {
+            console.warn("Join insert failed (check columns/RLS):", error);
+            // Trotzdem WhatsApp öffnen, weil UX wichtiger ist
+          }
+        }
+
+        savePin(pin);
+        openWhatsApp(group.whatsapp_link);
+        await loadData();
+      }
+    };
+
+    // ---------- Load + Render ----------
     async function loadData() {
       const params = new URLSearchParams(window.location.search);
       if (params.get("admin") === ADMIN_SECRET || window.location.hash.includes("master") || window.location.href.includes("/master")) {
@@ -1033,6 +770,7 @@ createCoordination: async (giftId) => {
       }
       state.gifts = gs || [];
 
+      // Coordination tables
       try {
         const { data: groups, error: ggErr } = await sb.from("gift_coordination_groups").select("*");
         if (ggErr) throw ggErr;
@@ -1042,19 +780,23 @@ createCoordination: async (giftId) => {
 
         state.coordGroups = groups || [];
         state.coordMembers = members || [];
-      } catch {
+      } catch (e) {
+        console.warn("Coord tables missing / RLS / error:", e);
         state.coordGroups = [];
         state.coordMembers = [];
       }
 
+      // Contributions
       try {
         const { data: contribs, error: cErr } = await sb.from("contributions").select("*");
         if (cErr) throw cErr;
         state.contributions = contribs || [];
-      } catch {
+      } catch (e) {
+        console.warn("Contributions missing / RLS / error:", e);
         state.contributions = [];
       }
 
+      // Reservations
       if (state.isAdmin) {
         const { data: allRes } = await sb.from("reservations").select("*, gifts(title)").order("created_at", { ascending: false });
         const { data: allContribs } = await sb.from("contributions").select("*, gifts(title)").order("created_at", { ascending: false });
@@ -1064,6 +806,7 @@ createCoordination: async (giftId) => {
 
         document.getElementById("admin-dashboard").style.display = "block";
         renderAdmin();
+
         state.reservations = allRes || [];
       } else {
         if (state.userPins.length > 0) {
@@ -1225,10 +968,11 @@ createCoordination: async (giftId) => {
       let st = "";
       const qty = parseInt(g.quantity) || 1;
       if (qty > 1) {
-        if (avail === 0) st = `<div style="color:#D32F2F; font-size:12px;">Alle ${qty} vergeben</div>`;
-        else st = `<div style="color:#2E7D32; font-size:12px;">${avail} von ${qty} verfügbar</div>`;
+        if (avail === 0) st = `<div style="color:#D32F2F;font-size:12px;">Alle ${qty} vergeben</div>`;
+        else st = `<div style="color:#2E7D32;font-size:12px;">${avail} von ${qty} verfügbar</div>`;
       }
 
+      // Coordination UI
       let coordUI = "";
       const group = getGroupForGift(g.id);
 
@@ -1237,11 +981,17 @@ createCoordination: async (giftId) => {
           coordUI = `<button class="reserved" style="font-size:11px" onclick="app.createCoordination('${g.id}')">Organisation übernehmen</button>`;
         } else {
           const count = getMemberCount(group.id);
-          coordUI = `<a href="#"
-   onclick="app.joinCoordination('${group.id}', '${escape(group.whatsapp_invite_url)}')"
-   style="font-size:11px;color:#666;text-decoration:underline">
-  Zur Abstimmung (${count}/${group.max_members})
-</a>`;
+          const max = parseInt(group.max_members) || 0;
+
+          if (max > 0 && count >= max) {
+            coordUI = `<span style="font-size:11px;color:#999;">Organisation voll (${count}/${max})</span>`;
+          } else {
+            coordUI = `<a href="javascript:void(0)"
+              onclick="app.joinCoordination('${group.id}')"
+              style="font-size:11px;color:#666;text-decoration:underline">
+              Zur Abstimmung (${count}/${max || "∞"})
+            </a>`;
+          }
         }
       }
 
@@ -1256,7 +1006,7 @@ createCoordination: async (giftId) => {
             <div class="meta">${price}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
             ${st}
           </div>
-          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
             ${act}
             ${coordUI}
             ${admin}
@@ -1274,12 +1024,12 @@ createCoordination: async (giftId) => {
 
       const bar = `
         <div style="margin-top:8px;">
-          <div style="display:flex; justify-content:space-between; font-size:12px; color:#555; margin-bottom:4px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#555;margin-bottom:4px;">
             <span>${current}€ gesammelt</span>
             <span>Ziel: ${target}€</span>
           </div>
-          <div style="height:6px; background:#EEE; border-radius:4px; overflow:hidden;">
-            <div style="height:100%; width:${percent}%; background:#4CAF50;"></div>
+          <div style="height:6px;background:#EEE;border-radius:4px;overflow:hidden;">
+            <div style="height:100%;width:${percent}%;background:#4CAF50;"></div>
           </div>
         </div>
       `;
@@ -1294,18 +1044,19 @@ createCoordination: async (giftId) => {
           <div class="item-content" style="width:100%">
             <div class="item-title">
               ${escapeHtml(g.title)}
-              <span style="font-size:12px; font-weight:400; color:#4CAF50; background:#E8F5E9; padding:2px 6px; border-radius:4px; margin-left:6px;">Sammelgeschenk</span>
+              <span style="font-size:12px;font-weight:400;color:#4CAF50;background:#E8F5E9;padding:2px 6px;border-radius:4px;margin-left:6px;">Sammelgeschenk</span>
             </div>
             <div class="meta">${priceStr}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Details ↗</a></div>
             ${bar}
           </div>
-          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:100px;">
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:100px;">
             ${act}
           </div>
         </div>
       `;
     }
 
+    // Controls
     document.getElementById("search-input").oninput = (e) => { state.filter.search = e.target.value; render(); };
     document.getElementById("filter-free").onclick = (e) => {
       state.filter.showFreeOnly = !state.filter.showFreeOnly;
@@ -1319,6 +1070,7 @@ createCoordination: async (giftId) => {
     };
     document.getElementById("sort-select").onchange = (e) => { state.sort = e.target.value; render(); };
 
+    // Start
     loadData();
   </script>
 </body>
