@@ -815,7 +815,13 @@
         const pin = await requestPin("Organisation übernehmen", "Bitte lege einen 4-stelligen Code fest.");
         if (!pin) return;
 
-        const link = prompt("WhatsApp-Gruppenlink einfügen:");
+        const linkRaw = prompt("WhatsApp-Gruppenlink einfügen:") || "";
+const link = linkRaw.trim();
+
+if (!isValidWhatsAppInvite(link)) {
+  showToast("Ungültiger WhatsApp-Link.");
+  return;
+}
         if (!isValidWhatsAppInvite(link)) { showToast("Ungültiger WhatsApp-Link."); return; }
 
         const max = parseInt(prompt("Maximale Teilnehmerzahl? (z.B. 3)"), 10);
