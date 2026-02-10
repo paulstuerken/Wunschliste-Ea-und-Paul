@@ -865,6 +865,42 @@ function isValidWhatsAppInvite(url) {
         await sb.from("gifts").update({ reserved_quantity: 0, reserved: false }).eq("id", id);
         loadData();
       }
+      createCoordination: async (giftId) => {
+  const pin = await requestPin(
+    "Organisation übernehmen",
+    "Bitte lege einen 4-stelligen Code fest."
+  );
+  if (!pin) return;
+
+  const link = prompt("WhatsApp-Gruppenlink einfügen:");
+  if (!isValidWhatsAppInvite(link)) {
+    showToast("Ungültiger WhatsApp-Link.");
+    return;
+  }
+
+  const max = parseInt(prompt("Maximale Teilnehmerzahl? (z.B. 3)"), 10);
+  if (!max || max < 2) {
+    showToast("Ungültige Anzahl.");
+    return;
+  }
+
+  const { error } = await sb.from("gift_coordination_groups").insert({
+    gift_id: giftId,
+    creator_pin: pin,
+    whatsapp_link: link,
+    max_members: max
+  });
+
+  if (error) {
+    console.error(error);
+    showToast("Fehler beim Anlegen.");
+    return;
+  }
+
+  savePin(pin);
+  showToast("Organisation angelegt.");
+  loadData();
+}
     };
 
     function confirmModal(title, text) {
@@ -1215,7 +1251,29 @@ try {
         if (avail === 0) st = `<div style="color:#D32F2F; font-size:12px;">Alle ${qty} vergeben</div>`;
         else st = `<div style="color:#2E7D32; font-size:12px;">${avail} von ${qty} verfügbar</div>`;
       }
+// --- Koordination (dezent) ---
+let coordUI = "";
+const group = getGroupForGift(g.id);
 
+if (!g.is_group_gift && g.allow_coordination) {
+  if (!group) {
+    coordUI = `
+      <button class="reserved" style="font-size:11px"
+        onclick="app.createCoordination('${g.id}')">
+        Organisation übernehmen
+      </button>
+    `;
+  } else {
+    const count = getMemberCount(group.id);
+    coordUI = `
+      <a href="${escape(group.whatsapp_link)}"
+         target="_blank"
+         style="font-size:11px;color:#666;text-decoration:underline">
+        Zur Abstimmung (${count}/${group.max_members})
+      </a>
+    `;
+  }
+}
       const admin = state.isAdmin
         ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>`
         : "";
@@ -1228,10 +1286,10 @@ try {
             ${st}
           </div>
           <div style="flex-direction:column; display:flex; align-items:flex-end; gap:6px;">
-            ${act}
-            ${admin}
-          </div>
-        </div>
+  ${act}
+  ${coordUI}
+  ${admin}
+</div>
       `;
     }
 
