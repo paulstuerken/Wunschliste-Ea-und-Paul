@@ -978,7 +978,10 @@
 
       if (!g.is_group_gift && g.allow_coordination) {
         if (!group) {
-          coordUI = `<button class="reserved" style="font-size:11px" onclick="app.createCoordination('${g.id}')">Organisation übernehmen</button>`;
+          coordUI = `<button class="reserved" style="font-size:11px"
+  onclick="app.createCoordination('${g.id}')">
+  Organisation eines Gruppengeschenkes übernehmen
+</button>`;
         } else {
           const count = getMemberCount(group.id);
           const max = parseInt(group.max_members) || 0;
