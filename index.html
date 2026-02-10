@@ -1034,7 +1034,7 @@
         </div>
       `;
 
-      let act = `<button style="background:#2E7D32;" onclick="app.contribute('${g.id}')">Beteiligen</button>`;
+     let act = `<button style="background:#2E7D32;" onclick="app.contribute('${g.id}')">An Gruppengeschenk beteiligen</button>`;
       if (inMySection) act = `<button class="undo" onclick="app.removeContribution('${g.id}')">Beitrag zurückziehen</button>`;
 
       const priceStr = g.Preis ? `<span>${escapeHtml(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
