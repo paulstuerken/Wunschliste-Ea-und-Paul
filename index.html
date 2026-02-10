@@ -646,7 +646,37 @@
         return false;
       }
     }
+function normalizeWhatsAppLink(raw) {
+  let link = String(raw || "").trim();
 
+  // Falls jemand nur "chat.whatsapp.com/XXXX" einfügt
+  if (link.startsWith("chat.whatsapp.com/")) {
+    link = "https://" + link;
+  }
+
+  // Falls jemand "www.chat.whatsapp.com/XXXX" einfügt
+  if (link.startsWith("www.chat.whatsapp.com/")) {
+    link = "https://" + link.replace(/^www\./, "");
+  }
+
+  return link;
+}
+
+function isValidWhatsAppInvite(raw) {
+  const link = normalizeWhatsAppLink(raw);
+
+  try {
+    const u = new URL(link);
+    // WhatsApp Invite Links sind hier
+    if (u.hostname !== "chat.whatsapp.com") return false;
+
+    // Muss einen Invite Code im Pfad haben
+    const path = u.pathname.replace(/\/+/g, "/");
+    return path.length > 2;
+  } catch {
+    return false;
+  }
+}
     function catKey(c) { return encodeURIComponent(String(c || "")); }
 
     function showToast(msg) {
