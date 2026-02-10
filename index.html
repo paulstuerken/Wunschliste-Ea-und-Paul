@@ -1186,7 +1186,11 @@
           coordUI = `<button class="reserved" style="font-size:11px" onclick="app.createCoordination('${g.id}')">Organisation übernehmen</button>`;
         } else {
           const count = getMemberCount(group.id);
-          coordUI = `<a href="${escapeHtml(group.whatsapp_link)}" target="_blank" style="font-size:11px;color:#666;text-decoration:underline">Zur Abstimmung (${count}/${group.max_members})</a>`;
+          coordUI = `<a href="#"
+   onclick="app.joinCoordination('${group.id}', '${escape(group.whatsapp_invite_url)}')"
+   style="font-size:11px;color:#666;text-decoration:underline">
+  Zur Abstimmung (${count}/${group.max_members})
+</a>`;
         }
       }
 
