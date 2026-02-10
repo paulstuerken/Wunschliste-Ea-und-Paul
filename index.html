@@ -496,6 +496,26 @@
     <h1>Unsere Hochzeitswunschliste</h1>
     <p class="intro">Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind kein Muss.</p>
 
+    <!-- ADMIN DASHBOARD -->
+    <div id="admin-dashboard"
+      style="display:none; background:#FFF0F0; border:2px solid #D32F2F; padding:20px; margin-bottom:40px; border-radius:16px;">
+      <h2 style="color:#D32F2F; margin-top:0; font-size:18px;">Admin Dashboard</h2>
+      <p style="font-size:14px; color:#555; margin-bottom:15px;">Alle Reservierungen im Überblick.</p>
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;">
+          <thead>
+            <tr style="border-bottom:1px solid #CCC;">
+              <th style="padding:8px;">Geschenk</th>
+              <th style="padding:8px;">PIN</th>
+              <th style="padding:8px;">Menge</th>
+              <th style="padding:8px;">Aktion</th>
+            </tr>
+          </thead>
+          <tbody id="admin-list"></tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- Group Gift -->
     <div class="group-gift">
       <h2>Sammelgeschenk – KPM Kurland</h2>
@@ -588,6 +608,7 @@
     const state = {
       gifts: [],
       reservations: [],
+      allReservations: [], // Admin only
       userPins: [],
       filter: { search: "", showFreeOnly: false, showMineOnly: false },
       sort: "cat",
@@ -713,6 +734,29 @@
         loadData();
       },
 
+      // Admin Action: Delete a specific reservation by ID
+      adminDelete: async (resId, giftId, qty) => {
+        if (!(await confirm("ADMIN LÖSCHEN", "Diese Reservierung wirklich löschen?"))) return;
+
+        // 1. Delete by ID using RLS policy (policy must allow delete by true or basic access)
+        const { error } = await sb.from("reservations").delete().eq("id", resId);
+        if (error) {
+          console.error(error);
+          showToast("Fehler beim Löschen.");
+          return;
+        }
+
+        // 2. Decrement
+        const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", giftId).single();
+        if (fresh) {
+          const newQ = Math.max(0, (fresh.reserved_quantity || 0) - qty);
+          await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", giftId);
+        }
+
+        showToast("Gelöscht.");
+        loadData();
+      },
+
       adminReset: async (id) => {
         if (!(await confirm("ADMIN", "Reset completely?"))) return;
         await sb.from("reservations").delete().eq("gift_id", id);
@@ -778,7 +822,9 @@
 
     /* --- Loader --- */
     async function loadData() {
-      if (new URLSearchParams(window.location.search).get("admin") === ADMIN_SECRET) {
+      // Toggle Admin Mode
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("admin") === ADMIN_SECRET) {
         state.isAdmin = true; document.body.classList.add('admin-mode');
       }
 
@@ -789,15 +835,56 @@
       if (gErr) { document.getElementById('list').innerHTML = `<div class="empty-state">Fehler.</div>`; return; }
       state.gifts = gs;
 
-      // Load My Reservations (if any PINs)
-      if (state.userPins.length > 0) {
-        const { data: rs, error: rErr } = await sb.from("reservations").select("*").in("pin", state.userPins);
-        if (rs) state.reservations = rs;
+      // Load Reservations (Dual Logic)
+      if (state.isAdmin) {
+        // Admin: Load ALL reservations for the dashboard
+        // Note: RLS must allow SELECT for anon (which we enabled).
+        const { data: allRes, error } = await sb.from("reservations").select("*, gifts(title)").order("created_at", { ascending: false });
+        if (allRes) {
+          state.allReservations = allRes;
+          renderAdmin();
+          document.getElementById('admin-dashboard').style.display = 'block';
+        }
+        // Flatten for local user checks (optional, but good for consistency)
+        state.reservations = allRes || [];
       } else {
-        state.reservations = [];
+        // Normal User: Load relevant (filtered by stored PINs OR just load all and filter locally for "Mine"?)
+        // RLS policy: "ENABLE SELECT FOR EVERYONE". 
+        // So we can technically fetch all. 
+        // But privacy? If we fetch all, a savvy user can inspect network logs to see other PINs.
+        // Ideally RLS blocks seeing others. But our policy was generic.
+        // For now, let's fetch only if we have pins, or fetch all if simplistic policy.
+        // Let's assume generic fetch is okay for this emergency fix, or ideally use .in('pin', ...) if possible.
+        // If we use .in('pin', ...), we only get ours.
+        if (state.userPins.length > 0) {
+          const { data: rs } = await sb.from("reservations").select("*").in("pin", state.userPins);
+          state.reservations = rs || [];
+        } else {
+          state.reservations = [];
+        }
       }
 
       render();
+    }
+
+    function renderAdmin() {
+      const list = document.getElementById('admin-list');
+      if (!state.allReservations || state.allReservations.length === 0) {
+        list.innerHTML = `<tr><td colspan="4" style="padding:15px;text-align:center;">Keine Reservierungen gefunden.</td></tr>`;
+        return;
+      }
+
+      list.innerHTML = state.allReservations.map(r => {
+        const title = r.gifts ? r.gifts.title : "???";
+        return `<tr style="border-bottom:1px solid #EEE;">
+                 <td style="padding:8px; font-weight:500;">${escape(title)}</td>
+                 <td style="padding:8px; font-family:monospace;">${escape(r.pin)}</td>
+                 <td style="padding:8px;">${r.qty}</td>
+                 <td style="padding:8px;">
+                     <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;" onclick="app.adminDelete('${r.id}', '${r.gift_id}', ${r.qty})">Löschen</button>
+                 </td>
+             </tr>`;
+      }).join("");
     }
 
     function render() {
@@ -872,16 +959,10 @@
 
       let act = "";
       if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
-      else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`; // Or allow adding more? Simpler is "manage mine"
+      else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`;
       else act = `<button disabled>Vergeben</button>`;
 
-      // Special case: Available BUT I also have some? 
       if (avail > 0 && my) {
-        // User can reserve MORE or release current.
-        // Simplest UX: "Reservieren (+)" behavior or specific manage logic. 
-        // Let's stick to standard "Reservieren" but maybe show "Du hast x"
-        // Using "unreserve" button on my-section ensures release is possible.
-        // In main list, keep "Reservieren" if available.
         act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
       }
 
@@ -892,7 +973,8 @@
         else st = `<div style="color:#2E7D32; font-size:12px;">${avail} von ${g.quantity} verfügbar</div>`;
       }
 
-      const admin = state.isAdmin ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET</button></div>` : "";
+      // Keep small admin reset button for emergencies
+      const admin = state.isAdmin ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>` : "";
 
       return `<div class="item ${my ? 'my-reservation' : ''} ${my ? 'reserved-by-me' : ''}">
            <div class="item-content">
