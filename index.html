@@ -949,83 +949,77 @@
     }
 
     function renderItem(g, isMySection = false) {
-      const inMySection = (isMySection === true);
+  const inMySection = (isMySection === true);
 
-      if (g.is_group_gift) return renderGroupGiftItem(g, inMySection);
+  if (g.is_group_gift) return renderGroupGiftItem(g, inMySection);
 
-      const avail = getAvailable(g);
-      const my = isReservedByMe(g);
+  const avail = getAvailable(g);
+  const my = isReservedByMe(g);
 
-      const price = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
+  const price = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
 
-      let act = "";
-      if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
-      else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`;
-      else act = `<button disabled>Vergeben</button>`;
+  let act = "";
+  if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
+  else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`;
+  else act = `<button disabled>Vergeben</button>`;
 
-      if (inMySection) act = `<button class="undo" onclick="app.unreserve('${g.id}')">Freigeben</button>`;
+  if (inMySection) act = `<button class="undo" onclick="app.unreserve('${g.id}')">Freigeben</button>`;
 
-      let st = "";
-      const qty = parseInt(g.quantity) || 1;
-      if (qty > 1) {
-        if (avail === 0) st = `<div style="color:#D32F2F;font-size:12px;">Alle ${qty} vergeben</div>`;
-        else st = `<div style="color:#2E7D32;font-size:12px;">${avail} von ${qty} verfügbar</div>`;
-      }
-
-      // Coordination UI
-      let coordUI = "";
-      const group = getGroupForGift(g.id);
-
-      // Gruppengeschenk-Koordination nur erlauben,
-// wenn das Geschenk NOCH NICHT reserviert ist
-const isGiftReserved =
-  (parseInt(g.reserved_quantity || 0) > 0) ||
-  (getAvailable(g) === 0);
-
-if (!g.is_group_gift && g.allow_coordination && !isGiftReserved) {
-  if (!group) {
-    coordUI = `
-      <button class="reserved" style="font-size:11px"
-        onclick="app.createCoordination('${g.id}')">
-        Organisation eines Gruppengeschenkes übernehmen
-      </button>
-    `;
-  } else {
-    const count = getMemberCount(group.id);
-    coordUI = `
-      <a href="${group.whatsapp_link}"
-         target="_blank"
-         rel="noopener"
-         style="font-size:11px;color:#666;text-decoration:underline">
-        An Gruppengeschenk beteiligen (${count}/${group.max_members})
-      </a>
-    `;
+  let st = "";
+  const qty = parseInt(g.quantity) || 1;
+  if (qty > 1) {
+    if (avail === 0) st = `<div style="color:#D32F2F;font-size:12px;">Alle ${qty} vergeben</div>`;
+    else st = `<div style="color:#2E7D32;font-size:12px;">${avail} von ${qty} verfügbar</div>`;
   }
-}
-          }
-        }
-      }
 
-      const admin = state.isAdmin
-        ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>`
-        : "";
+  // Coordination UI
+  let coordUI = "";
+  const group = getGroupForGift(g.id);
 
-      return `
-        <div class="item ${my ? "my-reservation" : ""}">
-          <div class="item-content">
-            <div class="item-title">${escapeHtml(g.title)}</div>
-            <div class="meta">${price}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
-            ${st}
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-            ${act}
-            ${coordUI}
-            ${admin}
-          </div>
-        </div>
+  const isGiftReserved =
+    (parseInt(g.reserved_quantity || 0) > 0) ||
+    (getAvailable(g) === 0);
+
+  if (!g.is_group_gift && g.allow_coordination && !isGiftReserved) {
+    if (!group) {
+      coordUI = `
+        <button class="reserved" style="font-size:11px"
+          onclick="app.createCoordination('${g.id}')">
+          Organisation eines Gruppengeschenkes übernehmen
+        </button>
+      `;
+    } else {
+      const count = getMemberCount(group.id);
+      coordUI = `
+        <a href="${escapeHtml(group.whatsapp_link)}"
+           target="_blank"
+           rel="noopener"
+           style="font-size:11px;color:#666;text-decoration:underline">
+          An Gruppengeschenk beteiligen (${count}/${group.max_members})
+        </a>
       `;
     }
+  }
 
+  const admin = state.isAdmin
+    ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>`
+    : "";
+
+  return `
+    <div class="item ${my ? "my-reservation" : ""}">
+      <div class="item-content">
+        <div class="item-title">${escapeHtml(g.title)}</div>
+        <div class="meta">${price}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
+        ${st}
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        ${act}
+        ${coordUI}
+        ${admin}
+      </div>
+    </div>
+  `;
+}
     function renderGroupGiftItem(g, isMySection = false) {
       const inMySection = (isMySection === true);
 
