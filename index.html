@@ -2,124 +2,121 @@
 <html lang="de">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>Unsere Wunschliste</title>
-  <meta name="robots" content="noindex, nofollow">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hochzeitswünsche | Elena & Paul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-root: #F9F8F6;
+      --bg-body: #FAFAFA;
       --bg-card: #FFFFFF;
-      --bg-panel: #F2F1EF;
-      --text-primary: #1D1D1F;
-      --text-secondary: #86868B;
-      --text-tertiary: #C7C7CC;
-      --accent: #1D1D1F;
-      --btn-bg: #EAEAEA;
-      --btn-text: #1D1D1F;
-      --btn-bg-hover: #E1E1E1;
+      --text-primary: #1A1A1A;
+      --text-secondary: #666666;
+      --accent: #E0E0E0;
       --radius-card: 16px;
-      --radius-btn: 999px;
-      --radius-input: 12px;
-      --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.03);
-      --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --radius-btn: 12px;
+      --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
+      --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.08);
+      --font-main: 'Outfit', sans-serif;
+      --max-width: 720px;
+      --btn-bg: #1A1A1A;
+      --btn-text: #FFFFFF;
+      --btn-bg-hover: #333333;
       --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      outline: none;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-root);
-      color: var(--text-primary);
       margin: 0;
+      font-family: var(--font-main);
+      background: var(--bg-body);
+      color: var(--text-primary);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      padding-bottom: 120px;
-    }
-
-    h1 {
-      font-size: 26px;
-      font-weight: 600;
-      text-align: center;
-      margin: 0 0 16px 0;
-      letter-spacing: -0.015em;
-    }
-
-    h2 {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-secondary);
-      margin: 0;
-    }
-
-    p.intro {
-      font-size: 16px;
-      line-height: 1.6;
-      color: #666;
-      text-align: center;
-      max-width: 540px;
-      margin: 0 auto 32px auto;
-      font-weight: 400;
     }
 
     .wrap {
-      max-width: 680px;
+      max-width: var(--max-width);
       margin: 0 auto;
       padding: 60px 24px;
     }
 
+    /* Hero */
     .hero {
       width: 100%;
-      height: 380px;
+      height: 360px;
       object-fit: cover;
       border-radius: var(--radius-card);
       margin-bottom: 40px;
       box-shadow: var(--shadow-soft);
-      filter: sepia(0.05) contrast(0.96);
+      background: #EEE;
     }
 
+    h1 {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 16px 0;
+      text-align: center;
+    }
+
+    .intro {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      font-weight: 300;
+      font-size: 17px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Group Gift Section */
     .group-gift {
-      background: var(--bg-card);
+      background: #FFF;
+      border: 1px solid #EAEAEA;
       border-radius: var(--radius-card);
-      box-shadow: var(--shadow-soft);
-      padding: 24px;
-      margin-bottom: 32px;
-      border: 1px solid rgba(0, 0, 0, 0.03);
+      padding: 32px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .group-gift h2 {
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    .group-gift p {
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 24px;
     }
 
     .iban-container {
-      background: #fff;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      border-radius: 999px;
-      padding: 12px 16px;
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      background: #F9F9F9;
+      padding: 10px 18px;
+      border-radius: 99px;
+      border: 1px solid #EEE;
+      font-family: monospace;
+      font-size: 15px;
+      color: #333;
       cursor: pointer;
-      transition: all 0.2s var(--ease);
-      margin-top: 10px;
+      transition: all 0.2s;
     }
 
     .iban-container:hover {
-      border-color: #CCC;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .iban-text {
-      font-weight: 500;
-      font-size: 15px;
-      letter-spacing: 0.02em;
-      color: #333;
-      white-space: nowrap;
+      background: #F0F0F0;
+      border-color: #DDD;
     }
 
     .copy-icon {
@@ -128,13 +125,13 @@
       fill: #888;
     }
 
+    /* Progress & Controls */
     .progress-container {
       margin-bottom: 32px;
-      text-align: center;
-      display: none;
     }
 
     .progress-text {
+      text-align: center;
       font-size: 13px;
       color: var(--text-secondary);
       margin-bottom: 8px;
@@ -142,29 +139,24 @@
     }
 
     .progress-track {
-      width: 100%;
-      height: 4px;
-      background: #E5E5E5;
-      border-radius: 2px;
+      height: 6px;
+      background: #EEE;
+      border-radius: 99px;
       overflow: hidden;
     }
 
     .progress-fill {
       height: 100%;
-      background: var(--text-secondary);
-      width: 0%;
-      transition: width 1s var(--ease);
+      background: var(--text-primary);
+      width: 0;
+      transition: width 0.8s var(--ease);
     }
 
     .controls {
-      background: var(--bg-card);
-      padding: 20px;
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 24px;
       display: flex;
       flex-direction: column;
       gap: 16px;
+      margin-bottom: 40px;
     }
 
     .search-row {
@@ -173,53 +165,51 @@
 
     .search-input {
       width: 100%;
-      padding: 12px 16px 12px 40px;
+      padding: 14px 14px 14px 44px;
+      border: 1px solid transparent;
+      background: #FFF;
+      border-radius: var(--radius-btn);
+      font-family: inherit;
       font-size: 15px;
-      border: 1px solid #E5E5E5;
-      border-radius: var(--radius-input);
-      background: #FCFCFC;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
       transition: all 0.2s;
     }
 
     .search-input:focus {
-      border-color: #CCC;
-      background: #FFF;
+      outline: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 
     .search-icon {
       position: absolute;
-      left: 12px;
+      left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      fill: var(--text-secondary);
+      width: 18px;
+      height: 18px;
+      fill: #999;
       pointer-events: none;
     }
 
     .filter-row {
       display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      gap: 10px;
     }
 
     .toggles {
       display: flex;
-      gap: 12px;
+      gap: 8px;
     }
 
     .toggle-btn {
       background: transparent;
       border: 1px solid #E5E5E5;
-      padding: 8px 14px;
-      border-radius: 99px;
-      font-size: 13px;
       color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.2s;
-      user-select: none;
+      padding: 8px 14px;
+      font-size: 13px;
+      min-width: auto;
     }
 
     .toggle-btn.active {
@@ -235,16 +225,17 @@
       color: var(--text-primary);
       font-weight: 500;
       cursor: pointer;
-      padding-right: 16px;
+      padding-right: 10px;
       text-align: right;
       appearance: none;
     }
 
+    /* Section */
     .section-title {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 36px 0 14px 0;
+      margin: 40px 0 16px 0;
       padding: 0 4px;
       cursor: pointer;
       user-select: none;
@@ -275,6 +266,7 @@
       opacity: 0;
     }
 
+    /* Items */
     .item {
       background: var(--bg-card);
       padding: 24px;
@@ -295,10 +287,16 @@
       border-color: rgba(0, 0, 0, 0.03);
     }
 
+    /* Highlight if reserved by me */
+    .item.my-reservation {
+      border: 1px solid #E0E0E0;
+      background: #FFFEFA;
+    }
+
     .item-content {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
       min-width: 0;
     }
 
@@ -329,14 +327,14 @@
     }
 
     .meta a::after {
-      content: '';
+      content: "";
       position: absolute;
-      bottom: 0;
+      bottom: -1px;
       left: 0;
       width: 100%;
       height: 1px;
       background: currentColor;
-      opacity: 0.3;
+      opacity: 0.25;
     }
 
     .sep {
@@ -344,8 +342,10 @@
       height: 2px;
       background: #CCC;
       border-radius: 50%;
+      display: inline-block;
     }
 
+    /* Buttons */
     button {
       background: var(--btn-bg);
       color: var(--btn-text);
@@ -364,12 +364,31 @@
       background: var(--btn-bg-hover);
     }
 
+    /* Reserved-by-me button (still clickable to undo) */
+    button.reserved {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid #E5E5E5;
+    }
+
+    button.reserved:hover {
+      border-color: #CCC;
+      color: var(--text-primary);
+    }
+
+    .item.reserved-by-me button.undo {
+      border-color: #4CAF50;
+      color: #2E7D32;
+      background: rgba(76, 175, 80, 0.05);
+    }
+
     button:disabled {
       background: #F5F5F5;
-      color: #BBB;
+      color: #CCC;
       cursor: default;
     }
 
+    /* Empty + skeleton */
     .empty-state {
       text-align: center;
       padding: 40px;
@@ -377,49 +396,53 @@
       font-size: 15px;
     }
 
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: #222;
-      color: #FFF;
-      padding: 12px 24px;
-      border-radius: 99px;
-      font-size: 14px;
-      opacity: 0;
-      transition: all 0.4s;
-      z-index: 1000;
-      pointer-events: none;
-    }
-
-    .toast.active {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
     .skeleton {
       height: 72px;
       background: #EEE;
       border-radius: var(--radius-card);
       margin-bottom: 12px;
-      animation: pulse 2s infinite;
+      animation: pulse 1.8s infinite;
     }
 
     @keyframes pulse {
-      0% { opacity: 0.5; }
-      50% { opacity: 0.85; }
-      100% { opacity: 0.5; }
+      0% {
+        opacity: 0.55;
+      }
+
+      50% {
+        opacity: 0.85;
+      }
+
+      100% {
+        opacity: 0.55;
+      }
+    }
+
+    /* My reservations section */
+    #my-reservations-section {
+      background: #F4F4F4;
+      border-radius: var(--radius-card);
+      padding: 24px;
+      margin-bottom: 40px;
+      display: none;
+    }
+
+    #my-reservations-section h2 {
+      margin-bottom: 16px;
+      margin-top: 0;
+      color: #333;
+    }
+
+    #my-reservations-list .item {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      background: #FFF;
     }
 
     /* Modal */
     .modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.30);
       backdrop-filter: blur(4px);
       display: flex;
       justify-content: center;
@@ -427,7 +450,7 @@
       z-index: 999;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s;
+      transition: opacity 0.25s var(--ease);
     }
 
     .modal-overlay.active {
@@ -441,10 +464,10 @@
       max-width: 360px;
       padding: 28px;
       border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      text-align: left;
-      transform: scale(0.95);
-      transition: transform 0.3s;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.10);
+      text-align: center;
+      transform: scale(0.96);
+      transition: transform 0.25s var(--ease);
     }
 
     .modal-overlay.active .modal {
@@ -453,36 +476,19 @@
 
     .modal h3 {
       font-size: 18px;
-      margin: 0 0 8px 0;
+      margin: 0 0 12px 0;
     }
 
     .modal p {
-      font-size: 14px;
-      color: #666;
-      margin: 0 0 18px 0;
-      line-height: 1.5;
-    }
-
-    .modal label {
-      display: block;
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin: 12px 0 6px 0;
-    }
-
-    .modal input, .modal select {
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 12px;
-      border: 1px solid #E5E5E5;
       font-size: 15px;
-      background: #FCFCFC;
+      color: #666;
+      margin: 0 0 22px 0;
+      line-height: 1.5;
     }
 
     .modal-actions {
       display: flex;
       gap: 10px;
-      margin-top: 18px;
     }
 
     .modal-btn {
@@ -490,11 +496,11 @@
       padding: 12px;
       border-radius: 12px;
       font-size: 15px;
-      min-width: 0;
+      min-width: auto;
     }
 
     .modal-btn.primary {
-      background: #1D1D1F;
+      background: var(--text-primary);
       color: #FFF;
     }
 
@@ -503,41 +509,195 @@
       color: #333;
     }
 
-    @media (max-width: 600px) {
-      .wrap { padding: 40px 20px; }
-      .hero { height: 280px; }
-      .item { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
-      button { width: 100%; }
-      .filter-row { flex-direction: column; align-items: stretch; }
-      .toggles { justify-content: space-between; }
-      .sort-select { text-align: left; margin-top: 8px; }
-      .iban-container { width: 100%; justify-content: center; }
-      .iban-text { font-size: 13px; overflow: hidden; text-overflow: ellipsis; }
+    /* PIN Input */
+    .pin-input-container {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .pin-digit {
+      width: 48px;
+      height: 56px;
+      font-size: 24px;
+      text-align: center;
+      border: 1px solid #E5E5E5;
+      border-radius: 12px;
+      background: #FAFAFA;
+      transition: all 0.2s;
+      font-family: -apple-system, monospace;
+      caret-color: var(--text-primary);
+    }
+
+    .pin-digit:focus {
+      border-color: #333;
+      background: #FFF;
+      box-shadow: 0 0 0 1px #333;
+    }
+
+    .pin-error {
+      color: #D32F2F;
+      font-size: 13px;
+      margin-top: 8px;
+      min-height: 20px;
+    }
+
+    /* Release Section */
+    .release-section {
+      background: #FFF;
+      border: 1px solid #EAEAEA;
+      border-radius: var(--radius-card);
+      padding: 24px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .release-section h2 {
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .release-section p {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    /* Admin Badge */
+    .admin-badge {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #000;
+      color: #FFF;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 4px;
+      z-index: 2000;
+      pointer-events: none;
+      display: none;
+    }
+
+    body.admin-mode .admin-badge {
+      display: block;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(18px);
+      background: #222;
+      color: #FFF;
+      padding: 12px 22px;
+      border-radius: 99px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all 0.35s var(--ease);
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .toast.active {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width:600px) {
+      .wrap {
+        padding: 40px 20px;
+      }
+
+      .hero {
+        height: 280px;
+      }
+
+      .item {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 20px;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toggles {
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .toggle-btn {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .sort-select {
+        text-align: left;
+        margin-top: 6px;
+      }
+
+      .iban-container {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .iban-text {
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   </style>
 </head>
 
 <body>
+  <div class="admin-badge">ADMIN</div>
   <div class="wrap">
-    <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" alt="Brautpaar" class="hero">
+    <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" alt="Brautpaar"
+      class="hero">
 
     <h1>Unsere Hochzeitswunschliste</h1>
-    <p class="intro">Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind natürlich kein Muss.</p>
+    <p class="intro">
+      Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind natürlich kein Muss.
+    </p>
 
     <div class="group-gift">
       <h2>Sammelgeschenk – KPM Kurland</h2>
-      <p>Wer sich an dem KPM Kurland Sammelgeschenk beteiligen möchte, kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.</p>
+      <p>
+        Wer sich an dem KPM Kurland Sammelgeschenk beteiligen möchte, kann dies gerne über unseren Trauzeugen Max
+        Tiefenbacher tun.
+      </p>
+
       <div class="iban-container" onclick="window.app.copyIBAN()" title="IBAN kopieren">
-        <svg class="copy-icon" viewBox="0 0 24 24">
-          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+        <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
         </svg>
         <span class="iban-text">DE89 2007 0024 0191 3888 02</span>
       </div>
-      <div style="font-size: 13px; color: #888; margin-top: 8px;">Max Tiefenbacher</div>
+      <div style="font-size:13px; color:#888; margin-top:8px;">Max Tiefenbacher</div>
+    </div>
+
+    <!-- Release Reservation (Release by PIN) -->
+    <div class="release-section">
+      <h2>Reservierung freigeben</h2>
+      <p>Falls du einen Wunsch mit einem 4-stelligen Code reserviert hast, kannst du ihn hier freigeben.</p>
+      <button class="modal-btn secondary" style="width: auto; padding: 8px 16px;"
+        onclick="window.app.openReleaseModal()">Mit Code freigeben</button>
     </div>
 
     <div class="progress-container" id="progress-container">
-      <div class="progress-text" id="progress-text">0 von 0 Wünschen erfüllt</div>
+      <div class="progress-text" id="progress-text">0 von 0 Wünschen vergeben</div>
       <div class="progress-track">
         <div class="progress-fill" id="progress-fill"></div>
       </div>
@@ -545,16 +705,19 @@
 
     <div class="controls">
       <div class="search-row">
-        <svg class="search-icon" viewBox="0 0 24 24">
-          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
         </svg>
         <input type="text" id="search-input" class="search-input" placeholder="Wunsch suchen...">
       </div>
+
       <div class="filter-row">
         <div class="toggles">
-          <button class="toggle-btn" id="filter-free">Nur Verfügbare</button>
-          <button class="toggle-btn" id="filter-pin">Mein PIN</button>
+          <button class="toggle-btn" id="filter-free" type="button">Nur Verfügbare</button>
+          <button class="toggle-btn" id="filter-mine" type="button">Meine Reservierungen</button>
         </div>
+
         <select id="sort-select" class="sort-select">
           <option value="cat">Kategorie</option>
           <option value="status">Status (Verfügbar zuerst)</option>
@@ -564,6 +727,11 @@
       </div>
     </div>
 
+    <div id="my-reservations-section">
+      <h2>Deine Reservierungen</h2>
+      <div id="my-reservations-list"></div>
+    </div>
+
     <div id="list">
       <div class="skeleton"></div>
       <div class="skeleton"></div>
@@ -571,36 +739,347 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <h3 id="modalTitle">Titel</h3>
       <p id="modalText">Text</p>
-
-      <div id="modalFields"></div>
-
       <div class="modal-actions">
-        <button class="modal-btn secondary" id="modalCancel">Abbrechen</button>
-        <button class="modal-btn primary" id="modalConfirm">Bestätigen</button>
+        <button class="modal-btn secondary" id="modalCancel" type="button">Abbrechen</button>
+        <button class="modal-btn primary" id="modalConfirm" type="button">Bestätigen</button>
       </div>
     </div>
   </div>
 
-  <div class="toast" id="toast">Aktion erfolgreich</div>
+  <div class="toast" id="toast" aria-live="polite">Aktion erfolgreich</div>
 
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
     const SUPABASE_URL = "https://tpfovcyqqhqlyzcopiwt.supabase.co";
-    const SUPABASE_ANON_KEY = "DEIN_ANON_KEY";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwZm92Y3lxcWhxbHl6Y29waXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyMzQ0NDgsImV4cCI6MjA4MTgxMDQ0OH0.UBAnfI_s7vQkPMDmwZHLVTYUkmZIAMvS6sK0w60Cvps";
+    const ADMIN_SECRET = "CHANGE_ME_TO_A_LONG_SECRET";
+
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    /* --- global state --- */
     const state = {
-      gifts: [],
-      myPin: localStorage.getItem("my_pin") || "",
-      filter: { search: "", showFreeOnly: false, showPinOnly: false },
+      gifts: [], // { id, title, category, quantity, reserved_quantity, ... }
+      reservations: [], // { gift_id, pin, qty } -> subset relevant to user
+      filter: { search: "", showFreeOnly: false, showMineOnly: false },
       sort: "cat",
-      categoryState: {}
+      categoryState: {},
+      isAdmin: false
     };
+
+    /* --- helpers --- */
+    function getStoredPins() {
+      try {
+        const stored = localStorage.getItem("gift_user_pins");
+        return stored ? JSON.parse(stored) : [];
+      } catch (e) { return []; }
+    }
+
+    function addStoredPin(pin) {
+      const pins = getStoredPins();
+      if (!pins.includes(pin)) {
+        pins.push(pin);
+        localStorage.setItem("gift_user_pins", JSON.stringify(pins));
+      }
+    }
+
+    // Helper to calculate available quantity
+    function getAvailable(g) {
+      return Math.max(0, (g.quantity || 1) - (g.reserved_quantity || 0));
+    }
+
+    // Helper to check if current user has reserved a gift (based on stored PINs)
+    // We need to check the actual reservations table for this to be accurate with partials
+    function getUserReservations(giftId) {
+      const pins = getStoredPins();
+      return state.reservations.filter(r => r.gift_id === giftId && pins.includes(r.pin));
+    }
+
+    function parsePrice(priceStr) {
+      if (!priceStr) return Infinity;
+      const matches = String(priceStr).match(/[\d.,]+/);
+      if (!matches) return Infinity;
+      let numStr = matches[0].replace(/\./g, "").replace(",", ".");
+      const num = parseFloat(numStr);
+      return isNaN(num) ? Infinity : num;
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function catKey(c) { return encodeURIComponent(String(c ?? "")); }
+
+    /* --- UI Rendering --- */
+    function render() {
+      const isAdmin = state.isAdmin;
+      const pins = getStoredPins();
+
+      // 1. Filter
+      let filtered = state.gifts.filter(g => {
+        const matchesSearch = String(g.title ?? "").toLowerCase().includes(state.filter.search.toLowerCase());
+
+        // "Mine" Check: Do we have any reservation records for this gift with our PINs?
+        const myRes = getUserReservations(g.id);
+        const isMine = myRes.length > 0;
+        const isFullyReserved = getAvailable(g) === 0;
+
+        if (state.filter.showFreeOnly && isFullyReserved) return false;
+        if (state.filter.showMineOnly && !isMine) return false;
+
+        return matchesSearch;
+      });
+
+      // 2. Sort
+      filtered.sort((a, b) => {
+        if (state.sort === 'price_asc') return parsePrice(a.Preis) - parsePrice(b.Preis);
+        if (state.sort === 'price_desc') return parsePrice(b.Preis) - parsePrice(a.Preis);
+        if (state.sort === 'status') {
+          const aAvail = getAvailable(a) > 0;
+          const bAvail = getAvailable(b) > 0;
+          if (aAvail === bAvail) return String(a.title).localeCompare(String(b.title), "de");
+          return aAvail ? -1 : 1; // free first
+        }
+        if (String(a.category) !== String(b.category)) return String(a.category).localeCompare(String(b.category), "de");
+        return String(a.title).localeCompare(String(b.title), "de");
+      });
+
+      // 3. Progress
+      // Calculate items with 0 available vs total items? Or pure quantity?
+      // "300 guests" -> likely tracking total items.
+      // Let's count "Wünsche erfüllt" as fully reserved items.
+      const totalItems = state.gifts.length;
+      const fulfilledItems = state.gifts.filter(g => getAvailable(g) === 0).length;
+
+      const width = totalItems > 0 ? (fulfilledItems / totalItems) * 100 : 0;
+      document.getElementById('progress-fill').style.width = width + "%";
+      document.getElementById('progress-text').textContent = `${fulfilledItems} von ${totalItems} Wünschen erfüllt`;
+      document.getElementById('progress-container').style.display = 'block';
+
+      // 4. My Reservations
+      const myGiftIds = new Set(
+        state.reservations.filter(r => pins.includes(r.pin)).map(r => r.gift_id)
+      );
+      const myGifts = state.gifts.filter(g => myGiftIds.has(g.id));
+
+      const myResSection = document.getElementById('my-reservations-section');
+      const myResList = document.getElementById('my-reservations-list');
+
+      if (myGifts.length > 0) {
+        myResSection.style.display = 'block';
+        myResList.innerHTML = myGifts.map(g => renderItem(g, true)).join("");
+      } else {
+        myResSection.style.display = 'none';
+        myResList.innerHTML = "";
+      }
+
+      // 5. Main List
+      const listContainer = document.getElementById('list');
+      if (state.sort === 'cat') {
+        const cats = {};
+        for (const g of filtered) {
+          const c = String(g.category ?? "Sonstiges");
+          (cats[c] ??= []).push(g);
+        }
+        if (Object.keys(cats).length === 0) { listContainer.innerHTML = `<div class="empty-state">Keine Geschenke gefunden.</div>`; return; }
+
+        let html = "";
+        for (const c in cats) {
+          const key = catKey(c);
+          const isCollapsed = state.categoryState[key] === true;
+          const groupClass = isCollapsed ? 'collapsed' : '';
+          html += `
+                    <div class="section-title ${isCollapsed ? 'collapsed' : ''}" onclick="window.app.toggleCat('${key}')">
+                        <h2>${escapeHtml(c)}</h2>
+                        <svg class="section-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+                    </div>
+                    <div class="gift-group ${groupClass}" id="cat-${key}">
+                        ${cats[c].map(g => renderItem(g)).join("")}
+                    </div>
+                `;
+        }
+        listContainer.innerHTML = html;
+      } else {
+        if (filtered.length === 0) { listContainer.innerHTML = `<div class="empty-state">Keine Geschenke gefunden.</div>`; return; }
+        listContainer.innerHTML = filtered.map(g => renderItem(g)).join("");
+      }
+    }
+
+    function renderItem(g, isMySection = false) {
+      const isAdmin = state.isAdmin;
+      const available = getAvailable(g);
+      const myRes = getUserReservations(g.id);
+      const myQty = myRes.reduce((sum, r) => sum + r.qty, 0);
+
+      let btn = "";
+      let adminBtn = "";
+      let statusText = "";
+
+      // Status Text
+      if (g.quantity > 1) {
+        if (available === 0) statusText = `<div style="color:#d32f2f; font-size:12px;">Alle ${g.quantity} vergeben</div>`;
+        else statusText = `<div style="color:#2e7d32; font-size:12px;">${available} von ${g.quantity} verfügbar</div>`;
+      }
+
+      if (isAdmin) {
+        adminBtn = `<div style="margin-top:8px;"><button style="background:#000; color:#FFF; font-size:11px; padding:6px 12px;" onclick="window.app.adminReset('${escapeHtml(g.id)}')">Admin Reset</button></div>`;
+      }
+
+      // Button State
+      if (available > 0) {
+        btn = `<button type="button" onclick="window.app.reserveGift('${escapeHtml(g.id)}')">Reservieren</button>`;
+      } else if (myQty > 0) {
+        // Fully reserved, but I have a share
+        btn = `<button type="button" class="reserved" onclick="window.app.manageMyReservation('${escapeHtml(g.id)}')">Meine Reservierung</button>`;
+      } else {
+        // Fully reserved by others
+        btn = `<button type="button" disabled>Vergeben</button>`;
+      }
+
+      // If I have a reservation, I should be able to manage it regardless of availability
+      if (myQty > 0 && available > 0) {
+        // Available, but I also have a reservation. 
+        // Should I show "Reservieren" (more) or "Meine Reservierung"?
+        // Let's show "Reservieren" but add a small link/text for mine? 
+        // Or simpler: Just "Reservieren (+)" and handling management via the specialized section?
+        // User Rule: "Users may revisit...". Simpler: Keep main button for Reserving MORE. 
+        // "My Reservations" section handles management/release.
+        // BUT: renderItem is used in "My Reservations" list too.
+        if (isMySection) {
+          btn = `<button type="button" class="undo" onclick="window.app.unreserveGift('${escapeHtml(g.id)}')">Freigeben (${myQty})</button>`;
+        }
+      }
+
+      const priceHtml = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
+
+      return `
+            <div class="item ${myQty > 0 ? 'my-reservation' : ''}">
+                <div class="item-content">
+                    <div class="item-title">${escapeHtml(g.title)}</div>
+                    <div class="meta">
+                        ${priceHtml}
+                        <a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a>
+                    </div>
+                    ${statusText}
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+                    ${btn}
+                    ${adminBtn}
+                </div>
+            </div>
+        `;
+    }
+
+    /* --- Modal & Interactions --- */
+
+    // Generic Modal with HTML Support
+    function openModal(title, bodyHtml, confirmText = "Bestätigen") {
+      return new Promise((resolve) => {
+        const overlay = document.getElementById('modalOverlay');
+        const btns = {
+          confirm: document.getElementById('modalConfirm'),
+          cancel: document.getElementById('modalCancel')
+        };
+
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalBody').innerHTML = bodyHtml;
+        btns.confirm.textContent = confirmText;
+
+        // Remove old listeners
+        const newConfirm = btns.confirm.cloneNode(true);
+        const newCancel = btns.cancel.cloneNode(true);
+        btns.confirm.parentNode.replaceChild(newConfirm, btns.confirm);
+        btns.cancel.parentNode.replaceChild(newCancel, btns.cancel);
+
+        const close = (val) => {
+          overlay.classList.remove('active');
+          resolve(val);
+        };
+
+        newConfirm.onclick = () => close(true);
+        newCancel.onclick = () => close(false);
+
+        overlay.classList.add('active');
+      });
+    }
+
+    // PIN Input UI Generation
+    function createPinInputHtml() {
+      return `
+            <div class="pin-input-container">
+                <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" class="pin-digit" data-idx="0">
+                <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" class="pin-digit" data-idx="1">
+                <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" class="pin-digit" data-idx="2">
+                <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" class="pin-digit" data-idx="3">
+            </div>
+            <div id="pinError" class="pin-error"></div>
+        `;
+    }
+
+    function setupPinInputs(container, onComplete) {
+      const inputs = container.querySelectorAll('.pin-digit');
+      inputs.forEach((input, idx) => {
+        input.addEventListener('input', (e) => {
+          const val = e.target.value;
+          if (!/^\d$/.test(val)) { e.target.value = ""; return; }
+          if (idx < 3) inputs[idx + 1].focus();
+          const code = Array.from(inputs).map(i => i.value).join('');
+          if (code.length === 4) onComplete(code);
+        });
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !e.target.value && idx > 0) inputs[idx - 1].focus();
+        });
+        input.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const text = (e.clipboardData || window.clipboardData).getData('text').trim();
+          const digits = text.match(/\d/g);
+          if (digits && digits.length >= 4) {
+            inputs.forEach((inp, i) => inp.value = digits[i]);
+            inputs[3].focus();
+            onComplete(digits.slice(0, 4).join(''));
+          }
+        });
+      });
+      setTimeout(() => inputs[0].focus(), 100);
+      return () => Array.from(inputs).map(i => i.value).join('');
+    }
+
+    // Special Modal for PIN Entry
+    function requestPin(title, introText) {
+      return new Promise((resolve) => {
+        const body = `<p style="margin-bottom:0;">${introText}</p>${createPinInputHtml()}`;
+
+        openModal(title, body, "Bestätigen").then(confirmed => {
+          if (!confirmed) { resolve(null); return; }
+          const code = Array.from(document.querySelectorAll('.pin-digit')).map(i => i.value).join('');
+          if (code.length === 4) resolve(code);
+          else resolve(null);
+        });
+
+        // Hook up logic
+        const container = document.getElementById('modalBody');
+        const confirmBtn = document.getElementById('modalConfirm');
+        confirmBtn.disabled = true;
+
+        setupPinInputs(container, (code) => {
+          if (code.length === 4) confirmBtn.disabled = false;
+          else confirmBtn.disabled = true;
+        });
+
+        container.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !confirmBtn.disabled) confirmBtn.click();
+        });
+      });
+    }
 
     function showToast(msg) {
       const t = document.getElementById('toast');
@@ -609,307 +1088,203 @@
       setTimeout(() => t.classList.remove('active'), 2500);
     }
 
-    function parsePrice(priceStr) {
-      if (!priceStr) return Infinity;
-      const matches = priceStr.match(/[\d.,]+/);
-      if (!matches) return Infinity;
-      let numStr = matches[0].replace(/\./g, "").replace(",", ".");
-      const num = parseFloat(numStr);
-      return isNaN(num) ? Infinity : num;
-    }
-
-    function availableQty(g) {
-      return Math.max(0, (g.quantity ?? 1) - (g.reserved_quantity ?? 0));
-    }
-
-    async function loadData() {
-      const { data, error } = await sb
-        .from("gifts")
-        .select("*")
-        .order("category")
-        .order("title");
-
-      if (error || !data) {
-        console.error(error);
-        document.getElementById('list').innerHTML = `<div class="empty-state">Fehler beim Laden.</div>`;
-        return;
-      }
-
-      state.gifts = data;
-      render();
-      document.getElementById('progress-container').style.display = 'block';
-    }
-
-    function render() {
-      // progress
-      const total = state.gifts.length;
-      const reservedCount = state.gifts.filter(g => availableQty(g) === 0).length;
-      const width = total > 0 ? (reservedCount / total) * 100 : 0;
-      document.getElementById('progress-fill').style.width = width + "%";
-      document.getElementById('progress-text').textContent = `${reservedCount} von ${total} Wünschen erfüllt`;
-
-      // filter
-      let filtered = state.gifts.filter(g => {
-        const s = (g.title || "").toLowerCase();
-        const matchesSearch = s.includes(state.filter.search.toLowerCase());
-        const matchesFree = !state.filter.showFreeOnly || availableQty(g) > 0;
-        return matchesSearch && matchesFree;
-      });
-
-      // sort
-      filtered.sort((a, b) => {
-        if (state.sort === 'price_asc') return parsePrice(a.Preis) - parsePrice(b.Preis);
-        if (state.sort === 'price_desc') return parsePrice(b.Preis) - parsePrice(a.Preis);
-        if (state.sort === 'status') {
-          const aAvail = availableQty(a) > 0;
-          const bAvail = availableQty(b) > 0;
-          if (aAvail === bAvail) return (a.title || "").localeCompare(b.title || "");
-          return aAvail ? -1 : 1;
-        }
-        if ((a.category || "") !== (b.category || "")) return (a.category || "").localeCompare(b.category || "");
-        return (a.title || "").localeCompare(b.title || "");
-      });
-
-      // group by category
-      const listContainer = document.getElementById('list');
-      if (filtered.length === 0) {
-        listContainer.innerHTML = `<div class="empty-state">Keine Geschenke gefunden.</div>`;
-        return;
-      }
-
-      if (state.sort === 'cat') {
-        const cats = {};
-        filtered.forEach(g => (cats[g.category] ??= []).push(g));
-
-        let html = "";
-        for (const c in cats) {
-          const isCollapsed = state.categoryState[c] === true;
-          html += `
-            <div class="section-title ${isCollapsed ? 'collapsed' : ''}" onclick="window.app.toggleCat('${escapeHtml(c)}')">
-              <h2>${escapeHtml(c)}</h2>
-              <svg class="section-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-            </div>
-            <div class="gift-group ${isCollapsed ? 'collapsed' : ''}" id="cat-${cssId(c)}">
-              ${cats[c].map(g => renderItem(g)).join("")}
-            </div>
-          `;
-        }
-        listContainer.innerHTML = html;
-      } else {
-        listContainer.innerHTML = filtered.map(g => renderItem(g)).join("");
-      }
-    }
-
-    function renderItem(g) {
-      const avail = availableQty(g);
-      const total = g.quantity ?? 1;
-      const given = Math.min(total, g.reserved_quantity ?? 0);
-
-      const statusText = total > 1 ? `${given} von ${total} vergeben` : (avail > 0 ? "frei" : "vergeben");
-      const priceHtml = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
-
-      let btn = "";
-      if (avail > 0) {
-        btn = `<button onclick="window.app.openReserve('${escapeJs(g.id)}')">Reservieren</button>`;
-      } else {
-        btn = `<button disabled>Vergeben</button>`;
-      }
-
-      return `
-        <div class="item">
-          <div class="item-content">
-            <div class="item-title">${escapeHtml(g.title || "")}</div>
-            <div class="meta">
-              ${priceHtml}
-              <span>${escapeHtml(statusText)}</span>
-              <div class="sep"></div>
-              <a href="${escapeHtml(g.url || "#")}" target="_blank" rel="noopener">Zum Shop ↗</a>
-            </div>
-          </div>
-          ${btn}
-        </div>
-      `;
-    }
-
-    function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
-    }
-    function escapeJs(str) { return String(str).replace(/'/g, "\\'"); }
-    function cssId(str) { return String(str).replace(/[^a-zA-Z0-9_-]/g, "_"); }
-
-    function openModal({ title, text, fieldsHtml, confirmText, onConfirm }) {
-      const overlay = document.getElementById('modalOverlay');
-      document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalText').textContent = text;
-      document.getElementById('modalFields').innerHTML = fieldsHtml || "";
-      document.getElementById('modalConfirm').textContent = confirmText || "Bestätigen";
-
-      const cancelBtn = document.getElementById('modalCancel');
-      const confirmBtn = document.getElementById('modalConfirm');
-
-      const close = () => {
-        overlay.classList.remove('active');
-        cancelBtn.onclick = null;
-        confirmBtn.onclick = null;
-      };
-
-      cancelBtn.onclick = () => close();
-      confirmBtn.onclick = async () => {
-        try {
-          await onConfirm();
-          close();
-        } catch (e) {
-          console.error(e);
-          showToast("Fehler – bitte erneut versuchen");
-        }
-      };
-
-      overlay.classList.add('active');
-    }
-
-    function generatePin() {
-      // 4-digit numeric
-      const n = Math.floor(1000 + Math.random() * 9000);
-      return String(n);
-    }
-
-    async function pinExists(pin) {
-      const { data, error } = await sb.from("reservations").select("id").eq("pin", pin).limit(1);
-      if (error) return false;
-      return (data && data.length > 0);
-    }
-
-    async function generateUniquePin() {
-      for (let i = 0; i < 20; i++) {
-        const pin = generatePin();
-        if (!(await pinExists(pin))) return pin;
-      }
-      // fallback
-      return String(Date.now()).slice(-4);
-    }
+    /* --- Actions --- */
 
     window.app = {
-      toggleCat: (cat) => {
-        state.categoryState[cat] = !state.categoryState[cat];
+      toggleCat: (key) => {
+        state.categoryState[key] = !state.categoryState[key];
         render();
       },
+
+      reserveGift: async (id) => {
+        const g = state.gifts.find(x => x.id === id);
+        if (!g) return;
+
+        const avail = getAvailable(g);
+        if (avail <= 0) { showToast("Nicht mehr verfügbar."); return; }
+
+        // Ask for quantity if > 1 available
+        // For simplicity in this emergency fix, we confirm 1 unless we build a qty picker.
+        // User constraint: "Multiple users may reserve partial quantities".
+        // DECISION: 1 per transaction for stability.
+
+        const pin = await requestPin(
+          "Wunsch reservieren",
+          "Bitte wähle einen 4-stelligen Code. Damit kannst du die Reservierung später bearbeiten."
+        );
+        if (!pin) return;
+
+        // 1. Re-check Availability (Critical)
+        const { data: fresh, error: freshErr } = await sb.from("gifts").select("quantity, reserved_quantity").eq("id", id).single();
+        if (freshErr || !fresh) { showToast("Fehler beim Laden."); return; }
+
+        const freshAvail = Math.max(0, (fresh.quantity || 1) - (fresh.reserved_quantity || 0));
+        if (freshAvail < 1) {
+          showToast("Leider inzwischen vergeben.");
+          loadData();
+          return;
+        }
+
+        // 2. Insert Reservation
+        const { error: insertErr } = await sb.from("reservations").insert({
+          gift_id: id,
+          pin: pin,
+          qty: 1
+        });
+
+        if (insertErr) {
+          console.error(insertErr);
+          showToast("Fehler beim Speichern.");
+          return;
+        }
+
+        // 3. Update Gift Reserved Count
+        const newResQty = (fresh.reserved_quantity || 0) + 1;
+        const { error: updateErr } = await sb.from("gifts").update({
+          reserved_quantity: newResQty
+        }).eq("id", id);
+
+        if (updateErr) {
+          console.error(updateErr);
+          showToast("Fehler bei der Aktualisierung.");
+          loadData();
+          return;
+        }
+
+        // Success
+        addStoredPin(pin);
+        await loadData();
+        showToast("Erfolgreich reserviert!");
+      },
+
+      manageMyReservation: async (id) => {
+        // Helper for the "Meine Reservierung" button on main items
+        // Just scrolls to section or unreserves?
+        // Let's scroll or unreserve.
+        // Simpler: Unreserve flow (since it prompts confirmation).
+        window.app.unreserveGift(id);
+      },
+
+      unreserveGift: async (id) => {
+        const myRes = getUserReservations(id);
+        if (myRes.length === 0) { showToast("Keine Reservierung gefunden."); return; }
+
+        const resToRelease = myRes[0]; // Release one unit
+
+        const ok = await openModal("Freigeben?", "Möchtest du diese Reservierung (1 Stück) freigeben?", "Ja, freigeben");
+        if (!ok) return;
+
+        // 1. Delete Reservation
+        const resId = resToRelease.id;
+        if (resId) {
+          await sb.from("reservations").delete().eq("id", resId);
+        } else {
+          await sb.from("reservations").delete().match({ gift_id: id, pin: resToRelease.pin });
+        }
+
+        // 2. Decrement Gift
+        const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", id).single();
+        if (fresh) {
+          const newQty = Math.max(0, (fresh.reserved_quantity || 0) - resToRelease.qty);
+          await sb.from("gifts").update({ reserved_quantity: newQty }).eq("id", id);
+        }
+
+        loadData();
+        showToast("Freigegeben.");
+      },
+
+      // Manual PIN Release (Cross-Device)
+      openReleaseModal: async () => {
+        const pin = await requestPin(
+          "Reservierung finden",
+          "Bitte gib deinen Code ein."
+        );
+        if (!pin) return;
+
+        // Find reservations
+        const { data: resList, error } = await sb.from("reservations").select("*, gifts(title)").eq("pin", pin);
+
+        if (error || !resList || resList.length === 0) {
+          showToast("Keine Reservierungen mit diesem Code gefunden.");
+          return;
+        }
+
+        // Release first found
+        const first = resList[0];
+        const title = first.gifts ? first.gifts.title : "Unbekanntes Geschenk";
+
+        const ok = await openModal("Gefunden", `Reservierung für "${escapeHtml(title)}" (${first.qty} Stück) freigeben?`, "Ja, freigeben");
+        if (!ok) return;
+
+        // Execute Release
+        await sb.from("reservations").delete().eq("id", first.id);
+
+        // Decrement
+        const { data: g } = await sb.from("gifts").select("reserved_quantity").eq("id", first.gift_id).single();
+        if (g) {
+          await sb.from("gifts").update({
+            reserved_quantity: Math.max(0, g.reserved_quantity - first.qty)
+          }).eq("id", first.gift_id);
+        }
+
+        addStoredPin(pin);
+        loadData();
+        showToast("Freigegeben.");
+      },
+
+      adminReset: async (id) => {
+        const ok = await openModal("ADMIN", "Reset Reserved Quantity to 0 and WIPE reservations?", "Wipe");
+        if (!ok) return;
+
+        await sb.from("reservations").delete().eq("gift_id", id);
+        await sb.from("gifts").update({ reserved_quantity: 0, reserved: false }).eq("id", id);
+
+        loadData();
+        showToast("Reset Complete");
+      },
+
       copyIBAN: () => {
         const text = "DE89 2007 0024 0191 3888 02";
         navigator.clipboard.writeText(text.replace(/\s/g, "")).then(() => showToast("IBAN kopiert")).catch(() => showToast("IBAN kopiert"));
-      },
-
-      openReserve: async (giftId) => {
-        const g = state.gifts.find(x => String(x.id) === String(giftId));
-        if (!g) return;
-
-        const avail = availableQty(g);
-        if (avail <= 0) return;
-
-        const suggestedPin = await generateUniquePin();
-
-        const qtyOptions = Array.from({ length: avail }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("");
-
-        openModal({
-          title: "Reservieren",
-          text: "Bitte wähle eine Menge und merke dir deinen 4-stelligen Code. Damit kannst du später wieder freigeben.",
-          fieldsHtml: `
-            <label>Menge</label>
-            <select id="fieldQty">${qtyOptions}</select>
-
-            <label>Dein 4-stelliger Code</label>
-            <input id="fieldPin" inputmode="numeric" maxlength="4" value="${suggestedPin}">
-            <div style="margin-top:8px;font-size:12px;color:#888;">
-              Tipp: Screenshot machen oder notieren.
-            </div>
-          `,
-          confirmText: "Reservieren",
-          onConfirm: async () => {
-            const qty = parseInt(document.getElementById("fieldQty").value, 10);
-            const pin = String(document.getElementById("fieldPin").value || "").trim();
-
-            if (!/^\d{4}$/.test(pin)) {
-              showToast("Bitte 4-stelligen Code eingeben");
-              return;
-            }
-
-            // Insert reservation
-            const { error } = await sb.from("reservations").insert([{ gift_id: String(g.id), pin, qty }]);
-            if (error) {
-              // Most common: pin already exists, or overbooking
-              const msg = (error.message || "").toLowerCase();
-              if (msg.includes("duplicate") || msg.includes("unique")) showToast("Code ist vergeben – bitte anderen wählen");
-              else if (msg.includes("not enough available")) showToast("Nicht mehr genug verfügbar");
-              else showToast("Fehler beim Reservieren");
-              return;
-            }
-
-            localStorage.setItem("my_pin", pin);
-            state.myPin = pin;
-
-            await loadData();
-            showToast("Reserviert");
-          }
-        });
-      },
-
-      releaseByPin: async () => {
-        openModal({
-          title: "Freigeben",
-          text: "Gib deinen 4-stelligen Code ein, um deine Reservierung wieder freizugeben.",
-          fieldsHtml: `
-            <label>Dein 4-stelliger Code</label>
-            <input id="fieldReleasePin" inputmode="numeric" maxlength="4" value="${state.myPin || ""}">
-          `,
-          confirmText: "Freigeben",
-          onConfirm: async () => {
-            const pin = String(document.getElementById("fieldReleasePin").value || "").trim();
-            if (!/^\d{4}$/.test(pin)) {
-              showToast("Bitte 4-stelligen Code eingeben");
-              return;
-            }
-
-            const { error } = await sb.from("reservations").delete().eq("pin", pin);
-            if (error) {
-              showToast("Fehler beim Freigeben");
-              return;
-            }
-
-            if (state.myPin === pin) {
-              localStorage.removeItem("my_pin");
-              state.myPin = "";
-            }
-
-            await loadData();
-            showToast("Freigegeben");
-          }
-        });
       }
     };
 
-    // controls
-    document.getElementById('search-input').addEventListener('input', (e) => {
-      state.filter.search = e.target.value;
+    /* --- Init --- */
+    async function loadData() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("admin") === ADMIN_SECRET) {
+        state.isAdmin = true;
+        document.body.classList.add("admin-mode");
+      }
+
+      // 1. Fetch Gifts
+      const { data: gifts, error: gErr } = await sb.from("gifts").select("*").order("category").order("title");
+      if (gErr || !gifts) {
+        document.getElementById('list').innerHTML = `<div class="empty-state">Fehler beim Laden.</div>`;
+        return;
+      }
+      state.gifts = gifts;
+
+      // 2. Fetch User Reservations
+      const pins = getStoredPins();
+      if (pins.length > 0) {
+        const { data: res, error: rErr } = await sb.from("reservations").select("*").in("pin", pins);
+        if (res) state.reservations = res;
+      } else {
+        state.reservations = [];
+      }
+
       render();
-    });
+    }
 
-    document.getElementById('filter-free').addEventListener('click', (e) => {
-      state.filter.showFreeOnly = !state.filter.showFreeOnly;
-      e.target.classList.toggle('active', state.filter.showFreeOnly);
-      render();
-    });
+    // Event Listeners
+    document.getElementById('search-input').addEventListener('input', (e) => { state.filter.search = e.target.value; render(); });
+    document.getElementById('filter-free').addEventListener('click', (e) => { state.filter.showFreeOnly = !state.filter.showFreeOnly; e.target.classList.toggle('active', state.filter.showFreeOnly); render(); });
+    document.getElementById('filter-mine').addEventListener('click', (e) => { state.filter.showMineOnly = !state.filter.showMineOnly; e.target.classList.toggle('active', state.filter.showMineOnly); render(); });
+    document.getElementById('sort-select').addEventListener('change', (e) => { state.sort = e.target.value; render(); });
 
-    document.getElementById('filter-pin').addEventListener('click', async (e) => {
-      // Open release modal (simple)
-      window.app.releaseByPin();
-    });
-
-    document.getElementById('sort-select').addEventListener('change', (e) => {
-      state.sort = e.target.value;
-      render();
-    });
-
-    // init
     loadData();
   </script>
 </body>
+
 </html>
