@@ -504,9 +504,36 @@
         opacity: 0.8;
       }
 
-      100% {
-        opacity: 0.5;
-      }
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .iban-container:hover {
+      border-color: #CCC;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .iban-container:active {
+      transform: translateY(0);
+    }
+
+    .iban-text {
+      font-family: -apple-system, monospace;
+      /* Monospace for numbers feels correct but let's test sans */
+      font-family: inherit;
+      /* Keep sans for elegance */
+      font-weight: 500;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      color: #333;
+    }
+
+    .copy-icon {
+      width: 16px;
+      height: 16px;
+      fill: #888;
     }
 
     @media (max-width: 600px) {
@@ -542,6 +569,22 @@
         text-align: left;
         margin-top: 8px;
       }
+
+      .group-gift {
+        padding: 24px 20px;
+      }
+
+      .iban-container {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .iban-text {
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   </style>
 </head>
@@ -556,6 +599,24 @@
     <p class="intro">
       Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind natürlich kein Muss.
     </p>
+
+    <!-- Group Gift Section -->
+    <div class="group-gift">
+      <h2>Sammelgeschenk – KPM Kurland</h2>
+      <p>
+        Wer sich an dem KPM Kurland Sammelgeschenk beteiligen möchte,
+        kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.
+      </p>
+
+      <div class="iban-container" onclick="window.app.copyIBAN()" title="IBAN kopieren">
+        <svg class="copy-icon" viewBox="0 0 24 24">
+          <path
+            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+        </svg>
+        <span class="iban-text">DE89 2007 0024 0191 3888 02</span>
+      </div>
+      <div style="font-size: 13px; color: #888; margin-top: 8px;">Max Tiefenbacher</div>
+    </div>
 
     <!-- Progress -->
     <div class="progress-container" id="progress-container" style="display:none;">
@@ -879,6 +940,14 @@
 
         loadData();
         showToast("Freigegeben.");
+      },
+      copyIBAN: () => {
+        const text = "DE89 2007 0024 0191 3888 02";
+        navigator.clipboard.writeText(text.replace(/\s/g, "")).then(() => {
+          showToast("IBAN kopiert");
+        }).catch(err => {
+          showToast("IBAN kopiert");
+        });
       }
     };
 
