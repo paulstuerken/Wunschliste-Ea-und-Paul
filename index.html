@@ -989,7 +989,25 @@ coordMembers: [],
         return;
       }
       state.gifts = gs || [];
+// Coordination (WhatsApp Gruppen)
+try {
+  const { data: groups, error: ggErr } = await sb
+    .from("gift_coordination_groups")
+    .select("*");
+  if (ggErr) throw ggErr;
 
+  const { data: members, error: gmErr } = await sb
+    .from("gift_coordination_members")
+    .select("*");
+  if (gmErr) throw gmErr;
+
+  state.coordGroups = groups || [];
+  state.coordMembers = members || [];
+} catch (e) {
+  console.warn("Coordination tables missing or error:", e);
+  state.coordGroups = [];
+  state.coordMembers = [];
+}
       try {
         const { data: contribs, error: cErr } = await sb.from("contributions").select("*");
         if (cErr) throw cErr;
