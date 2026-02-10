@@ -629,14 +629,15 @@
 
     function getAvailable(g) {
       if (g.is_group_gift) {
-        // Logic for group gift availability? 
-        // It's always "available" for contribution unless specific logic.
-        // But for sorting/filtering, let's say available if not fully funded?
         const current = getContributionTotal(g.id);
-        if (g.target_amount > 0 && current >= g.target_amount) return 0; // Fully funded
-        return 1; // Available
+        const target = parseFloat(g.target_amount) || 0;
+        if (target > 0 && current >= target) return 0;
+        return 1;
       }
-      return Math.max(0, (g.quantity || 1) - (g.reserved_quantity || 0));
+      // Robust Math: Force integers
+      const q = parseInt(g.quantity) || 1;
+      const r = parseInt(g.reserved_quantity) || 0;
+      return Math.max(0, q - r);
     }
 
     function getContributionTotal(giftId) {
@@ -1165,6 +1166,9 @@
       const price = g.Preis ? `<span>${escape(g.Preis)}</span><div class="sep"></div>` : "";
 
       let act = "";
+      // DEBUG: Log if something weird happens
+      if (isNaN(avail)) console.warn("NaN avail for", g.title, g);
+
       if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
       else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`;
       else act = `<button disabled>Vergeben</button>`;
