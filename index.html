@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -7,549 +8,511 @@
   <meta name="robots" content="noindex, nofollow">
 
   <style>
-    :root{
-      --bg-root:#F9F8F6;
-      --bg-card:#FFFFFF;
-
-      --text-primary:#1D1D1F;
-      --text-secondary:#86868B;
-
-      --btn-bg:#EAEAEA;
-      --btn-text:#1D1D1F;
-      --btn-bg-hover:#E1E1E1;
-
-      --radius-card:16px;
-      --radius-btn:999px;
-      --radius-input:12px;
-
-      --shadow-soft:0 2px 12px rgba(0,0,0,0.03);
-      --shadow-hover:0 4px 20px rgba(0,0,0,0.05);
-
-      --ease:cubic-bezier(0.2,0.8,0.2,1);
+    :root {
+      --bg-root: #F9F8F6;
+      --bg-card: #FFFFFF;
+      --bg-panel: #F2F1EF;
+      --text-primary: #1D1D1F;
+      --text-secondary: #86868B;
+      --text-tertiary: #C7C7CC;
+      --accent: #1D1D1F;
+      --btn-bg: #EAEAEA;
+      --btn-text: #1D1D1F;
+      --btn-bg-hover: #E1E1E1;
+      --radius-card: 16px;
+      --radius-btn: 999px;
+      --radius-input: 12px;
+      --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.03);
+      --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; outline:none; }
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      background:var(--bg-root);
-      color:var(--text-primary);
-      margin:0;
-      line-height:1.5;
-      -webkit-font-smoothing:antialiased;
-      padding-bottom:120px;
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
     }
 
-    .wrap{ max-width:680px; margin:0 auto; padding:60px 24px; }
-
-    h1{
-      font-size:26px;
-      font-weight:600;
-      text-align:center;
-      margin:0 0 16px 0;
-      letter-spacing:-0.015em;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-root);
+      color: var(--text-primary);
+      margin: 0;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 120px;
     }
 
-    h2{
-      font-size:13px;
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      color:var(--text-secondary);
-      margin:0;
+    h1 {
+      font-size: 26px;
+      font-weight: 600;
+      text-align: center;
+      margin: 0 0 16px 0;
+      letter-spacing: -0.015em;
     }
 
-    p.intro{
-      font-size:16px;
-      line-height:1.6;
-      color:#666;
-      text-align:center;
-      max-width:540px;
-      margin:0 auto 32px auto;
-      font-weight:400;
+    h2 {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin: 0;
     }
 
-    .hero{
-      width:100%;
-      height:380px;
-      object-fit:cover;
-      border-radius:var(--radius-card);
-      margin-bottom:40px;
-      box-shadow:var(--shadow-soft);
-      filter:sepia(0.05) contrast(0.96);
+    p.intro {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #666;
+      text-align: center;
+      max-width: 540px;
+      margin: 0 auto 32px auto;
+      font-weight: 400;
     }
 
-    /* Group gift */
-    .group-gift{
-      background:var(--bg-card);
-      border-radius:var(--radius-card);
-      padding:24px;
-      margin:0 0 24px 0;
-      box-shadow:var(--shadow-soft);
-    }
-    .group-gift p{
-      margin:12px 0 16px 0;
-      color:var(--text-secondary);
-      font-size:15px;
-      line-height:1.6;
-    }
-    .iban-container{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:12px 14px;
-      border-radius:14px;
-      background:#FCFCFC;
-      border:1px solid rgba(0,0,0,0.06);
-      cursor:pointer;
-      transition:transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
-      user-select:none;
-      width:fit-content;
-    }
-    .iban-container:hover{
-      border-color:#CCC;
-      transform:translateY(-1px);
-      box-shadow:0 4px 12px rgba(0,0,0,0.05);
-    }
-    .iban-container:active{ transform:translateY(0); }
-    .iban-text{
-      font-size:15px;
-      letter-spacing:0.02em;
-      color:#333;
-      font-weight:500;
-      white-space:nowrap;
-    }
-    .copy-icon{ width:16px; height:16px; fill:#888; }
-
-    /* Admin badge */
-    .admin-badge{
-      display:none;
-      margin:0 0 16px 0;
-      text-align:center;
-      font-size:12px;
-      color:#fff;
-    }
-    .admin-badge span{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:#1D1D1F;
-      box-shadow:0 10px 20px rgba(0,0,0,0.08);
-      letter-spacing:0.02em;
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 60px 24px;
     }
 
-    /* Progress */
-    .progress-container{ margin:18px 0 28px 0; text-align:center; display:none; }
-    .progress-text{ font-size:13px; color:var(--text-secondary); margin-bottom:8px; font-weight:500; }
-    .progress-track{ width:100%; height:4px; background:#E5E5E5; border-radius:2px; overflow:hidden; }
-    .progress-fill{ height:100%; background:var(--text-secondary); width:0%; transition:width 0.8s var(--ease); }
-
-    /* Controls */
-    .controls{
-      background:var(--bg-card);
-      padding:20px;
-      border-radius:var(--radius-card);
-      box-shadow:var(--shadow-soft);
-      margin-bottom:20px;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-    .search-row{ position:relative; }
-    .search-input{
-      width:100%;
-      padding:12px 16px 12px 40px;
-      font-size:15px;
-      border:1px solid #E5E5E5;
-      border-radius:var(--radius-input);
-      background:#FCFCFC;
-      transition:all 0.2s;
-    }
-    .search-input:focus{ border-color:#CCC; background:#FFF; }
-    .search-icon{
-      position:absolute; left:12px; top:50%;
-      transform:translateY(-50%);
-      width:16px; height:16px;
-      fill:var(--text-secondary);
-      pointer-events:none;
-    }
-    .filter-row{
-      display:flex; flex-wrap:wrap; gap:12px;
-      align-items:center; justify-content:space-between;
-    }
-    .toggles{ display:flex; gap:12px; }
-    .toggle-btn{
-      background:transparent;
-      border:1px solid #E5E5E5;
-      padding:8px 14px;
-      border-radius:999px;
-      font-size:13px;
-      color:var(--text-secondary);
-      cursor:pointer;
-      transition:all 0.2s;
-      user-select:none;
-      min-width:140px;
-      text-align:center;
-    }
-    .toggle-btn.active{
-      background:var(--text-primary);
-      color:#FFF;
-      border-color:var(--text-primary);
-    }
-    .sort-select{
-      border:none;
-      background:transparent;
-      font-size:13px;
-      color:var(--text-primary);
-      font-weight:500;
-      cursor:pointer;
-      padding-right:10px;
-      text-align:right;
-      appearance:none;
+    .hero {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      border-radius: var(--radius-card);
+      margin-bottom: 40px;
+      box-shadow: var(--shadow-soft);
+      filter: sepia(0.05) contrast(0.96);
     }
 
-    /* Manage release section */
-    .manage{
-      background:var(--bg-card);
-      border-radius:var(--radius-card);
-      padding:20px;
-      box-shadow:var(--shadow-soft);
-      margin-bottom:28px;
-    }
-    .manage p{
-      margin:10px 0 14px 0;
-      color:var(--text-secondary);
-      font-size:14px;
-      line-height:1.6;
-    }
-    .pin-row{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .pin-inputs{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .pin-box{
-      width:44px;
-      height:48px;
-      border-radius:12px;
-      border:1px solid #E5E5E5;
-      background:#FCFCFC;
-      text-align:center;
-      font-size:18px;
-      font-weight:600;
-      color:var(--text-primary);
-      transition:all 0.2s;
-    }
-    .pin-box:focus{
-      border-color:#BDBDBD;
-      background:#FFF;
-      box-shadow:0 0 0 3px rgba(0,0,0,0.05);
-    }
-    .manage .btn-inline{
-      min-width:auto;
-      padding:12px 16px;
-      border-radius:999px;
-      font-size:13px;
-      font-weight:600;
-    }
-    .inline-error{
-      margin-top:10px;
-      font-size:13px;
-      color:#9B1C1C;
-      display:none;
-    }
-    .inline-success{
-      margin-top:10px;
-      font-size:13px;
-      color:#0F5132;
-      display:none;
+    .group-gift {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      padding: 24px;
+      margin-bottom: 32px;
+      border: 1px solid rgba(0, 0, 0, 0.03);
     }
 
-    /* Section headers */
-    .section-title{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin:40px 0 16px 0;
-      padding:0 4px;
-      cursor:pointer;
-      user-select:none;
-    }
-    .section-title:hover{ opacity:0.85; }
-    .section-chevron{
-      width:12px; height:12px;
-      fill:var(--text-secondary);
-      transition:transform 0.3s;
-    }
-    .section-title.collapsed .section-chevron{ transform:rotate(-90deg); }
-    .gift-group{
-      transition:height 0.3s var(--ease), opacity 0.3s var(--ease);
-      overflow:hidden;
-    }
-    .gift-group.collapsed{ height:0 !important; opacity:0; }
-
-    /* Items */
-    .item{
-      background:var(--bg-card);
-      padding:24px;
-      margin-bottom:12px;
-      border-radius:var(--radius-card);
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:20px;
-      align-items:center;
-      box-shadow:0 1px 3px rgba(0,0,0,0.02);
-      transition:all 0.2s var(--ease);
-      border:1px solid transparent;
-    }
-    .item:hover{
-      box-shadow:var(--shadow-hover);
-      transform:translateY(-1px);
-      border-color:rgba(0,0,0,0.03);
-    }
-    .item.my-reservation{
-      border:1px solid #E0E0E0;
-      background:#FFFEFA;
-    }
-    .item-content{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
-    }
-    .item-title{
-      font-size:17px;
-      font-weight:500;
-      color:var(--text-primary);
-    }
-    .meta{
-      font-size:14px;
-      color:var(--text-secondary);
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .meta a{
-      color:var(--text-secondary);
-      text-decoration:none;
-      position:relative;
-      transition:color 0.2s;
-    }
-    .meta a:hover{ color:var(--text-primary); }
-    .meta a::after{
-      content:"";
-      position:absolute;
-      bottom:-1px;
-      left:0;
-      width:100%;
-      height:1px;
-      background:currentColor;
-      opacity:0.25;
-    }
-    .sep{
-      width:2px; height:2px;
-      background:#CCC;
-      border-radius:50%;
-      display:inline-block;
+    .iban-container {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 999px;
+      padding: 12px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      margin-top: 10px;
     }
 
-    button{
-      background:var(--btn-bg);
-      color:var(--btn-text);
-      border:none;
-      padding:10px 18px;
-      border-radius:var(--radius-btn);
-      font-size:13px;
-      font-weight:600;
-      cursor:pointer;
-      transition:background 0.2s;
-      min-width:130px;
-      text-align:center;
-    }
-    button:hover:not(:disabled){ background:var(--btn-bg-hover); }
-    button.reserved{
-      background:transparent;
-      color:var(--text-secondary);
-      border:1px solid #E5E5E5;
-    }
-    button.reserved:hover{ border-color:#CCC; color:var(--text-primary); }
-    button.admin{
-      background:transparent;
-      color:#7A7A7A;
-      border:1px dashed #D9D9D9;
-      min-width:auto;
-      padding:8px 12px;
-      font-weight:600;
-    }
-    button.admin:hover{ border-color:#BDBDBD; color:var(--text-primary); }
-    button:disabled{
-      background:#F5F5F5;
-      color:#CCC;
-      cursor:default;
+    .iban-container:hover {
+      border-color: #CCC;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
-    .empty-state{
-      text-align:center;
-      padding:40px;
-      color:var(--text-secondary);
-      font-size:15px;
+    .iban-text {
+      font-weight: 500;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      color: #333;
+      white-space: nowrap;
     }
 
-    .skeleton{
-      height:72px;
-      background:#EEE;
-      border-radius:var(--radius-card);
-      margin-bottom:12px;
-      animation:pulse 1.8s infinite;
-    }
-    @keyframes pulse{
-      0%{ opacity:0.55; }
-      50%{ opacity:0.85; }
-      100%{ opacity:0.55; }
+    .copy-icon {
+      width: 16px;
+      height: 16px;
+      fill: #888;
     }
 
-    #my-reservations-section{
-      background:#F4F4F4;
-      border-radius:var(--radius-card);
-      padding:24px;
-      margin-bottom:30px;
-      display:none;
+    .progress-container {
+      margin-bottom: 32px;
+      text-align: center;
+      display: none;
     }
-    #my-reservations-section h2{
-      margin-bottom:16px;
-      margin-top:0;
-      color:#333;
+
+    .progress-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-weight: 500;
     }
-    #my-reservations-list .item{
-      box-shadow:0 2px 8px rgba(0,0,0,0.04);
-      background:#FFF;
+
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: #E5E5E5;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--text-secondary);
+      width: 0%;
+      transition: width 1s var(--ease);
+    }
+
+    .controls {
+      background: var(--bg-card);
+      padding: 20px;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .search-row {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      font-size: 15px;
+      border: 1px solid #E5E5E5;
+      border-radius: var(--radius-input);
+      background: #FCFCFC;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: #CCC;
+      background: #FFF;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      fill: var(--text-secondary);
+      pointer-events: none;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toggles {
+      display: flex;
+      gap: 12px;
+    }
+
+    .toggle-btn {
+      background: transparent;
+      border: 1px solid #E5E5E5;
+      padding: 8px 14px;
+      border-radius: 99px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .toggle-btn.active {
+      background: var(--text-primary);
+      color: #FFF;
+      border-color: var(--text-primary);
+    }
+
+    .sort-select {
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      color: var(--text-primary);
+      font-weight: 500;
+      cursor: pointer;
+      padding-right: 16px;
+      text-align: right;
+      appearance: none;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 36px 0 14px 0;
+      padding: 0 4px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .section-title:hover {
+      opacity: 0.85;
+    }
+
+    .section-chevron {
+      width: 12px;
+      height: 12px;
+      fill: var(--text-secondary);
+      transition: transform 0.3s;
+    }
+
+    .section-title.collapsed .section-chevron {
+      transform: rotate(-90deg);
+    }
+
+    .gift-group {
+      transition: height 0.3s var(--ease), opacity 0.3s var(--ease);
+      overflow: hidden;
+    }
+
+    .gift-group.collapsed {
+      height: 0 !important;
+      opacity: 0;
+    }
+
+    .item {
+      background: var(--bg-card);
+      padding: 24px;
+      margin-bottom: 12px;
+      border-radius: var(--radius-card);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s var(--ease);
+      border: 1px solid transparent;
+    }
+
+    .item:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+      border-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .item-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .item-title {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .meta {
+      font-size: 14px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .meta a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .meta a:hover {
+      color: var(--text-primary);
+    }
+
+    .meta a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.3;
+    }
+
+    .sep {
+      width: 2px;
+      height: 2px;
+      background: #CCC;
+      border-radius: 50%;
+    }
+
+    button {
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: none;
+      padding: 10px 18px;
+      border-radius: var(--radius-btn);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      min-width: 120px;
+      text-align: center;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--btn-bg-hover);
+    }
+
+    button:disabled {
+      background: #F5F5F5;
+      color: #BBB;
+      cursor: default;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #222;
+      color: #FFF;
+      padding: 12px 24px;
+      border-radius: 99px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all 0.4s;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .toast.active {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .skeleton {
+      height: 72px;
+      background: #EEE;
+      border-radius: var(--radius-card);
+      margin-bottom: 12px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; }
+      50% { opacity: 0.85; }
+      100% { opacity: 0.5; }
     }
 
     /* Modal */
-    .modal-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.30);
-      backdrop-filter:blur(4px);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      z-index:999;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity 0.25s var(--ease);
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
     }
-    .modal-overlay.active{ opacity:1; pointer-events:auto; }
-    .modal{
-      background:#FFF;
-      width:92%;
-      max-width:420px;
-      padding:26px;
-      border-radius:20px;
-      box-shadow:0 20px 40px rgba(0,0,0,0.10);
-      text-align:left;
-      transform:scale(0.96);
-      transition:transform 0.25s var(--ease);
-    }
-    .modal-overlay.active .modal{ transform:scale(1); }
-    .modal h3{ font-size:18px; margin:0 0 10px 0; }
-    .modal p{
-      font-size:14.5px;
-      color:#666;
-      margin:0 0 16px 0;
-      line-height:1.6;
-    }
-    .modal .pin-inputs{ margin:10px 0 6px 0; }
-    .modal .inline-error{ display:none; margin:8px 0 0 0; }
-    .modal-actions{
-      display:flex;
-      gap:10px;
-      margin-top:18px;
-    }
-    .modal-btn{
-      flex:1;
-      padding:12px;
-      border-radius:12px;
-      font-size:15px;
-      min-width:auto;
-    }
-    .modal-btn.primary{ background:var(--text-primary); color:#FFF; }
-    .modal-btn.secondary{ background:#F5F5F5; color:#333; }
 
-    /* Toast */
-    .toast{
-      position:fixed;
-      bottom:30px;
-      left:50%;
-      transform:translateX(-50%) translateY(18px);
-      background:#222;
-      color:#FFF;
-      padding:12px 16px;
-      border-radius:999px;
-      font-size:14px;
-      opacity:0;
-      transition:all 0.35s var(--ease);
-      z-index:1000;
-      pointer-events:none;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      max-width:92%;
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
     }
-    .toast.active{ opacity:1; transform:translateX(-50%) translateY(0); }
-    .toast .toast-action{
-      pointer-events:auto;
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.25);
-      color:#fff;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-      cursor:pointer;
+
+    .modal {
+      background: #FFF;
+      width: 90%;
+      max-width: 360px;
+      padding: 28px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      transform: scale(0.95);
+      transition: transform 0.3s;
     }
-    .toast .toast-action:hover{ border-color:rgba(255,255,255,0.45); }
 
-    @media (max-width:600px){
-      .wrap{ padding:40px 20px; }
-      .hero{ height:280px; }
+    .modal-overlay.active .modal {
+      transform: scale(1);
+    }
 
-      .item{ grid-template-columns:1fr; gap:16px; padding:20px; }
-      button{ width:100%; }
+    .modal h3 {
+      font-size: 18px;
+      margin: 0 0 8px 0;
+    }
 
-      .filter-row{ flex-direction:column; align-items:stretch; }
-      .toggles{ justify-content:space-between; flex-wrap:wrap; }
-      .toggle-btn{ flex:1; min-width:0; }
-      .sort-select{ text-align:left; margin-top:6px; }
+    .modal p {
+      font-size: 14px;
+      color: #666;
+      margin: 0 0 18px 0;
+      line-height: 1.5;
+    }
 
-      .iban-container{ width:100%; justify-content:center; }
-      .iban-text{ font-size:13px; overflow:hidden; text-overflow:ellipsis; }
+    .modal label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin: 12px 0 6px 0;
+    }
 
-      .pin-row{ 
-        flex-direction:column;
-        align-items:stretch;
-        gap:14px;
-      }
-      .pin-inputs{ 
-        justify-content:space-between; 
-        width:100%; 
-      }
-      .pin-box{ 
-        flex:1; 
-        width:auto;
-        max-width:60px;
-      }
-      .manage .btn-inline{ 
-        width:100%;
-        padding:14px 16px;
-      }
+    .modal input, .modal select {
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid #E5E5E5;
+      font-size: 15px;
+      background: #FCFCFC;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 15px;
+      min-width: 0;
+    }
+
+    .modal-btn.primary {
+      background: #1D1D1F;
+      color: #FFF;
+    }
+
+    .modal-btn.secondary {
+      background: #F5F5F5;
+      color: #333;
+    }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 40px 20px; }
+      .hero { height: 280px; }
+      .item { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
+      button { width: 100%; }
+      .filter-row { flex-direction: column; align-items: stretch; }
+      .toggles { justify-content: space-between; }
+      .sort-select { text-align: left; margin-top: 8px; }
+      .iban-container { width: 100%; justify-content: center; }
+      .iban-text { font-size: 13px; overflow: hidden; text-overflow: ellipsis; }
     }
   </style>
 </head>
@@ -563,39 +526,35 @@
 
     <div class="group-gift">
       <h2>Sammelgeschenk – KPM Kurland</h2>
-      <p>
-        Wer sich an dem KPM Kurland Sammelgeschenk beteiligen möchte, kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.
-      </p>
+      <p>Wer sich an dem KPM Kurland Sammelgeschenk beteiligen möchte, kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.</p>
       <div class="iban-container" onclick="window.app.copyIBAN()" title="IBAN kopieren">
-        <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+        <svg class="copy-icon" viewBox="0 0 24 24">
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
         </svg>
         <span class="iban-text">DE89 2007 0024 0191 3888 02</span>
       </div>
-      <div style="font-size:13px; color:#888; margin-top:8px;">Max Tiefenbacher</div>
+      <div style="font-size: 13px; color: #888; margin-top: 8px;">Max Tiefenbacher</div>
     </div>
 
-    <div class="admin-badge" id="adminBadge"><span>Admin-Modus aktiv</span></div>
-
     <div class="progress-container" id="progress-container">
-      <div class="progress-text" id="progress-text">0 von 0 Wünschen vergeben</div>
-      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-text" id="progress-text">0 von 0 Wünschen erfüllt</div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
     </div>
 
     <div class="controls">
       <div class="search-row">
-        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        <svg class="search-icon" viewBox="0 0 24 24">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
         </svg>
         <input type="text" id="search-input" class="search-input" placeholder="Wunsch suchen...">
       </div>
-
       <div class="filter-row">
         <div class="toggles">
-          <button class="toggle-btn" id="filter-free" type="button">Nur Verfügbare</button>
-          <button class="toggle-btn" id="filter-mine" type="button">Meine Reservierungen</button>
+          <button class="toggle-btn" id="filter-free">Nur Verfügbare</button>
+          <button class="toggle-btn" id="filter-pin">Mein PIN</button>
         </div>
-
         <select id="sort-select" class="sort-select">
           <option value="cat">Kategorie</option>
           <option value="status">Status (Verfügbar zuerst)</option>
@@ -605,29 +564,6 @@
       </div>
     </div>
 
-    <div class="manage">
-      <h2>Reservierung freigeben</h2>
-      <p>Wenn du deine Reservierung auf einem anderen Gerät ändern möchtest, gib hier deinen 4-stelligen Code ein.</p>
-
-      <div class="pin-row">
-        <div class="pin-inputs" id="releasePinInputs" aria-label="PIN eingeben">
-          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 1">
-          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 2">
-          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 3">
-          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 4">
-        </div>
-        <button class="btn-inline" type="button" id="releaseBtn">Freigeben</button>
-      </div>
-
-      <div class="inline-error" id="releaseError"></div>
-      <div class="inline-success" id="releaseSuccess"></div>
-    </div>
-
-    <div id="my-reservations-section">
-      <h2>Deine Reservierungen</h2>
-      <div id="my-reservations-list"></div>
-    </div>
-
     <div id="list">
       <div class="skeleton"></div>
       <div class="skeleton"></div>
@@ -635,630 +571,345 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
       <h3 id="modalTitle">Titel</h3>
       <p id="modalText">Text</p>
 
-      <div id="modalPinBlock" style="display:none;">
-        <div class="pin-inputs" id="reservePinInputs" aria-label="PIN wählen">
-          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 1">
-          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 2">
-          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 3">
-          <input class="pin-box" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="PIN Ziffer 4">
-        </div>
-        <div class="inline-error" id="modalPinError" style="display:none;"></div>
-        <div style="margin-top:10px; font-size:13px; color:#888;">
-          Bitte notiere dir den Code, falls du später etwas ändern möchtest.
-        </div>
-      </div>
+      <div id="modalFields"></div>
 
       <div class="modal-actions">
-        <button class="modal-btn secondary" id="modalCancel" type="button">Abbrechen</button>
-        <button class="modal-btn primary" id="modalConfirm" type="button">Bestätigen</button>
+        <button class="modal-btn secondary" id="modalCancel">Abbrechen</button>
+        <button class="modal-btn primary" id="modalConfirm">Bestätigen</button>
       </div>
     </div>
   </div>
 
-  <div class="toast" id="toast" aria-live="polite">
-    <span id="toastText">Aktion erfolgreich</span>
-    <button class="toast-action" id="toastAction" type="button" style="display:none;">Kopieren</button>
-  </div>
+  <div class="toast" id="toast">Aktion erfolgreich</div>
 
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
     const SUPABASE_URL = "https://tpfovcyqqhqlyzcopiwt.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwZm92Y3lxcWhxbHl6Y29waXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyMzQ0NDgsImV4cCI6MjA4MTgxMDQ0OH0.UBAnfI_s7vQkPMDmwZHLVTYUkmZIAMvS6sK0w60Cvps";
-
-    const ADMIN_SECRET = "Callmemaybe1";
-
+    const SUPABASE_ANON_KEY = "DEIN_ANON_KEY";
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const state = {
       gifts: [],
-      filter: { search: "", showFreeOnly: false, showMineOnly: false },
+      myPin: localStorage.getItem("my_pin") || "",
+      filter: { search: "", showFreeOnly: false, showPinOnly: false },
       sort: "cat",
-      categoryState: {},
-      isAdmin: false
+      categoryState: {}
     };
 
-    function escapeHtml(s){
-      return String(s ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#39;");
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('active');
+      setTimeout(() => t.classList.remove('active'), 2500);
     }
 
-    function parsePrice(priceStr){
+    function parsePrice(priceStr) {
       if (!priceStr) return Infinity;
-      const m = String(priceStr).match(/[\d.,]+/);
-      if (!m) return Infinity;
-      const numStr = m[0].replace(/\./g,"").replace(",",".");
-      const n = parseFloat(numStr);
-      return Number.isFinite(n) ? n : Infinity;
+      const matches = priceStr.match(/[\d.,]+/);
+      if (!matches) return Infinity;
+      let numStr = matches[0].replace(/\./g, "").replace(",", ".");
+      const num = parseFloat(numStr);
+      return isNaN(num) ? Infinity : num;
     }
 
-    function catKey(c){ return encodeURIComponent(String(c ?? "")); }
-
-    function lsKey(id){ return "gift_pin_" + id; }
-    function getLocalPIN(id){ return localStorage.getItem(lsKey(id)); }
-    function setLocalPIN(id, pin){ localStorage.setItem(lsKey(id), pin); }
-    function clearLocalPIN(id){ localStorage.removeItem(lsKey(id)); }
-
-    function isValidPin(pin){
-      return /^[0-9]{4}$/.test(pin);
+    function availableQty(g) {
+      return Math.max(0, (g.quantity ?? 1) - (g.reserved_quantity ?? 0));
     }
 
-    function getAdminMode(){
-      const url = new URL(window.location.href);
-      return url.searchParams.get("admin") === ADMIN_SECRET;
-    }
+    async function loadData() {
+      const { data, error } = await sb
+        .from("gifts")
+        .select("*")
+        .order("category")
+        .order("title");
 
-    function setInline(el, msg, type){
-      if (!el) return;
-      if (!msg){
-        el.style.display = "none";
-        el.textContent = "";
+      if (error || !data) {
+        console.error(error);
+        document.getElementById('list').innerHTML = `<div class="empty-state">Fehler beim Laden.</div>`;
         return;
       }
-      el.textContent = msg;
-      el.style.display = "block";
-      if (type === "error"){
-        el.style.color = "#9B1C1C";
-      } else {
-        el.style.color = "#0F5132";
-      }
+
+      state.gifts = data;
+      render();
+      document.getElementById('progress-container').style.display = 'block';
     }
 
-    function showToast(msg, copyText = null){
-      const t = document.getElementById("toast");
-      const tt = document.getElementById("toastText");
-      const action = document.getElementById("toastAction");
-      tt.textContent = msg;
-
-      if (copyText){
-        action.style.display = "inline-flex";
-        action.onclick = async () => {
-          await copyToClipboard(copyText);
-          tt.textContent = "Code kopiert";
-          setTimeout(() => { tt.textContent = msg; }, 900);
-        };
-      } else {
-        action.style.display = "none";
-        action.onclick = null;
-      }
-
-      t.classList.add("active");
-      setTimeout(() => t.classList.remove("active"), 2800);
-    }
-
-    async function copyToClipboard(text){
-      try{
-        await navigator.clipboard.writeText(text);
-      } catch {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.left = "-9999px";
-        document.body.appendChild(ta);
-        ta.select();
-        try{ document.execCommand("copy"); } catch {}
-        document.body.removeChild(ta);
-      }
-    }
-
-    function wirePinInputs(containerEl){
-      const inputs = Array.from(containerEl.querySelectorAll("input"));
-      const onlyDigit = (v) => v.replace(/[^0-9]/g,"");
-
-      inputs.forEach((inp, idx) => {
-        inp.addEventListener("input", (e) => {
-          const v = onlyDigit(inp.value);
-          inp.value = v.slice(-1);
-          if (inp.value && idx < inputs.length - 1){
-            inputs[idx + 1].focus();
-            inputs[idx + 1].select?.();
-          }
-        });
-
-        inp.addEventListener("keydown", (e) => {
-          if (e.key === "Backspace" && !inp.value && idx > 0){
-            inputs[idx - 1].focus();
-            inputs[idx - 1].value = "";
-            e.preventDefault();
-          }
-          if (e.key === "ArrowLeft" && idx > 0){
-            inputs[idx - 1].focus();
-            e.preventDefault();
-          }
-          if (e.key === "ArrowRight" && idx < inputs.length - 1){
-            inputs[idx + 1].focus();
-            e.preventDefault();
-          }
-        });
-
-        inp.addEventListener("paste", (e) => {
-          const text = onlyDigit((e.clipboardData || window.clipboardData).getData("text") || "");
-          if (text.length >= 4){
-            for (let i = 0; i < 4; i++){
-              inputs[i].value = text[i] || "";
-            }
-            inputs[3].focus();
-            e.preventDefault();
-          }
-        });
-
-        inp.addEventListener("focus", () => {
-          inp.select?.();
-        });
-      });
-
-      return {
-        get: () => inputs.map(i => i.value || "").join(""),
-        set: (pin) => {
-          const p = String(pin || "");
-          for (let i = 0; i < 4; i++) inputs[i].value = p[i] || "";
-        },
-        clear: () => inputs.forEach(i => i.value = ""),
-        focusFirst: () => inputs[0]?.focus()
-      };
-    }
-
-    let modalResolver = null;
-    let modalKeyHandler = null;
-    let reserveModalActive = false;
-
-    function openModal({ title, text, confirmText = "Bestätigen", cancelText = "Abbrechen", showPin = false }){
-      const overlay = document.getElementById("modalOverlay");
-      document.getElementById("modalTitle").textContent = title;
-      document.getElementById("modalText").textContent = text;
-      document.getElementById("modalConfirm").textContent = confirmText;
-      document.getElementById("modalCancel").textContent = cancelText;
-
-      const pinBlock = document.getElementById("modalPinBlock");
-      const pinError = document.getElementById("modalPinError");
-
-      pinBlock.style.display = showPin ? "block" : "none";
-      pinError.style.display = "none";
-      pinError.textContent = "";
-
-      overlay.classList.add("active");
-
-      if (modalKeyHandler) window.removeEventListener("keydown", modalKeyHandler);
-      modalKeyHandler = (e) => {
-        if (e.key === "Escape") closeModal(false);
-        if (e.key === "Enter" && !showPin) closeModal(true);
-      };
-      window.addEventListener("keydown", modalKeyHandler);
-
-      return new Promise((resolve) => {
-        modalResolver = resolve;
-      });
-    }
-
-    function closeModal(val){
-      const overlay = document.getElementById("modalOverlay");
-      overlay.classList.remove("active");
-      if (modalKeyHandler) window.removeEventListener("keydown", modalKeyHandler);
-      modalKeyHandler = null;
-      if (modalResolver){
-        const r = modalResolver;
-        modalResolver = null;
-        r(val);
-      }
-    }
-
-    document.getElementById("modalCancel").addEventListener("click", () => {
-      reserveModalActive = false;
-      closeModal(false);
-    });
-
-    document.getElementById("modalConfirm").addEventListener("click", async () => {
-      if (reserveModalActive){
-        await handleReservationConfirm();
-      } else {
-        closeModal(true);
-      }
-    });
-
-    const reservePin = wirePinInputs(document.getElementById("reservePinInputs"));
-    const releasePin = wirePinInputs(document.getElementById("releasePinInputs"));
-
-    state.isAdmin = getAdminMode();
-    if (state.isAdmin){
-      document.getElementById("adminBadge").style.display = "block";
-    }
-
-    function render(){
-      const searchLower = state.filter.search.trim().toLowerCase();
-
-      let filtered = state.gifts.filter(g => {
-        const title = String(g.title ?? "");
-        const matchesSearch = !searchLower || title.toLowerCase().includes(searchLower);
-
-        const localPin = getLocalPIN(g.id);
-        const isMine = g.reserved && g.reserved_token && localPin && String(g.reserved_token) === String(localPin);
-
-        if (state.filter.showFreeOnly && g.reserved) return false;
-        if (state.filter.showMineOnly && !isMine) return false;
-
-        return matchesSearch;
-      });
-
-      filtered.sort((a,b) => {
-        if (state.sort === "price_asc") return parsePrice(a.Preis) - parsePrice(b.Preis);
-        if (state.sort === "price_desc") return parsePrice(b.Preis) - parsePrice(a.Preis);
-        if (state.sort === "status"){
-          if (!!a.reserved === !!b.reserved) return String(a.title).localeCompare(String(b.title), "de");
-          return a.reserved ? 1 : -1;
-        }
-        if (String(a.category) !== String(b.category)) return String(a.category).localeCompare(String(b.category), "de");
-        return String(a.title).localeCompare(String(b.title), "de");
-      });
-
+    function render() {
+      // progress
       const total = state.gifts.length;
-      const reservedCount = state.gifts.filter(g => g.reserved).length;
+      const reservedCount = state.gifts.filter(g => availableQty(g) === 0).length;
       const width = total > 0 ? (reservedCount / total) * 100 : 0;
-      document.getElementById("progress-fill").style.width = width + "%";
-      document.getElementById("progress-text").textContent = `${reservedCount} von ${total} Wünschen vergeben`;
-      document.getElementById("progress-container").style.display = "block";
+      document.getElementById('progress-fill').style.width = width + "%";
+      document.getElementById('progress-text').textContent = `${reservedCount} von ${total} Wünschen erfüllt`;
 
-      const myGifts = state.gifts.filter(g => {
-        const localPin = getLocalPIN(g.id);
-        return g.reserved && g.reserved_token && localPin && String(g.reserved_token) === String(localPin);
+      // filter
+      let filtered = state.gifts.filter(g => {
+        const s = (g.title || "").toLowerCase();
+        const matchesSearch = s.includes(state.filter.search.toLowerCase());
+        const matchesFree = !state.filter.showFreeOnly || availableQty(g) > 0;
+        return matchesSearch && matchesFree;
       });
 
-      const myResSection = document.getElementById("my-reservations-section");
-      const myResList = document.getElementById("my-reservations-list");
+      // sort
+      filtered.sort((a, b) => {
+        if (state.sort === 'price_asc') return parsePrice(a.Preis) - parsePrice(b.Preis);
+        if (state.sort === 'price_desc') return parsePrice(b.Preis) - parsePrice(a.Preis);
+        if (state.sort === 'status') {
+          const aAvail = availableQty(a) > 0;
+          const bAvail = availableQty(b) > 0;
+          if (aAvail === bAvail) return (a.title || "").localeCompare(b.title || "");
+          return aAvail ? -1 : 1;
+        }
+        if ((a.category || "") !== (b.category || "")) return (a.category || "").localeCompare(b.category || "");
+        return (a.title || "").localeCompare(b.title || "");
+      });
 
-      if (myGifts.length > 0){
-        myResSection.style.display = "block";
-        myResList.innerHTML = myGifts.map(g => renderItem(g, true)).join("");
-      } else {
-        myResSection.style.display = "none";
-        myResList.innerHTML = "";
+      // group by category
+      const listContainer = document.getElementById('list');
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `<div class="empty-state">Keine Geschenke gefunden.</div>`;
+        return;
       }
 
-      const listContainer = document.getElementById("list");
-
-      if (state.sort === "cat"){
+      if (state.sort === 'cat') {
         const cats = {};
-        for (const g of filtered){
-          const c = String(g.category ?? "Sonstiges");
-          (cats[c] ??= []).push(g);
-        }
-        const catNames = Object.keys(cats);
-        if (catNames.length === 0){
-          listContainer.innerHTML = `<div class="empty-state">Keine Geschenke gefunden.</div>`;
-          return;
-        }
+        filtered.forEach(g => (cats[g.category] ??= []).push(g));
 
         let html = "";
-        for (const c of catNames){
-          const key = catKey(c);
-          const isCollapsed = state.categoryState[key] === true;
-
+        for (const c in cats) {
+          const isCollapsed = state.categoryState[c] === true;
           html += `
-            <div class="section-title ${isCollapsed ? "collapsed" : ""}" onclick="window.app.toggleCat('${key}')">
+            <div class="section-title ${isCollapsed ? 'collapsed' : ''}" onclick="window.app.toggleCat('${escapeHtml(c)}')">
               <h2>${escapeHtml(c)}</h2>
-              <svg class="section-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+              <svg class="section-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
             </div>
-            <div class="gift-group ${isCollapsed ? "collapsed" : ""}" id="cat-${key}">
+            <div class="gift-group ${isCollapsed ? 'collapsed' : ''}" id="cat-${cssId(c)}">
               ${cats[c].map(g => renderItem(g)).join("")}
             </div>
           `;
         }
         listContainer.innerHTML = html;
       } else {
-        if (filtered.length === 0){
-          listContainer.innerHTML = `<div class="empty-state">Keine Geschenke gefunden.</div>`;
-          return;
-        }
         listContainer.innerHTML = filtered.map(g => renderItem(g)).join("");
       }
     }
 
-    function renderItem(g, isMySection = false){
-      const localPin = getLocalPIN(g.id);
-      const isMine = g.reserved && g.reserved_token && localPin && String(g.reserved_token) === String(localPin);
+    function renderItem(g) {
+      const avail = availableQty(g);
+      const total = g.quantity ?? 1;
+      const given = Math.min(total, g.reserved_quantity ?? 0);
 
-      let btnHtml = "";
-      if (!g.reserved){
-        btnHtml = `<button type="button" onclick="window.app.reserve('${escapeHtml(g.id)}')">Reservieren</button>`;
-      } else if (isMine){
-        btnHtml = `<button type="button" class="reserved" onclick="window.app.unreserveMine('${escapeHtml(g.id)}')">Reserviert</button>`;
+      const statusText = total > 1 ? `${given} von ${total} vergeben` : (avail > 0 ? "frei" : "vergeben");
+      const priceHtml = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
+
+      let btn = "";
+      if (avail > 0) {
+        btn = `<button onclick="window.app.openReserve('${escapeJs(g.id)}')">Reservieren</button>`;
       } else {
-        btnHtml = `<button type="button" disabled>Vergeben</button>`;
+        btn = `<button disabled>Vergeben</button>`;
       }
 
-      const priceHtml = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><span class="sep"></span>` : "";
-
-      const adminHtml = (state.isAdmin && g.reserved)
-        ? `<button type="button" class="admin" onclick="window.app.adminUnreserve('${escapeHtml(g.id)}')">Admin freigeben</button>`
-        : "";
-
       return `
-        <div class="item ${isMine ? "my-reservation" : ""}">
+        <div class="item">
           <div class="item-content">
-            <div class="item-title">${escapeHtml(g.title)}</div>
+            <div class="item-title">${escapeHtml(g.title || "")}</div>
             <div class="meta">
               ${priceHtml}
-              <a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a>
+              <span>${escapeHtml(statusText)}</span>
+              <div class="sep"></div>
+              <a href="${escapeHtml(g.url || "#")}" target="_blank" rel="noopener">Zum Shop ↗</a>
             </div>
-            ${adminHtml ? `<div style="margin-top:10px;">${adminHtml}</div>` : ``}
           </div>
-          ${btnHtml}
+          ${btn}
         </div>
       `;
     }
 
-    async function loadData(){
-      const { data, error } = await sb.from("gifts").select("*").order("category").order("title");
-      if (error || !data){
-        console.error(error);
-        document.getElementById("list").innerHTML = `<div class="empty-state">Fehler beim Laden.</div>`;
-        return;
-      }
-      state.gifts = data;
-      render();
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+    }
+    function escapeJs(str) { return String(str).replace(/'/g, "\\'"); }
+    function cssId(str) { return String(str).replace(/[^a-zA-Z0-9_-]/g, "_"); }
+
+    function openModal({ title, text, fieldsHtml, confirmText, onConfirm }) {
+      const overlay = document.getElementById('modalOverlay');
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalText').textContent = text;
+      document.getElementById('modalFields').innerHTML = fieldsHtml || "";
+      document.getElementById('modalConfirm').textContent = confirmText || "Bestätigen";
+
+      const cancelBtn = document.getElementById('modalCancel');
+      const confirmBtn = document.getElementById('modalConfirm');
+
+      const close = () => {
+        overlay.classList.remove('active');
+        cancelBtn.onclick = null;
+        confirmBtn.onclick = null;
+      };
+
+      cancelBtn.onclick = () => close();
+      confirmBtn.onclick = async () => {
+        try {
+          await onConfirm();
+          close();
+        } catch (e) {
+          console.error(e);
+          showToast("Fehler – bitte erneut versuchen");
+        }
+      };
+
+      overlay.classList.add('active');
     }
 
-    async function checkPinAvailable(pin){
-      const { data, error } = await sb
-        .from("gifts")
-        .select("id")
-        .eq("reserved", true)
-        .eq("reserved_token", pin)
-        .limit(1);
+    function generatePin() {
+      // 4-digit numeric
+      const n = Math.floor(1000 + Math.random() * 9000);
+      return String(n);
+    }
 
+    async function pinExists(pin) {
+      const { data, error } = await sb.from("reservations").select("id").eq("pin", pin).limit(1);
       if (error) return false;
-      return !data || data.length === 0;
+      return (data && data.length > 0);
     }
 
-    let currentReservationId = null;
-
-    async function handleReservationConfirm(){
-      const pinError = document.getElementById("modalPinError");
-      const pin = reservePin.get();
-
-      if (!isValidPin(pin)){
-        pinError.textContent = "Bitte 4 Ziffern eingeben.";
-        pinError.style.display = "block";
-        return;
+    async function generateUniquePin() {
+      for (let i = 0; i < 20; i++) {
+        const pin = generatePin();
+        if (!(await pinExists(pin))) return pin;
       }
-
-      const available = await checkPinAvailable(pin);
-      if (!available){
-        pinError.textContent = "Dieser Code ist bereits vergeben. Bitte wähle einen anderen.";
-        pinError.style.display = "block";
-        return;
-      }
-
-      const now = new Date().toISOString();
-      const { data, error } = await sb
-        .from("gifts")
-        .update({ reserved:true, reserved_token:pin, reserved_at:now })
-        .eq("id", currentReservationId)
-        .eq("reserved", false)
-        .select("id");
-
-      if (error || !data || data.length === 0){
-        pinError.textContent = "Leider hat es nicht geklappt. Bitte versuche es erneut.";
-        pinError.style.display = "block";
-        await loadData();
-        return;
-      }
-
-      setLocalPIN(currentReservationId, pin);
-      reserveModalActive = false;
-      currentReservationId = null;
-      closeModal(true);
-      await loadData();
-      showToast(`Reserviert. Code: ${pin}`, pin);
+      // fallback
+      return String(Date.now()).slice(-4);
     }
 
     window.app = {
-      toggleCat: (key) => {
-        state.categoryState[key] = !state.categoryState[key];
+      toggleCat: (cat) => {
+        state.categoryState[cat] = !state.categoryState[cat];
         render();
       },
-
-      copyIBAN: async () => {
-        const raw = "DE89 2007 0024 0191 3888 02";
-        const iban = raw.replace(/\s/g,"");
-        await copyToClipboard(iban);
-        showToast("IBAN kopiert");
+      copyIBAN: () => {
+        const text = "DE89 2007 0024 0191 3888 02";
+        navigator.clipboard.writeText(text.replace(/\s/g, "")).then(() => showToast("IBAN kopiert")).catch(() => showToast("IBAN kopiert"));
       },
 
-      reserve: async (id) => {
-        currentReservationId = id;
-        reserveModalActive = true;
-        reservePin.clear();
-        
-        await openModal({
+      openReserve: async (giftId) => {
+        const g = state.gifts.find(x => String(x.id) === String(giftId));
+        if (!g) return;
+
+        const avail = availableQty(g);
+        if (avail <= 0) return;
+
+        const suggestedPin = await generateUniquePin();
+
+        const qtyOptions = Array.from({ length: avail }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("");
+
+        openModal({
           title: "Reservieren",
-          text: "Bitte wähle einen 4-stelligen Code. Damit kannst du die Reservierung später wieder freigeben – auch auf einem anderen Gerät.",
+          text: "Bitte wähle eine Menge und merke dir deinen 4-stelligen Code. Damit kannst du später wieder freigeben.",
+          fieldsHtml: `
+            <label>Menge</label>
+            <select id="fieldQty">${qtyOptions}</select>
+
+            <label>Dein 4-stelliger Code</label>
+            <input id="fieldPin" inputmode="numeric" maxlength="4" value="${suggestedPin}">
+            <div style="margin-top:8px;font-size:12px;color:#888;">
+              Tipp: Screenshot machen oder notieren.
+            </div>
+          `,
           confirmText: "Reservieren",
-          cancelText: "Abbrechen",
-          showPin: true
+          onConfirm: async () => {
+            const qty = parseInt(document.getElementById("fieldQty").value, 10);
+            const pin = String(document.getElementById("fieldPin").value || "").trim();
+
+            if (!/^\d{4}$/.test(pin)) {
+              showToast("Bitte 4-stelligen Code eingeben");
+              return;
+            }
+
+            // Insert reservation
+            const { error } = await sb.from("reservations").insert([{ gift_id: String(g.id), pin, qty }]);
+            if (error) {
+              // Most common: pin already exists, or overbooking
+              const msg = (error.message || "").toLowerCase();
+              if (msg.includes("duplicate") || msg.includes("unique")) showToast("Code ist vergeben – bitte anderen wählen");
+              else if (msg.includes("not enough available")) showToast("Nicht mehr genug verfügbar");
+              else showToast("Fehler beim Reservieren");
+              return;
+            }
+
+            localStorage.setItem("my_pin", pin);
+            state.myPin = pin;
+
+            await loadData();
+            showToast("Reserviert");
+          }
         });
-
-        if (!reserveModalActive){
-          currentReservationId = null;
-        }
-      },
-
-      unreserveMine: async (id) => {
-        const localPin = getLocalPIN(id);
-        if (!localPin){
-          showToast("Kein Code auf diesem Gerät gefunden");
-          return;
-        }
-
-        const ok = await openModal({
-          title: "Freigeben",
-          text: "Möchtest du diese Reservierung wieder freigeben?",
-          confirmText: "Freigeben",
-          cancelText: "Abbrechen",
-          showPin: false
-        });
-        if (!ok) return;
-
-        const { data, error } = await sb
-          .from("gifts")
-          .update({ reserved:false, reserved_token:null, reserved_at:null })
-          .eq("id", id)
-          .eq("reserved_token", localPin)
-          .select("id");
-
-        if (error || !data || data.length === 0){
-          showToast("Konnte nicht freigeben. Bitte Code nutzen.");
-          await loadData();
-          return;
-        }
-
-        clearLocalPIN(id);
-        await loadData();
-        showToast("Freigegeben");
       },
 
       releaseByPin: async () => {
-        setInline(document.getElementById("releaseError"), "", "error");
-        setInline(document.getElementById("releaseSuccess"), "", "success");
-
-        const pin = releasePin.get();
-        if (!isValidPin(pin)){
-          setInline(document.getElementById("releaseError"), "Bitte 4 Ziffern eingeben.", "error");
-          return;
-        }
-
-        const { data, error } = await sb
-          .from("gifts")
-          .select("id,title,url,reserved_token")
-          .eq("reserved", true)
-          .eq("reserved_token", pin)
-          .limit(2);
-
-        if (error){
-          setInline(document.getElementById("releaseError"), "Leider hat es nicht geklappt. Bitte später erneut versuchen.", "error");
-          return;
-        }
-
-        if (!data || data.length === 0){
-          setInline(document.getElementById("releaseError"), "Kein reservierter Wunsch mit diesem Code gefunden.", "error");
-          return;
-        }
-
-        if (data.length > 1){
-          setInline(document.getElementById("releaseError"), "Mehrere Reservierungen mit diesem Code gefunden. Bitte kontaktiert uns kurz.", "error");
-          return;
-        }
-
-        const gift = data[0];
-        const ok = await openModal({
+        openModal({
           title: "Freigeben",
-          text: `Reservierung für „${gift.title}" freigeben?`,
+          text: "Gib deinen 4-stelligen Code ein, um deine Reservierung wieder freizugeben.",
+          fieldsHtml: `
+            <label>Dein 4-stelliger Code</label>
+            <input id="fieldReleasePin" inputmode="numeric" maxlength="4" value="${state.myPin || ""}">
+          `,
           confirmText: "Freigeben",
-          cancelText: "Abbrechen",
-          showPin: false
-        });
-        if (!ok) return;
+          onConfirm: async () => {
+            const pin = String(document.getElementById("fieldReleasePin").value || "").trim();
+            if (!/^\d{4}$/.test(pin)) {
+              showToast("Bitte 4-stelligen Code eingeben");
+              return;
+            }
 
-        const upd = await sb
-          .from("gifts")
-          .update({ reserved:false, reserved_token:null, reserved_at:null })
-          .eq("id", gift.id)
-          .eq("reserved_token", pin)
-          .select("id");
+            const { error } = await sb.from("reservations").delete().eq("pin", pin);
+            if (error) {
+              showToast("Fehler beim Freigeben");
+              return;
+            }
 
-        if (upd.error || !upd.data || upd.data.length === 0){
-          setInline(document.getElementById("releaseError"), "Konnte nicht freigeben. Bitte später erneut versuchen.", "error");
-          await loadData();
-          return;
-        }
+            if (state.myPin === pin) {
+              localStorage.removeItem("my_pin");
+              state.myPin = "";
+            }
 
-        try{
-          for (const g of state.gifts){
-            if (getLocalPIN(g.id) === pin) clearLocalPIN(g.id);
+            await loadData();
+            showToast("Freigegeben");
           }
-        } catch {}
-
-        releasePin.clear();
-        setInline(document.getElementById("releaseSuccess"), "Freigegeben.", "success");
-        showToast("Freigegeben");
-        await loadData();
-      },
-
-      adminUnreserve: async (id) => {
-        if (!state.isAdmin) return;
-
-        const ok = await openModal({
-          title: "Admin",
-          text: "Möchtest du diese Reservierung wirklich freigeben?",
-          confirmText: "Freigeben",
-          cancelText: "Abbrechen",
-          showPin: false
         });
-        if (!ok) return;
-
-        await sb
-          .from("gifts")
-          .update({ reserved:false, reserved_token:null, reserved_at:null })
-          .eq("id", id);
-
-        await loadData();
-        showToast("Admin: freigegeben");
       }
     };
 
-    document.getElementById("releaseBtn").addEventListener("click", () => window.app.releaseByPin());
-
-    document.getElementById("search-input").addEventListener("input", (e) => {
+    // controls
+    document.getElementById('search-input').addEventListener('input', (e) => {
       state.filter.search = e.target.value;
       render();
     });
 
-    document.getElementById("filter-free").addEventListener("click", (e) => {
+    document.getElementById('filter-free').addEventListener('click', (e) => {
       state.filter.showFreeOnly = !state.filter.showFreeOnly;
-      e.target.classList.toggle("active", state.filter.showFreeOnly);
+      e.target.classList.toggle('active', state.filter.showFreeOnly);
       render();
     });
 
-    document.getElementById("filter-mine").addEventListener("click", (e) => {
-      state.filter.showMineOnly = !state.filter.showMineOnly;
-      e.target.classList.toggle("active", state.filter.showMineOnly);
-      render();
+    document.getElementById('filter-pin').addEventListener('click', async (e) => {
+      // Open release modal (simple)
+      window.app.releaseByPin();
     });
 
-    document.getElementById("sort-select").addEventListener("change", (e) => {
+    document.getElementById('sort-select').addEventListener('change', (e) => {
       state.sort = e.target.value;
       render();
     });
 
-    await loadData();
+    // init
+    loadData();
   </script>
 </body>
 </html>
