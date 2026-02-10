@@ -840,29 +840,44 @@ function isValidWhatsAppInvite(raw) {
         await sb.from("gifts").update({ reserved_quantity: 0, reserved: false }).eq("id", id);
         loadData();
       },
+createCoordination: async (giftId) => {
+  const pin = await requestPin(
+    "Organisation übernehmen",
+    "Bitte lege einen 4-stelligen Code fest."
+  );
+  if (!pin) return;
 
-      createCoordination: async (giftId) => {
-        const pin = await requestPin("Organisation übernehmen", "Bitte lege einen 4-stelligen Code fest.");
-        if (!pin) return;
+  const linkRaw = prompt("WhatsApp Gruppenlink einfügen:") || "";
+  const link = normalizeWhatsAppLink(linkRaw);
 
-        const linkRaw = prompt("WhatsApp-Gruppenlink einfügen:") || "";
-const link = linkRaw.trim();
+  if (!isValidWhatsAppInvite(link)) {
+    showToast("Ungültiger WhatsApp Gruppenlink. Bitte direkt aus WhatsApp kopieren.");
+    return;
+  }
 
-if (!isValidWhatsAppInvite(link)) {
-  showToast("Ungültiger WhatsApp-Link.");
-  return;
+  const max = parseInt(prompt("Maximale Teilnehmerzahl? (z.B. 3)"), 10);
+  if (!max || max < 2) {
+    showToast("Ungültige Anzahl.");
+    return;
+  }
+
+  const { error } = await sb.from("gift_coordination_groups").insert({
+    gift_id: giftId,
+    creator_pin: pin,
+    whatsapp_link: link,
+    max_members: max
+  });
+
+  if (error) {
+    console.error(error);
+    showToast("Fehler beim Anlegen.");
+    return;
+  }
+
+  savePin(pin);
+  showToast("Organisation angelegt.");
+  loadData();
 }
-        if (!isValidWhatsAppInvite(link)) { showToast("Ungültiger WhatsApp-Link."); return; }
-
-        const max = parseInt(prompt("Maximale Teilnehmerzahl? (z.B. 3)"), 10);
-        if (!max || max < 2) { showToast("Ungültige Anzahl."); return; }
-
-        const { error } = await sb.from("gift_coordination_groups").insert({
-          gift_id: giftId,
-          creator_pin: pin,
-          whatsapp_link: link,
-          max_members: max
-        });
 
         if (error) { showToast("Fehler beim Anlegen."); return; }
 
