@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -8,582 +7,524 @@
   <meta name="robots" content="noindex, nofollow">
 
   <style>
-    :root {
-      /* Premium Minimal Palette */
-      --bg-root: #F9F8F6;
-      --bg-card: #FFFFFF;
-      --bg-panel: #F2F1EF;
+    :root{
+      --bg-root:#F9F8F6;
+      --bg-card:#FFFFFF;
 
-      --text-primary: #1D1D1F;
-      --text-secondary: #86868B;
-      --text-tertiary: #C7C7CC;
+      --text-primary:#1D1D1F;
+      --text-secondary:#86868B;
 
-      --accent: #1D1D1F;
-      /* Calm accent */
+      --btn-bg:#EAEAEA;
+      --btn-text:#1D1D1F;
+      --btn-bg-hover:#E1E1E1;
 
-      --btn-bg: #EAEAEA;
-      --btn-text: #1D1D1F;
-      --btn-bg-hover: #E1E1E1;
+      --radius-card:16px;
+      --radius-btn:999px;
+      --radius-input:12px;
 
-      --radius-card: 16px;
-      --radius-btn: 999px;
-      --radius-input: 12px;
+      --shadow-soft:0 2px 12px rgba(0,0,0,0.03);
+      --shadow-hover:0 4px 20px rgba(0,0,0,0.05);
 
-      --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.03);
-      --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.05);
-
-      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --ease:cubic-bezier(0.2,0.8,0.2,1);
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      outline: none;
+    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; outline:none; }
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg-root);
+      color:var(--text-primary);
+      margin:0;
+      line-height:1.5;
+      -webkit-font-smoothing:antialiased;
+      padding-bottom:120px;
     }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-root);
-      color: var(--text-primary);
-      margin: 0;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: 120px;
+    .wrap{
+      max-width:680px;
+      margin:0 auto;
+      padding:60px 24px;
     }
 
-    /* Typography */
-    h1 {
-      font-size: 26px;
-      font-weight: 600;
-      text-align: center;
-      margin: 0 0 16px 0;
-      letter-spacing: -0.015em;
+    h1{
+      font-size:26px;
+      font-weight:600;
+      text-align:center;
+      margin:0 0 16px 0;
+      letter-spacing:-0.015em;
     }
 
-    h2 {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-secondary);
-      margin: 0;
+    h2{
+      font-size:13px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      color:var(--text-secondary);
+      margin:0;
     }
 
-    p.intro {
-      font-size: 16px;
-      line-height: 1.6;
-      color: #666;
-      text-align: center;
-      max-width: 540px;
-      margin: 0 auto 32px auto;
-      font-weight: 400;
+    p.intro{
+      font-size:16px;
+      line-height:1.6;
+      color:#666;
+      text-align:center;
+      max-width:540px;
+      margin:0 auto 32px auto;
+      font-weight:400;
     }
 
-    .wrap {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 60px 24px;
+    .hero{
+      width:100%;
+      height:380px;
+      object-fit:cover;
+      border-radius:var(--radius-card);
+      margin-bottom:40px;
+      box-shadow:var(--shadow-soft);
+      filter:sepia(0.05) contrast(0.96);
     }
 
-    /* Hero */
-    .hero {
-      width: 100%;
-      height: 380px;
-      object-fit: cover;
-      border-radius: var(--radius-card);
-      margin-bottom: 40px;
-      box-shadow: var(--shadow-soft);
-      filter: sepia(0.05) contrast(0.96);
+    /* Group gift */
+    .group-gift{
+      background:var(--bg-card);
+      border-radius:var(--radius-card);
+      padding:24px;
+      margin:0 0 32px 0;
+      box-shadow:var(--shadow-soft);
     }
 
-    /* Progress Bar */
-    .progress-container {
-      margin-bottom: 40px;
-      text-align: center;
+    .group-gift p{
+      margin:12px 0 16px 0;
+      color:var(--text-secondary);
+      font-size:15px;
+      line-height:1.6;
     }
 
-    .progress-text {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-      font-weight: 500;
+    .iban-container{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:#FCFCFC;
+      border:1px solid rgba(0,0,0,0.06);
+      cursor:pointer;
+      transition:transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
+      user-select:none;
+      width:fit-content;
     }
 
-    .progress-track {
-      width: 100%;
-      height: 4px;
-      background: #E5E5E5;
-      border-radius: 2px;
-      overflow: hidden;
+    .iban-container:hover{
+      border-color:#CCC;
+      transform:translateY(-1px);
+      box-shadow:0 4px 12px rgba(0,0,0,0.05);
     }
 
-    .progress-fill {
-      height: 100%;
-      background: var(--text-secondary);
-      width: 0%;
-      transition: width 1s var(--ease);
+    .iban-container:active{ transform:translateY(0); }
+
+    .iban-text{
+      font-size:15px;
+      letter-spacing:0.02em;
+      color:#333;
+      font-weight:500;
+      white-space:nowrap;
     }
 
-    /* Controls (Search, Sort, Filter) */
-    .controls {
-      background: var(--bg-card);
-      padding: 20px;
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    .copy-icon{ width:16px; height:16px; fill:#888; }
+
+    /* Progress */
+    .progress-container{
+      margin-bottom:40px;
+      text-align:center;
+      display:none;
+    }
+    .progress-text{
+      font-size:13px;
+      color:var(--text-secondary);
+      margin-bottom:8px;
+      font-weight:500;
+    }
+    .progress-track{
+      width:100%;
+      height:4px;
+      background:#E5E5E5;
+      border-radius:2px;
+      overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;
+      background:var(--text-secondary);
+      width:0%;
+      transition:width 0.8s var(--ease);
     }
 
-    .search-row {
-      position: relative;
+    /* Controls */
+    .controls{
+      background:var(--bg-card);
+      padding:20px;
+      border-radius:var(--radius-card);
+      box-shadow:var(--shadow-soft);
+      margin-bottom:32px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
     }
 
-    .search-input {
-      width: 100%;
-      padding: 12px 16px 12px 40px;
-      font-size: 15px;
-      border: 1px solid #E5E5E5;
-      border-radius: var(--radius-input);
-      background: #FCFCFC;
-      transition: all 0.2s;
+    .search-row{ position:relative; }
+    .search-input{
+      width:100%;
+      padding:12px 16px 12px 40px;
+      font-size:15px;
+      border:1px solid #E5E5E5;
+      border-radius:var(--radius-input);
+      background:#FCFCFC;
+      transition:all 0.2s;
+    }
+    .search-input:focus{
+      border-color:#CCC;
+      background:#FFF;
+    }
+    .search-icon{
+      position:absolute;
+      left:12px;
+      top:50%;
+      transform:translateY(-50%);
+      width:16px;
+      height:16px;
+      fill:var(--text-secondary);
+      pointer-events:none;
     }
 
-    .search-input:focus {
-      border-color: #CCC;
-      background: #FFF;
+    .filter-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
     }
 
-    .search-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      fill: var(--text-secondary);
-      pointer-events: none;
+    .toggles{ display:flex; gap:12px; }
+
+    .toggle-btn{
+      background:transparent;
+      border:1px solid #E5E5E5;
+      padding:8px 14px;
+      border-radius:99px;
+      font-size:13px;
+      color:var(--text-secondary);
+      cursor:pointer;
+      transition:all 0.2s;
+      user-select:none;
+      min-width:140px;
+      text-align:center;
+    }
+    .toggle-btn.active{
+      background:var(--text-primary);
+      color:#FFF;
+      border-color:var(--text-primary);
     }
 
-    .filter-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      justify-content: space-between;
+    .sort-select{
+      border:none;
+      background:transparent;
+      font-size:13px;
+      color:var(--text-primary);
+      font-weight:500;
+      cursor:pointer;
+      padding-right:10px;
+      text-align:right;
+      appearance:none;
     }
 
-    .toggles {
-      display: flex;
-      gap: 12px;
+    /* Section */
+    .section-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:40px 0 16px 0;
+      padding:0 4px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .section-title:hover{ opacity:0.85; }
+    .section-chevron{
+      width:12px;
+      height:12px;
+      fill:var(--text-secondary);
+      transition:transform 0.3s;
+    }
+    .section-title.collapsed .section-chevron{ transform:rotate(-90deg); }
+
+    .gift-group{
+      transition:height 0.3s var(--ease), opacity 0.3s var(--ease);
+      overflow:hidden;
+    }
+    .gift-group.collapsed{
+      height:0 !important;
+      opacity:0;
     }
 
-    .toggle-btn {
-      background: transparent;
-      border: 1px solid #E5E5E5;
-      padding: 8px 14px;
-      border-radius: 99px;
-      font-size: 13px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.2s;
-      user-select: none;
+    /* Items */
+    .item{
+      background:var(--bg-card);
+      padding:24px;
+      margin-bottom:12px;
+      border-radius:var(--radius-card);
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:20px;
+      align-items:center;
+      box-shadow:0 1px 3px rgba(0,0,0,0.02);
+      transition:all 0.2s var(--ease);
+      border:1px solid transparent;
+    }
+    .item:hover{
+      box-shadow:var(--shadow-hover);
+      transform:translateY(-1px);
+      border-color:rgba(0,0,0,0.03);
     }
 
-    .toggle-btn.active {
-      background: var(--text-primary);
-      color: #FFF;
-      border-color: var(--text-primary);
+    /* Highlight if reserved by me */
+    .item.my-reservation{
+      border:1px solid #E0E0E0;
+      background:#FFFEFA;
     }
 
-    .sort-select {
-      border: none;
-      background: transparent;
-      font-size: 13px;
-      color: var(--text-primary);
-      font-weight: 500;
-      cursor: pointer;
-      padding-right: 16px;
-      text-align: right;
-      appearance: none;
-      /* simple cleaner look */
-      /* Custom arrow via bg image if desired, keeping simple for now */
+    .item-content{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
     }
 
-    /* Gift List */
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 40px 0 16px 0;
-      padding: 0 4px;
-      cursor: pointer;
-      user-select: none;
+    .item-title{
+      font-size:17px;
+      font-weight:500;
+      color:var(--text-primary);
     }
 
-    .section-title:hover {
-      opacity: 0.8;
+    .meta{
+      font-size:14px;
+      color:var(--text-secondary);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    .section-chevron {
-      width: 12px;
-      height: 12px;
-      fill: var(--text-secondary);
-      transition: transform 0.3s;
+    .meta a{
+      color:var(--text-secondary);
+      text-decoration:none;
+      position:relative;
+      transition:color 0.2s;
+    }
+    .meta a:hover{ color:var(--text-primary); }
+    .meta a::after{
+      content:"";
+      position:absolute;
+      bottom:-1px;
+      left:0;
+      width:100%;
+      height:1px;
+      background:currentColor;
+      opacity:0.25;
     }
 
-    .section-title.collapsed .section-chevron {
-      transform: rotate(-90deg);
-    }
-
-    .gift-group {
-      transition: height 0.3s var(--ease), opacity 0.3s var(--ease);
-      overflow: hidden;
-    }
-
-    .gift-group.collapsed {
-      height: 0 !important;
-      opacity: 0;
-    }
-
-    /* Gift Item (No Image) */
-    .item {
-      background: var(--bg-card);
-      padding: 24px;
-      margin-bottom: 12px;
-      border-radius: var(--radius-card);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      /* Content | Button */
-      gap: 20px;
-      /* whitespace */
-      align-items: center;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-      transition: all 0.2s var(--ease);
-      border: 1px solid transparent;
-    }
-
-    .item:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-1px);
-      border-color: rgba(0, 0, 0, 0.03);
-    }
-
-    /* Reserved by Me Highlight */
-    .item.my-reservation {
-      border: 1px solid #E0E0E0;
-      background: #FFFEFA;
-    }
-
-    .item-content {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .item-title {
-      font-size: 17px;
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-
-    .meta {
-      font-size: 14px;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .meta a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      position: relative;
-      transition: color 0.2s;
-    }
-
-    .meta a:hover {
-      color: var(--text-primary);
-    }
-
-    .meta a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: currentColor;
-      opacity: 0.3;
-    }
-
-    .sep {
-      width: 2px;
-      height: 2px;
-      background: #CCC;
-      border-radius: 50%;
+    .sep{
+      width:2px;
+      height:2px;
+      background:#CCC;
+      border-radius:50%;
+      display:inline-block;
     }
 
     /* Buttons */
-    button {
-      background: var(--btn-bg);
-      color: var(--btn-text);
-      border: none;
-      padding: 10px 18px;
-      border-radius: var(--radius-btn);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
-      min-width: 100px;
-      text-align: center;
+    button{
+      background:var(--btn-bg);
+      color:var(--btn-text);
+      border:none;
+      padding:10px 18px;
+      border-radius:var(--radius-btn);
+      font-size:13px;
+      font-weight:500;
+      cursor:pointer;
+      transition:background 0.2s;
+      min-width:120px;
+      text-align:center;
+    }
+    button:hover:not(:disabled){ background:var(--btn-bg-hover); }
+
+    /* Reserved-by-me button (still clickable to undo) */
+    button.reserved{
+      background:transparent;
+      color:var(--text-secondary);
+      border:1px solid #E5E5E5;
+    }
+    button.reserved:hover{ border-color:#CCC; color:var(--text-primary); }
+
+    button:disabled{
+      background:#F5F5F5;
+      color:#CCC;
+      cursor:default;
     }
 
-    button:hover:not(:disabled) {
-      background: var(--btn-bg-hover);
+    /* Empty + skeleton */
+    .empty-state{
+      text-align:center;
+      padding:40px;
+      color:var(--text-secondary);
+      font-size:15px;
     }
 
-    button.undo {
-      background: transparent;
-      color: var(--text-secondary);
-      border: 1px solid #E5E5E5;
+    .skeleton{
+      height:72px;
+      background:#EEE;
+      border-radius:var(--radius-card);
+      margin-bottom:12px;
+      animation:pulse 1.8s infinite;
+    }
+    @keyframes pulse{
+      0%{ opacity:0.55; }
+      50%{ opacity:0.85; }
+      100%{ opacity:0.55; }
     }
 
-    button.undo:hover {
-      border-color: #CCC;
-      color: var(--text-primary);
+    /* My reservations section */
+    #my-reservations-section{
+      background:#F4F4F4;
+      border-radius:var(--radius-card);
+      padding:24px;
+      margin-bottom:40px;
+      display:none;
     }
-
-    button:disabled {
-      background: #F5F5F5;
-      color: #CCC;
-      cursor: default;
+    #my-reservations-section h2{
+      margin-bottom:16px;
+      margin-top:0;
+      color:#333;
     }
-
-    /* States */
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      color: var(--text-secondary);
-      font-size: 15px;
-    }
-
-    /* My Reservations Special Section */
-    #my-reservations-section {
-      background: #F4F4F4;
-      border-radius: var(--radius-card);
-      padding: 24px;
-      margin-bottom: 40px;
-      display: none;
-      /* hidden by default */
-    }
-
-    #my-reservations-section h2 {
-      margin-bottom: 16px;
-      margin-top: 0;
-      color: #333;
-    }
-
-    #my-reservations-list .item {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      background: #FFF;
+    #my-reservations-list .item{
+      box-shadow:0 2px 8px rgba(0,0,0,0.04);
+      background:#FFF;
     }
 
     /* Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(4px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.30);
+      backdrop-filter:blur(4px);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      z-index:999;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 0.25s var(--ease);
+    }
+    .modal-overlay.active{
+      opacity:1;
+      pointer-events:auto;
     }
 
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
+    .modal{
+      background:#FFF;
+      width:90%;
+      max-width:360px;
+      padding:28px;
+      border-radius:20px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.10);
+      text-align:center;
+      transform:scale(0.96);
+      transition:transform 0.25s var(--ease);
     }
+    .modal-overlay.active .modal{ transform:scale(1); }
 
-    .modal {
-      background: #FFF;
-      width: 90%;
-      max-width: 340px;
-      padding: 32px;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transform: scale(0.95);
-      transition: transform 0.3s;
+    .modal h3{
+      font-size:18px;
+      margin:0 0 12px 0;
     }
-
-    .modal-overlay.active .modal {
-      transform: scale(1);
+    .modal p{
+      font-size:15px;
+      color:#666;
+      margin:0 0 22px 0;
+      line-height:1.5;
     }
-
-    .modal h3 {
-      font-size: 18px;
-      margin: 0 0 12px 0;
+    .modal-actions{
+      display:flex;
+      gap:10px;
     }
-
-    .modal p {
-      font-size: 15px;
-      color: #666;
-      margin: 0 0 24px 0;
-      line-height: 1.5;
+    .modal-btn{
+      flex:1;
+      padding:12px;
+      border-radius:12px;
+      font-size:15px;
+      min-width:auto;
     }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
+    .modal-btn.primary{
+      background:var(--text-primary);
+      color:#FFF;
     }
-
-    .modal-btn {
-      flex: 1;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 15px;
-    }
-
-    .modal-btn.primary {
-      background: #1D1D1F;
-      color: #FFF;
-    }
-
-    .modal-btn.secondary {
-      background: #F5F5F5;
-      color: #333;
+    .modal-btn.secondary{
+      background:#F5F5F5;
+      color:#333;
     }
 
     /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: #222;
-      color: #FFF;
-      padding: 12px 24px;
-      border-radius: 99px;
-      font-size: 14px;
-      opacity: 0;
-      transition: all 0.4s;
-      z-index: 1000;
-      pointer-events: none;
+    .toast{
+      position:fixed;
+      bottom:30px;
+      left:50%;
+      transform:translateX(-50%) translateY(18px);
+      background:#222;
+      color:#FFF;
+      padding:12px 22px;
+      border-radius:99px;
+      font-size:14px;
+      opacity:0;
+      transition:all 0.35s var(--ease);
+      z-index:1000;
+      pointer-events:none;
+    }
+    .toast.active{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
     }
 
-    .toast.active {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    @media (max-width:600px){
+      .wrap{ padding:40px 20px; }
+      .hero{ height:280px; }
 
-    /* Skeleton */
-    .skeleton {
-      height: 72px;
-      background: #EEE;
-      border-radius: var(--radius-card);
-      margin-bottom: 12px;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        opacity: 0.5;
+      .item{
+        grid-template-columns:1fr;
+        gap:16px;
+        padding:20px;
       }
 
-      50% {
-        opacity: 0.8;
+      button{ width:100%; }
+
+      .filter-row{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .toggles{
+        justify-content:space-between;
+        flex-wrap:wrap;
+      }
+      .toggle-btn{
+        flex:1;
+        min-width:0;
+      }
+      .sort-select{
+        text-align:left;
+        margin-top:6px;
       }
 
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .iban-container:hover {
-      border-color: #CCC;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .iban-container:active {
-      transform: translateY(0);
-    }
-
-    .iban-text {
-      font-family: -apple-system, monospace;
-      /* Monospace for numbers feels correct but let's test sans */
-      font-family: inherit;
-      /* Keep sans for elegance */
-      font-weight: 500;
-      font-size: 15px;
-      letter-spacing: 0.02em;
-      color: #333;
-    }
-
-    .copy-icon {
-      width: 16px;
-      height: 16px;
-      fill: #888;
-    }
-
-    @media (max-width: 600px) {
-      .wrap {
-        padding: 40px 20px;
+      .iban-container{
+        width:100%;
+        justify-content:center;
       }
-
-      .hero {
-        height: 280px;
-      }
-
-      .item {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 20px;
-      }
-
-      button {
-        width: 100%;
-        margin-top: 4px;
-      }
-
-      .filter-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .toggles {
-        justify-content: space-between;
-      }
-
-      .sort-select {
-        text-align: left;
-        margin-top: 8px;
-      }
-
-      .group-gift {
-        padding: 24px 20px;
-      }
-
-      .iban-container {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .iban-text {
-        font-size: 13px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      .iban-text{
+        font-size:13px;
+        overflow:hidden;
+        text-overflow:ellipsis;
       }
     }
   </style>
@@ -591,55 +532,51 @@
 
 <body>
   <div class="wrap">
-
-    <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" alt="Brautpaar"
-      class="hero">
+    <img
+      src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000"
+      alt="Brautpaar"
+      class="hero"
+    >
 
     <h1>Unsere Hochzeitswunschliste</h1>
     <p class="intro">
       Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind natürlich kein Muss.
     </p>
 
-    <!-- Group Gift Section -->
     <div class="group-gift">
       <h2>Sammelgeschenk – KPM Kurland</h2>
       <p>
-        Wer sich an dem KPM Kurland Sammelgeschenk beteiligen möchte,
-        kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.
+        Wer sich an dem KPM Kurland Sammelgeschenk beteiligen möchte, kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.
       </p>
 
       <div class="iban-container" onclick="window.app.copyIBAN()" title="IBAN kopieren">
-        <svg class="copy-icon" viewBox="0 0 24 24">
-          <path
-            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+        <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
         </svg>
         <span class="iban-text">DE89 2007 0024 0191 3888 02</span>
       </div>
-      <div style="font-size: 13px; color: #888; margin-top: 8px;">Max Tiefenbacher</div>
+      <div style="font-size:13px; color:#888; margin-top:8px;">Max Tiefenbacher</div>
     </div>
 
-    <!-- Progress -->
-    <div class="progress-container" id="progress-container" style="display:none;">
-      <div class="progress-text" id="progress-text">0 von 0 Wünschen erfüllt</div>
-      <div class="progress-track">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
+    <div class="progress-container" id="progress-container">
+      <div class="progress-text" id="progress-text">0 von 0 Wünschen vergeben</div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
 
-    <!-- Controls -->
     <div class="controls">
       <div class="search-row">
-        <svg class="search-icon" viewBox="0 0 24 24">
-          <path
-            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
         </svg>
         <input type="text" id="search-input" class="search-input" placeholder="Wunsch suchen...">
       </div>
+
       <div class="filter-row">
         <div class="toggles">
-          <button class="toggle-btn" id="filter-free">Nur Verfügbare</button>
-          <button class="toggle-btn" id="filter-mine">Meine Reservierungen</button>
+          <button class="toggle-btn" id="filter-free" type="button">Nur Verfügbare</button>
+          <button class="toggle-btn" id="filter-mine" type="button">Meine Reservierungen</button>
         </div>
+
         <select id="sort-select" class="sort-select">
           <option value="cat">Kategorie</option>
           <option value="status">Status (Verfügbar zuerst)</option>
@@ -649,165 +586,158 @@
       </div>
     </div>
 
-    <!-- My Reservations Section -->
     <div id="my-reservations-section">
       <h2>Deine Reservierungen</h2>
       <div id="my-reservations-list"></div>
     </div>
 
-    <!-- Main List -->
     <div id="list">
       <div class="skeleton"></div>
       <div class="skeleton"></div>
       <div class="skeleton"></div>
     </div>
-
   </div>
 
-  <!-- Modal -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <h3 id="modalTitle">Titel</h3>
       <p id="modalText">Text</p>
       <div class="modal-actions">
-        <button class="modal-btn secondary" id="modalCancel">Abbrechen</button>
-        <button class="modal-btn primary" id="modalConfirm">Bestätigen</button>
+        <button class="modal-btn secondary" id="modalCancel" type="button">Abbrechen</button>
+        <button class="modal-btn primary" id="modalConfirm" type="button">Bestätigen</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast">Aktion erfolgreich</div>
+  <div class="toast" id="toast" aria-live="polite">Aktion erfolgreich</div>
 
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
     const SUPABASE_URL = "https://tpfovcyqqhqlyzcopiwt.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwZm92Y3lxcWhxbHl6Y29waXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyMzQ0NDgsImV4cCI6MjA4MTgxMDQ0OH0.UBAnfI_s7vQkPMDmwZHLVTYUkmZIAMvS6sK0w60Cvps";
-
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    /* --- global state --- */
     const state = {
-      gifts: [], // Raw data
-      filter: {
-        search: "",
-        showFreeOnly: false,
-        showMineOnly: false
-      },
+      gifts: [],
+      filter: { search: "", showFreeOnly: false, showMineOnly: false },
       sort: "cat", // cat, status, price_asc, price_desc
-      categoryState: {} // expanded/collapsed
+      categoryState: {} // collapsed: true/false
     };
 
-    /* --- helpers --- */
-    function getLocalToken(id) { return localStorage.getItem("gift_token_" + id); }
-    function setLocalToken(id, token) { localStorage.setItem("gift_token_" + id, token); }
-    function clearLocalToken(id) { localStorage.removeItem("gift_token_" + id); }
-    function randomToken() {
+    function getLocalToken(id){ return localStorage.getItem("gift_token_" + id); }
+    function setLocalToken(id, token){ localStorage.setItem("gift_token_" + id, token); }
+    function clearLocalToken(id){ localStorage.removeItem("gift_token_" + id); }
+    function randomToken(){
       const arr = new Uint8Array(16);
       crypto.getRandomValues(arr);
-      return Array.from(arr).map(b => b.toString(16).padStart(2, "0")).join("");
+      return Array.from(arr).map(b => b.toString(16).padStart(2,"0")).join("");
     }
 
-    function parsePrice(priceStr) {
-      if (!priceStr) return Infinity; // No price = last
-      const matches = priceStr.match(/[\d.,]+/);
-      if (!matches) return Infinity;
-      // Replace german decimal comma with dot if needed, remove thousands separators
-      // Simple heuristic: remove "." if follows by ",". 
-      // Let's stick to simple: remove non-numeric chars, keep last dot/comma as decimal
-      let numStr = matches[0].replace(/\./g, "").replace(",", ".");
-      const num = parseFloat(numStr);
-      return isNaN(num) ? Infinity : num;
+    function parsePrice(priceStr){
+      if (!priceStr) return Infinity;
+      const m = String(priceStr).match(/[\d.,]+/);
+      if (!m) return Infinity;
+      const numStr = m[0].replace(/\./g, "").replace(",", ".");
+      const n = parseFloat(numStr);
+      return Number.isFinite(n) ? n : Infinity;
     }
 
-    /* --- UI Rendering --- */
+    function escapeHtml(s){
+      return String(s ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#39;");
+    }
 
-    function render() {
-      // 1. Filter
+    function catKey(c){ return encodeURIComponent(String(c ?? "")); }
+
+    function render(){
+      const searchLower = state.filter.search.trim().toLowerCase();
+
       let filtered = state.gifts.filter(g => {
-        const matchesSearch = g.title.toLowerCase().includes(state.filter.search.toLowerCase());
+        const title = String(g.title ?? "");
+        const matchesSearch = !searchLower || title.toLowerCase().includes(searchLower);
 
-        let matchesToggle = true;
         const myToken = getLocalToken(g.id);
         const isMine = g.reserved && g.reserved_token && myToken && g.reserved_token === myToken;
 
-        if (state.filter.showFreeOnly && g.reserved) matchesToggle = false;
-        // "Show mine" overrides "show free" naturally if both checked (unlikely UX but safe logic)
-        if (state.filter.showMineOnly && !isMine) matchesToggle = false;
+        if (state.filter.showFreeOnly && g.reserved) return false;
+        if (state.filter.showMineOnly && !isMine) return false;
 
-        return matchesSearch && matchesToggle;
+        return matchesSearch;
       });
 
-      // 2. Sort
-      filtered.sort((a, b) => {
-        if (state.sort === 'price_asc') return parsePrice(a.Preis) - parsePrice(b.Preis);
-        if (state.sort === 'price_desc') return parsePrice(b.Preis) - parsePrice(a.Preis);
-        if (state.sort === 'status') {
-          // Available first
-          if (a.reserved === b.reserved) return a.title.localeCompare(b.title);
-          return a.reserved ? 1 : -1;
+      filtered.sort((a,b) => {
+        if (state.sort === "price_asc") return parsePrice(a.Preis) - parsePrice(b.Preis);
+        if (state.sort === "price_desc") return parsePrice(b.Preis) - parsePrice(a.Preis);
+        if (state.sort === "status"){
+          if (!!a.reserved === !!b.reserved) return String(a.title).localeCompare(String(b.title), "de");
+          return a.reserved ? 1 : -1; // free first
         }
-        // Default: Category then Title (Already sorted by Supabase roughly, but let's be strict)
-        if (a.category !== b.category) return a.category.localeCompare(b.category);
-        return a.title.localeCompare(b.title);
+        if (String(a.category) !== String(b.category)) return String(a.category).localeCompare(String(b.category), "de");
+        return String(a.title).localeCompare(String(b.title), "de");
       });
 
-      // 3. Render Progress
+      // Progress
       const total = state.gifts.length;
       const reservedCount = state.gifts.filter(g => g.reserved).length;
       const width = total > 0 ? (reservedCount / total) * 100 : 0;
-      document.getElementById('progress-fill').style.width = width + "%";
-      document.getElementById('progress-text').textContent = `${reservedCount} von ${total} Wünschen erfüllt`;
-      document.getElementById('progress-container').style.display = 'block';
+      document.getElementById("progress-fill").style.width = width + "%";
+      document.getElementById("progress-text").textContent = `${reservedCount} von ${total} Wünschen vergeben`;
+      document.getElementById("progress-container").style.display = "block";
 
-      // 4. Render My Reservations
+      // My reservations
       const myGifts = state.gifts.filter(g => {
         const t = getLocalToken(g.id);
         return g.reserved && g.reserved_token && t && g.reserved_token === t;
       });
-      const myResSection = document.getElementById('my-reservations-section');
-      const myResList = document.getElementById('my-reservations-list');
 
-      if (myGifts.length > 0) {
-        myResSection.style.display = 'block';
+      const myResSection = document.getElementById("my-reservations-section");
+      const myResList = document.getElementById("my-reservations-list");
+
+      if (myGifts.length > 0){
+        myResSection.style.display = "block";
         myResList.innerHTML = myGifts.map(g => renderItem(g, true)).join("");
       } else {
-        myResSection.style.display = 'none';
+        myResSection.style.display = "none";
+        myResList.innerHTML = "";
       }
 
-      // 5. Render Main List (Grouped by Category if sorting by Category)
-      const listContainer = document.getElementById('list');
+      const listContainer = document.getElementById("list");
 
-      if (state.sort === 'cat') {
+      if (state.sort === "cat"){
         const cats = {};
-        filtered.forEach(g => (cats[g.category] ??= []).push(g));
+        for (const g of filtered){
+          const c = String(g.category ?? "Sonstiges");
+          (cats[c] ??= []).push(g);
+        }
 
-        if (Object.keys(cats).length === 0) {
+        const catNames = Object.keys(cats);
+        if (catNames.length === 0){
           listContainer.innerHTML = `<div class="empty-state">Keine Geschenke gefunden.</div>`;
           return;
         }
 
         let html = "";
-        for (const c in cats) {
-          const isCollapsed = state.categoryState[c] === true; // default false (expanded)
-          const chevronStyle = isCollapsed ? 'transform: rotate(-90deg);' : '';
-          const groupClass = isCollapsed ? 'collapsed' : '';
-
+        for (const c of catNames){
+          const key = catKey(c);
+          const isCollapsed = state.categoryState[key] === true;
           html += `
-                    <div class="section-title ${isCollapsed ? 'collapsed' : ''}" onclick="window.app.toggleCat('${c}')">
-                        <h2>${c}</h2>
-                        <svg class="section-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                    </div>
-                    <div class="gift-group ${groupClass}" id="cat-${c}">
-                        ${cats[c].map(g => renderItem(g)).join("")}
-                    </div>
-                `;
+            <div class="section-title ${isCollapsed ? "collapsed" : ""}" onclick="window.app.toggleCat('${key}')">
+              <h2>${escapeHtml(c)}</h2>
+              <svg class="section-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+            </div>
+            <div class="gift-group ${isCollapsed ? "collapsed" : ""}" id="cat-${key}">
+              ${cats[c].map(g => renderItem(g)).join("")}
+            </div>
+          `;
         }
         listContainer.innerHTML = html;
       } else {
-        // Flat list for other sort methods
-        if (filtered.length === 0) {
+        if (filtered.length === 0){
           listContainer.innerHTML = `<div class="empty-state">Keine Geschenke gefunden.</div>`;
           return;
         }
@@ -815,79 +745,84 @@
       }
     }
 
-    function renderItem(g, isMySection = false) {
+    function renderItem(g, isMySection = false){
       const myToken = getLocalToken(g.id);
       const isMine = g.reserved && g.reserved_token && myToken && g.reserved_token === myToken;
 
-      // Button Logic
-      let btn = "";
-      if (!g.reserved) {
-        btn = `<button onclick="window.app.reserve('${g.id}')">Reservieren</button>`;
-      } else if (isMine) {
-        btn = `<button class="undo" onclick="window.app.unreserve('${g.id}')">Bearbeiten</button>`;
+      let btnHtml = "";
+      if (!g.reserved){
+        btnHtml = `<button type="button" onclick="window.app.reserve('${escapeHtml(g.id)}')">Reservieren</button>`;
+      } else if (isMine){
+        // Button label requested: not "Bearbeiten"
+        // Still clickable to undo (modal explains)
+        btnHtml = `<button type="button" class="reserved" onclick="window.app.unreserve('${escapeHtml(g.id)}')">Reserviert</button>`;
       } else {
-        btn = `<button disabled>Vergeben</button>`;
+        btnHtml = `<button type="button" disabled>Vergeben</button>`;
       }
 
-      const priceHtml = g.Preis ? `<span>${g.Preis}</span><div class="sep"></div>` : "";
+      const priceHtml = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><span class="sep"></span>` : "";
 
       return `
-            <div class="item ${isMine ? 'my-reservation' : ''}">
-                <div class="item-content">
-                    <div class="item-title">${g.title}</div>
-                    <div class="meta">
-                        ${priceHtml}
-                        <a href="${g.url}" target="_blank" rel="noopener">Zum Shop ↗</a>
-                    </div>
-                </div>
-                ${btn}
+        <div class="item ${isMine ? "my-reservation" : ""}">
+          <div class="item-content">
+            <div class="item-title">${escapeHtml(g.title)}</div>
+            <div class="meta">
+              ${priceHtml}
+              <a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a>
             </div>
-        `;
+          </div>
+          ${btnHtml}
+        </div>
+      `;
     }
 
-    /* --- Interactions --- */
-
-    // Modal
-    function confirmAction(title, text, confirmBtnText = "Bestätigen") {
+    function confirmAction(title, text, confirmBtnText){
       return new Promise((resolve) => {
-        const overlay = document.getElementById('modalOverlay');
-        const btns = {
-          confirm: document.getElementById('modalConfirm'),
-          cancel: document.getElementById('modalCancel')
+        const overlay = document.getElementById("modalOverlay");
+        const confirmBtn = document.getElementById("modalConfirm");
+        const cancelBtn = document.getElementById("modalCancel");
+
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalText").textContent = text;
+        confirmBtn.textContent = confirmBtnText;
+
+        const cleanup = () => {
+          confirmBtn.onclick = null;
+          cancelBtn.onclick = null;
+          window.removeEventListener("keydown", onKey);
         };
 
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalText').textContent = text;
-        btns.confirm.textContent = confirmBtnText;
-
         const close = (val) => {
-          overlay.classList.remove('active');
-          btns.confirm.onclick = null;
-          btns.cancel.onclick = null;
+          overlay.classList.remove("active");
+          cleanup();
           resolve(val);
         };
 
-        btns.confirm.onclick = () => close(true);
-        btns.cancel.onclick = () => close(false);
-        overlay.classList.add('active');
+        const onKey = (e) => {
+          if (e.key === "Escape") close(false);
+          if (e.key === "Enter") close(true);
+        };
+
+        confirmBtn.onclick = () => close(true);
+        cancelBtn.onclick = () => close(false);
+
+        window.addEventListener("keydown", onKey);
+        overlay.classList.add("active");
       });
     }
 
-    // Toast
-    function showToast(msg) {
-      const t = document.getElementById('toast');
+    function showToast(msg){
+      const t = document.getElementById("toast");
       t.textContent = msg;
-      t.classList.add('active');
-      setTimeout(() => t.classList.remove('active'), 2500);
+      t.classList.add("active");
+      setTimeout(() => t.classList.remove("active"), 2400);
     }
 
-    /* --- App Logic --- */
-
-    async function loadData() {
+    async function loadData(){
       const { data, error } = await sb.from("gifts").select("*").order("category").order("title");
-      if (error || !data) {
+      if (error || !data){
         console.error(error);
-        document.getElementById('list').innerHTML = `<div class="empty-state">Fehler beim Laden.</div>`;
+        document.getElementById("list").innerHTML = `<div class="empty-state">Fehler beim Laden.</div>`;
         return;
       }
       state.gifts = data;
@@ -895,89 +830,94 @@
     }
 
     window.app = {
-      toggleCat: (cat) => {
-        state.categoryState[cat] = !state.categoryState[cat];
+      toggleCat: (key) => {
+        state.categoryState[key] = !state.categoryState[key];
         render();
       },
+
       reserve: async (id) => {
         const ok = await confirmAction("Reservieren?", "Möchtest du diesen Wunsch für dich reservieren?", "Ja, reservieren");
         if (!ok) return;
 
         const token = randomToken();
-        // Optimistic update locally
-        const idx = state.gifts.findIndex(g => g.id === id);
-        if (idx !== -1) {
+
+        // optimistic UI
+        const idx = state.gifts.findIndex(g => String(g.id) === String(id));
+        if (idx !== -1){
           state.gifts[idx].reserved = true;
           state.gifts[idx].reserved_token = token;
           setLocalToken(id, token);
           render();
         }
 
-        await sb.from("gifts").update({
-          reserved: true, reserved_token: token, reserved_at: new Date().toISOString()
-        }).eq("id", id).eq("reserved", false);
+        await sb.from("gifts")
+          .update({ reserved:true, reserved_token:token, reserved_at:new Date().toISOString() })
+          .eq("id", id)
+          .eq("reserved", false);
 
-        loadData(); // Sync
-        showToast("Reserviert!");
+        await loadData();
+        showToast("Reserviert");
       },
+
       unreserve: async (id) => {
-        const ok = await confirmAction("Freigeben?", "Möchtest du diesen Wunsch wieder freigeben?", "Ja, freigeben");
+        const ok = await confirmAction("Freigeben?", "Möchtest du diese Reservierung wieder freigeben?", "Ja, freigeben");
         if (!ok) return;
 
         const token = getLocalToken(id);
-        // Optimistic
-        const idx = state.gifts.findIndex(g => g.id === id);
-        if (idx !== -1) {
+
+        // optimistic UI
+        const idx = state.gifts.findIndex(g => String(g.id) === String(id));
+        if (idx !== -1){
           state.gifts[idx].reserved = false;
           state.gifts[idx].reserved_token = null;
           clearLocalToken(id);
           render();
         }
 
-        await sb.from("gifts").update({
-          reserved: false, reserved_token: null, reserved_at: null
-        }).eq("id", id).eq("reserved_token", token);
+        await sb.from("gifts")
+          .update({ reserved:false, reserved_token:null, reserved_at:null })
+          .eq("id", id)
+          .eq("reserved_token", token);
 
-        loadData();
-        showToast("Freigegeben.");
+        await loadData();
+        showToast("Freigegeben");
       },
+
       copyIBAN: () => {
-        const text = "DE89 2007 0024 0191 3888 02";
-        navigator.clipboard.writeText(text.replace(/\s/g, "")).then(() => {
+        const raw = "DE89 2007 0024 0191 3888 02";
+        const iban = raw.replace(/\s/g, "");
+        navigator.clipboard.writeText(iban).then(() => {
           showToast("IBAN kopiert");
-        }).catch(err => {
+        }).catch(() => {
+          // fallback: still show success message
           showToast("IBAN kopiert");
         });
       }
     };
 
-    /* --- Event Listeners --- */
-    document.getElementById('search-input').addEventListener('input', (e) => {
+    document.getElementById("search-input").addEventListener("input", (e) => {
       state.filter.search = e.target.value;
       render();
     });
 
-    document.getElementById('filter-free').addEventListener('click', (e) => {
+    document.getElementById("filter-free").addEventListener("click", (e) => {
       state.filter.showFreeOnly = !state.filter.showFreeOnly;
-      e.target.classList.toggle('active', state.filter.showFreeOnly);
+      e.target.classList.toggle("active", state.filter.showFreeOnly);
       render();
     });
 
-    document.getElementById('filter-mine').addEventListener('click', (e) => {
+    document.getElementById("filter-mine").addEventListener("click", (e) => {
       state.filter.showMineOnly = !state.filter.showMineOnly;
-      e.target.classList.toggle('active', state.filter.showMineOnly);
+      e.target.classList.toggle("active", state.filter.showMineOnly);
       render();
     });
 
-    document.getElementById('sort-select').addEventListener('change', (e) => {
+    document.getElementById("sort-select").addEventListener("change", (e) => {
       state.sort = e.target.value;
       render();
     });
 
-    // Init
     loadData();
-
   </script>
 </body>
-
 </html>
