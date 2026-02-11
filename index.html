@@ -535,7 +535,7 @@
         if (!g) return;
         if (getAvailable(g) < 1) { showToast("Nicht mehr verfügbar."); return; }
 
-        const pin = await requestPin("Wunsch reservieren", "Bitte wähle einen eigenen 4-stelligen Code und merke dir diesen!");
+        const pin = await requestPin("Wunsch reservieren", "Bitte wähle einen persönlichen 4-stelligen Code und merke dir diesen! Mit diesem Code kannst du deine Reservierung später wieder ändern oder freigeben.");
         if (!pin) return;
 
         const { data: fresh, error: fErr } = await sb.from("gifts").select("quantity, reserved_quantity").eq("id", id).single();
