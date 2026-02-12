@@ -76,7 +76,6 @@
     .section-chevron{width:14px;height:14px;fill:var(--text-secondary);flex:0 0 auto;transition:transform 0.25s;}
     .section-title.collapsed .section-chevron{transform:rotate(-90deg);}
 
-    /* Stabiler Collapse */
     .gift-group{display:block;}
     .gift-group.collapsed{display:none;}
 
@@ -230,7 +229,7 @@
     <div class="modal">
       <h3 id="modalTitle"></h3>
       <div id="modalBody"></div>
-      <div class="modal-actions">
+      <div class="modal-actions" id="modalActions">
         <button class="modal-btn secondary" id="modalCancel">Abbrechen</button>
         <button class="modal-btn primary" id="modalConfirm">Bestätigen</button>
       </div>
@@ -293,25 +292,15 @@
       }
     }
 
-    // WhatsApp: akzeptiert beide gängigen Formate
-    // - https://chat.whatsapp.com/XXXX
-    // - https://www.whatsapp.com/invite/XXXX
+    // ---------- WhatsApp ----------
     function normalizeWhatsAppLink(raw) {
       let link = String(raw || "").trim();
-
       if (!link) return "";
-
-      // User pasted without protocol
       if (link.startsWith("chat.whatsapp.com/")) link = "https://" + link;
       if (link.startsWith("www.chat.whatsapp.com/")) link = "https://" + link.replace(/^www\./, "");
-
       if (link.startsWith("whatsapp.com/invite/")) link = "https://www." + link;
       if (link.startsWith("www.whatsapp.com/invite/")) link = "https://" + link;
-
-      // remove surrounding spaces
-      link = link.trim();
-
-      return link;
+      return link.trim();
     }
 
     function isValidWhatsAppInvite(raw) {
@@ -320,10 +309,8 @@
         const u = new URL(link);
         const host = u.hostname.replace(/^www\./, "");
         const path = u.pathname.replace(/\/+/g, "/");
-
         const isChat = host === "chat.whatsapp.com" && path.length > 2;
         const isInvite = host === "whatsapp.com" && path.startsWith("/invite/") && path.length > "/invite/".length;
-
         return isChat || isInvite;
       } catch {
         return false;
@@ -365,11 +352,19 @@
       return Math.max(0, q - r);
     }
 
+    function myReservationForGift(giftId) {
+      const mine = (state.reservations || []).filter(r => r.gift_id === giftId && state.userPins.includes(r.pin));
+      if (mine.length === 0) return null;
+      // Falls mehrere Datensätze existieren, summieren wir sicherheitshalber
+      const totalQty = mine.reduce((s, r) => s + (parseInt(r.qty) || 1), 0);
+      return { pin: mine[0].pin, qty: totalQty, rows: mine };
+    }
+
     function isReservedByMe(g) {
       if (g.is_group_gift) {
         return (state.contributions || []).some(c => c.gift_id === g.id && state.userPins.includes(c.pin));
       }
-      return (state.reservations || []).some(r => r.gift_id === g.id && state.userPins.includes(r.pin));
+      return !!myReservationForGift(g.id);
     }
 
     // ---------- Coordination helpers ----------
@@ -378,7 +373,6 @@
     }
 
     function getMemberPinsForGroup(groupId) {
-      // Dedup per PIN
       const pins = (state.coordMembers || [])
         .filter(m => m.group_id === groupId)
         .map(m => String(m.pin || "").trim())
@@ -396,10 +390,16 @@
         const el = document.getElementById("modalOverlay");
         document.getElementById("modalTitle").textContent = title;
         document.getElementById("modalBody").innerHTML = `<p>${text}</p>`;
-        document.getElementById("modalConfirm").textContent = "Ja";
+
+        const actions = document.getElementById("modalActions");
+        actions.style.display = "flex";
+
+        const ok = document.getElementById("modalConfirm");
+        ok.textContent = "Ja";
+        ok.disabled = false;
 
         const close = (v) => { el.classList.remove("active"); resolve(v); };
-        document.getElementById("modalConfirm").onclick = () => close(true);
+        ok.onclick = () => close(true);
         document.getElementById("modalCancel").onclick = () => close(false);
 
         el.classList.add("active");
@@ -419,6 +419,9 @@
         const el = document.getElementById("modalOverlay");
         document.getElementById("modalTitle").textContent = title;
         document.getElementById("modalBody").innerHTML = html;
+
+        const actions = document.getElementById("modalActions");
+        actions.style.display = "flex";
 
         const btn = document.getElementById("modalConfirm");
         btn.textContent = "Bestätigen";
@@ -453,6 +456,80 @@
       });
     }
 
+    // NEU: PIN + Menge auswählen (maxQty >= 1)
+    function requestReservationInput(title, txt, maxQty) {
+      return new Promise(resolve => {
+        const safeMax = Math.max(1, parseInt(maxQty || 1, 10));
+        const options = Array.from({ length: safeMax }, (_, i) => {
+          const v = i + 1;
+          return `<option value="${v}">${v}</option>`;
+        }).join("");
+
+        const qtyBlock = safeMax > 1 ? `
+          <div style="text-align:left;margin-top:10px;">
+            <label style="display:block;font-size:13px;margin-bottom:4px;color:#666;">Menge</label>
+            <select id="inp-qty" style="width:100%;padding:10px;border:1px solid #CCC;border-radius:8px;font-size:16px;">
+              ${options}
+            </select>
+            <div style="font-size:12px;color:#888;margin-top:6px;">Maximal ${safeMax} verfügbar</div>
+          </div>
+        ` : `<input type="hidden" id="inp-qty" value="1">`;
+
+        const html = `
+          <p>${txt}</p>
+          <div class="pin-input-container">
+            <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+            <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+            <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+            <input class="pin-digit" type="tel" inputmode="numeric" maxlength="1">
+          </div>
+          ${qtyBlock}
+        `;
+
+        const el = document.getElementById("modalOverlay");
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalBody").innerHTML = html;
+
+        const actions = document.getElementById("modalActions");
+        actions.style.display = "flex";
+
+        const btn = document.getElementById("modalConfirm");
+        btn.textContent = "Reservieren";
+        btn.disabled = true;
+
+        const inputs = el.querySelectorAll(".pin-digit");
+        const qtyEl = document.getElementById("inp-qty");
+
+        const check = () => {
+          const code = Array.from(inputs).map(x => x.value).join("");
+          const qty = Math.max(1, Math.min(safeMax, parseInt(qtyEl.value || "1", 10) || 1));
+          btn.disabled = code.length !== 4;
+          return { pin: code, qty };
+        };
+
+        inputs.forEach((inp, i) => {
+          inp.value = "";
+          inp.oninput = () => {
+            if (!/^\d$/.test(inp.value)) inp.value = "";
+            if (inp.value && i < 3) inputs[i + 1].focus();
+            check();
+          };
+          inp.onkeydown = (e) => {
+            if (e.key === "Backspace" && !inp.value && i > 0) inputs[i - 1].focus();
+          };
+        });
+
+        if (qtyEl) qtyEl.onchange = check;
+
+        const close = (val) => { el.classList.remove("active"); resolve(val); };
+        btn.onclick = () => close(check());
+        document.getElementById("modalCancel").onclick = () => close(null);
+
+        el.classList.add("active");
+        setTimeout(() => inputs[0].focus(), 100);
+      });
+    }
+
     function requestContributionInput(giftTitle) {
       return new Promise(resolve => {
         const el = document.getElementById("modalOverlay");
@@ -477,6 +554,9 @@
         `;
 
         document.getElementById("modalBody").innerHTML = html;
+
+        const actions = document.getElementById("modalActions");
+        actions.style.display = "flex";
 
         const btn = document.getElementById("modalConfirm");
         btn.textContent = "Speichern";
@@ -535,23 +615,67 @@
         if (!g) return;
         if (getAvailable(g) < 1) { showToast("Nicht mehr verfügbar."); return; }
 
-        const pin = await requestPin("Wunsch reservieren", "Bitte wähle einen persönlichen 4-stelligen Code und merke dir diesen! Mit diesem Code kannst du deine Reservierung später wieder ändern oder freigeben.");
-        if (!pin) return;
-
+        // Immer zuerst frisch prüfen, damit maxQty korrekt ist
         const { data: fresh, error: fErr } = await sb.from("gifts").select("quantity, reserved_quantity").eq("id", id).single();
         if (fErr || !fresh) { showToast("Fehler beim Prüfen."); return; }
 
         const availableNow = Math.max(0, (parseInt(fresh.quantity) || 1) - (parseInt(fresh.reserved_quantity) || 0));
         if (availableNow < 1) { showToast("Leider war jemand schneller."); await loadData(); return; }
 
-        const { error: insErr } = await sb.from("reservations").insert({ gift_id: id, pin: pin, qty: 1 });
-        if (insErr) {
-          if (insErr.code === "23505") showToast("PIN bereits vergeben. Bitte anderen Code wählen.");
-          else showToast("Fehler beim Speichern.");
-          return;
+        const input = await requestReservationInput(
+          "Wunsch reservieren",
+          "Bitte wähle einen persönlichen 4-stelligen Code und merke dir diesen! Mit diesem Code kannst du deine Reservierung später wieder ändern oder freigeben.",
+          availableNow
+        );
+        if (!input) return;
+
+        const pin = input.pin;
+        const qtyWanted = Math.max(1, Math.min(availableNow, parseInt(input.qty || 1, 10) || 1));
+
+        // Prüfen, ob es für (gift_id,pin) schon eine Reservierung gibt
+        const { data: existingRows, error: exErr } = await sb
+          .from("reservations")
+          .select("id, qty")
+          .match({ gift_id: id, pin: pin });
+
+        if (exErr) { showToast("Fehler beim Prüfen."); return; }
+
+        const existing = (existingRows && existingRows.length > 0) ? existingRows[0] : null;
+        const existingQty = existing ? (parseInt(existing.qty) || 1) : 0;
+
+        // Nochmal live gegen die Verfügbarkeit: falls jemand dazwischen reserviert
+        const { data: fresh2, error: fErr2 } = await sb.from("gifts").select("quantity, reserved_quantity").eq("id", id).single();
+        if (fErr2 || !fresh2) { showToast("Fehler beim Prüfen."); return; }
+
+        const availableNow2 = Math.max(0, (parseInt(fresh2.quantity) || 1) - (parseInt(fresh2.reserved_quantity) || 0));
+        if (availableNow2 < 1) { showToast("Leider war jemand schneller."); await loadData(); return; }
+
+        const qtyFinal = Math.max(1, Math.min(availableNow2, qtyWanted));
+
+        // Update oder Insert
+        if (existing) {
+          const newExistingQty = existingQty + qtyFinal;
+
+          const { error: upErr } = await sb
+            .from("reservations")
+            .update({ qty: newExistingQty })
+            .eq("id", existing.id);
+
+          if (upErr) { showToast("Fehler beim Speichern."); return; }
+        } else {
+          const { error: insErr } = await sb
+            .from("reservations")
+            .insert({ gift_id: id, pin: pin, qty: qtyFinal });
+
+          if (insErr) {
+            if (insErr.code === "23505") showToast("PIN bereits vergeben. Bitte anderen Code wählen.");
+            else showToast("Fehler beim Speichern.");
+            return;
+          }
         }
 
-        const newQ = (parseInt(fresh.reserved_quantity) || 0) + 1;
+        // reserved_quantity hochzählen
+        const newQ = (parseInt(fresh2.reserved_quantity) || 0) + qtyFinal;
         await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
 
         savePin(pin);
@@ -560,18 +684,20 @@
       },
 
       unreserve: async (id) => {
-        const myRes = (state.reservations || []).filter(r => r.gift_id === id && state.userPins.includes(r.pin));
-        if (myRes.length === 0) return;
+        const mine = (state.reservations || []).filter(r => r.gift_id === id && state.userPins.includes(r.pin));
+        if (mine.length === 0) return;
 
-        const r = myRes[0];
+        const pin = mine[0].pin;
+        const totalQty = mine.reduce((s, r) => s + (parseInt(r.qty) || 1), 0);
+
         if (!(await confirmModal("Freigeben?", "Möchtest du diese Reservierung freigeben?"))) return;
 
-        const { error: delErr } = await sb.from("reservations").delete().match({ gift_id: id, pin: r.pin });
+        const { error: delErr } = await sb.from("reservations").delete().match({ gift_id: id, pin: pin });
         if (delErr) { showToast("Fehler beim Löschen."); return; }
 
         const { data: fresh } = await sb.from("gifts").select("reserved_quantity").eq("id", id).single();
         if (fresh) {
-          const newQ = Math.max(0, (parseInt(fresh.reserved_quantity) || 0) - (parseInt(r.qty) || 1));
+          const newQ = Math.max(0, (parseInt(fresh.reserved_quantity) || 0) - totalQty);
           await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
         }
 
@@ -616,24 +742,53 @@
         const { data: list } = await sb.from("reservations").select("*, gifts(title)").eq("pin", pin);
         const { data: cList } = await sb.from("contributions").select("*, gifts(title)").eq("pin", pin);
 
-        if ((!list || list.length === 0) && (!cList || cList.length === 0)) {
+        const hasRes = list && list.length > 0;
+        const hasCon = cList && cList.length > 0;
+
+        if (!hasRes && !hasCon) {
           showToast("Keine Einträge gefunden.");
           return;
         }
 
-        if (list && list.length > 0) {
+        // Wenn mehrere Reservierungen mit gleicher PIN existieren, lassen wir wählen
+        if (hasRes && list.length > 1) {
+          const el = document.getElementById("modalOverlay");
+          document.getElementById("modalTitle").textContent = "Mehrere Reservierungen gefunden";
+          const body = list.map(r => {
+            const title = r.gifts ? r.gifts.title : "Unbekannt";
+            const qty = parseInt(r.qty) || 1;
+            return `<button style="width:100%;margin-top:8px" onclick="app._releaseReservationById('${r.id}','${r.gift_id}',${qty})">
+              ${escapeHtml(title)} (${qty}x) freigeben
+            </button>`;
+          }).join("");
+
+          document.getElementById("modalBody").innerHTML = `<p>Bitte auswählen:</p>${body}`;
+
+          const actions = document.getElementById("modalActions");
+          actions.style.display = "none";
+
+          el.classList.add("active");
+          document.getElementById("modalCancel").onclick = () => { el.classList.remove("active"); };
+
+          savePin(pin);
+          return;
+        }
+
+        if (hasRes) {
           const item = list[0];
           const title = item.gifts ? item.gifts.title : "Unbekannt";
-          if (!(await confirmModal("Gefunden", `Freigeben: "${escapeHtml(title)}"?`))) return;
+          const qty = parseInt(item.qty) || 1;
+
+          if (!(await confirmModal("Gefunden", `Freigeben: "${escapeHtml(title)}" (${qty}x)?`))) return;
 
           await sb.from("reservations").delete().eq("id", item.id);
           const { data: g } = await sb.from("gifts").select("reserved_quantity").eq("id", item.gift_id).single();
           if (g) {
             await sb.from("gifts").update({
-              reserved_quantity: Math.max(0, (parseInt(g.reserved_quantity) || 0) - (parseInt(item.qty) || 1))
+              reserved_quantity: Math.max(0, (parseInt(g.reserved_quantity) || 0) - qty)
             }).eq("id", item.gift_id);
           }
-        } else if (cList && cList.length > 0) {
+        } else if (hasCon) {
           const item = cList[0];
           const title = item.gifts ? item.gifts.title : "Unbekannt";
           if (!(await confirmModal("Beitrag gefunden", `Beitrag für "${escapeHtml(title)}" (${item.amount}€) entfernen?`))) return;
@@ -642,6 +797,26 @@
 
         savePin(pin);
         showToast("Erledigt.");
+        await loadData();
+      },
+
+      _releaseReservationById: async (resId, giftId, qty) => {
+        const el = document.getElementById("modalOverlay");
+        el.classList.remove("active");
+
+        if (!(await confirmModal("Freigeben?", "Möchtest du diese Reservierung freigeben?"))) return;
+
+        const { error: delErr } = await sb.from("reservations").delete().eq("id", resId);
+        if (delErr) { showToast("Fehler beim Löschen."); return; }
+
+        const { data: g } = await sb.from("gifts").select("reserved_quantity").eq("id", giftId).single();
+        if (g) {
+          await sb.from("gifts").update({
+            reserved_quantity: Math.max(0, (parseInt(g.reserved_quantity) || 0) - (parseInt(qty) || 1))
+          }).eq("id", giftId);
+        }
+
+        showToast("Freigegeben.");
         await loadData();
       },
 
@@ -671,7 +846,6 @@
         await loadData();
       },
 
-      // 1) Orga-Gruppe anlegen (pro Geschenk genau 1)
       createCoordination: async (giftId) => {
         const existing = getGroupForGift(giftId);
         if (existing) {
@@ -705,13 +879,10 @@
           return;
         }
 
-        // Creator als Member hinzufügen (damit count nicht 0 ist)
-        // Erwartete Spalten in gift_coordination_members: group_id, pin
         const { error: mErr } = await sb
           .from("gift_coordination_members")
           .insert({ group_id: created.id, pin: pin });
 
-        // Wenn RLS/Spalten anders sind, soll es trotzdem nicht crashen
         if (mErr) console.warn("Member insert failed (check columns/RLS):", mErr);
 
         savePin(pin);
@@ -719,7 +890,6 @@
         await loadData();
       },
 
-      // 2) Einer bestehenden Orga beitreten (PIN speichern, Member zählen, dann WhatsApp öffnen)
       joinCoordination: async (groupId) => {
         const group = (state.coordGroups || []).find(g => g.id === groupId);
         if (!group) { showToast("Gruppe nicht gefunden."); return; }
@@ -735,7 +905,6 @@
         const pin = await requestPin("An Gruppengeschenk beteiligen", "Bitte gib einen 4-stelligen Code ein.");
         if (!pin) return;
 
-        // Wenn Pin schon drin ist, nicht nochmal speichern
         if (!currentPins.includes(pin)) {
           const { error } = await sb
             .from("gift_coordination_members")
@@ -743,7 +912,6 @@
 
           if (error) {
             console.warn("Join insert failed (check columns/RLS):", error);
-            // Trotzdem WhatsApp öffnen, weil UX wichtiger ist
           }
         }
 
@@ -770,7 +938,6 @@
       }
       state.gifts = gs || [];
 
-      // Coordination tables
       try {
         const { data: groups, error: ggErr } = await sb.from("gift_coordination_groups").select("*");
         if (ggErr) throw ggErr;
@@ -786,7 +953,6 @@
         state.coordMembers = [];
       }
 
-      // Contributions
       try {
         const { data: contribs, error: cErr } = await sb.from("contributions").select("*");
         if (cErr) throw cErr;
@@ -796,7 +962,6 @@
         state.contributions = [];
       }
 
-      // Reservations
       if (state.isAdmin) {
         const { data: allRes } = await sb.from("reservations").select("*, gifts(title)").order("created_at", { ascending: false });
         const { data: allContribs } = await sb.from("contributions").select("*, gifts(title)").order("created_at", { ascending: false });
@@ -828,13 +993,14 @@
         html += `<tr style="background:#EEE"><td colspan="4" style="padding:4px 8px; font-weight:600;">Reservierungen</td></tr>`;
         html += state.allReservations.map(r => {
           const title = r.gifts ? r.gifts.title : "???";
+          const qty = parseInt(r.qty) || 1;
           return `<tr style="border-bottom:1px solid #EEE;">
             <td style="padding:8px; font-weight:500;">${escapeHtml(title)}</td>
             <td style="padding:8px; font-family:monospace;">${escapeHtml(r.pin)}</td>
-            <td style="padding:8px;">${r.qty}x</td>
+            <td style="padding:8px;">${qty}x</td>
             <td style="padding:8px;">
               <button style="background:#FFF0F0; color:#D32F2F; border:1px solid #D32F2F; padding:4px 10px; font-size:11px; border-radius:6px;"
-                onclick="app.adminDelete('${r.id}', '${r.gift_id}', ${r.qty})">Löschen</button>
+                onclick="app.adminDelete('${r.id}', '${r.gift_id}', ${qty})">Löschen</button>
             </td>
           </tr>`;
         }).join("");
@@ -949,77 +1115,83 @@
     }
 
     function renderItem(g, isMySection = false) {
-  const inMySection = (isMySection === true);
+      const inMySection = (isMySection === true);
 
-  if (g.is_group_gift) return renderGroupGiftItem(g, inMySection);
+      if (g.is_group_gift) return renderGroupGiftItem(g, inMySection);
 
-  const avail = getAvailable(g);
-  const my = isReservedByMe(g);
+      const avail = getAvailable(g);
+      const myRes = myReservationForGift(g.id);
+      const my = !!myRes;
 
-  const price = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
+      const price = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
 
-  let act = "";
-  if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
-  else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`;
-  else act = `<button disabled>Vergeben</button>`;
+      let act = "";
+      if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
+      else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`;
+      else act = `<button disabled>Vergeben</button>`;
 
-  if (inMySection) act = `<button class="undo" onclick="app.unreserve('${g.id}')">Freigeben</button>`;
+      if (inMySection) act = `<button class="undo" onclick="app.unreserve('${g.id}')">Freigeben</button>`;
 
-  let st = "";
-  const qty = parseInt(g.quantity) || 1;
-  if (qty > 1) {
-    if (avail === 0) st = `<div style="color:#D32F2F;font-size:12px;">Alle ${qty} vergeben</div>`;
-    else st = `<div style="color:#2E7D32;font-size:12px;">${avail} von ${qty} verfügbar</div>`;
-  }
+      let st = "";
+      const qty = parseInt(g.quantity) || 1;
 
-  // Coordination UI
-  let coordUI = "";
-  const group = getGroupForGift(g.id);
+      if (myRes && (parseInt(myRes.qty) || 0) > 0) {
+        st += `<div style="color:#555;font-size:12px;margin-top:6px;">Du hast ${parseInt(myRes.qty)} reserviert</div>`;
+      }
 
-  const isGiftReserved =
-    (parseInt(g.reserved_quantity || 0) > 0) ||
-    (getAvailable(g) === 0);
+      if (qty > 1) {
+        if (avail === 0) st += `<div style="color:#D32F2F;font-size:12px;">Alle ${qty} vergeben</div>`;
+        else st += `<div style="color:#2E7D32;font-size:12px;">${avail} von ${qty} verfügbar</div>`;
+      }
 
-  if (!g.is_group_gift && g.allow_coordination && !isGiftReserved) {
-    if (!group) {
-      coordUI = `
-        <button class="reserved" style="font-size:11px"
-          onclick="app.createCoordination('${g.id}')">
-          Organisation eines Gruppengeschenkes übernehmen
-        </button>
-      `;
-    } else {
-      const count = getMemberCount(group.id);
-      coordUI = `
-        <a href="${escapeHtml(group.whatsapp_link)}"
-           target="_blank"
-           rel="noopener"
-           style="font-size:11px;color:#666;text-decoration:underline">
-          An Gruppengeschenk beteiligen (${count}/${group.max_members})
-        </a>
+      let coordUI = "";
+      const group = getGroupForGift(g.id);
+
+      const isGiftReserved =
+        (parseInt(g.reserved_quantity || 0) > 0) ||
+        (getAvailable(g) === 0);
+
+      if (!g.is_group_gift && g.allow_coordination && !isGiftReserved) {
+        if (!group) {
+          coordUI = `
+            <button class="reserved" style="font-size:11px"
+              onclick="app.createCoordination('${g.id}')">
+              Organisation eines Gruppengeschenkes übernehmen
+            </button>
+          `;
+        } else {
+          const count = getMemberCount(group.id);
+          coordUI = `
+            <a href="${escapeHtml(group.whatsapp_link)}"
+               target="_blank"
+               rel="noopener"
+               style="font-size:11px;color:#666;text-decoration:underline">
+              An Gruppengeschenk beteiligen (${count}/${group.max_members})
+            </a>
+          `;
+        }
+      }
+
+      const admin = state.isAdmin
+        ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>`
+        : "";
+
+      return `
+        <div class="item ${my ? "my-reservation" : ""}">
+          <div class="item-content">
+            <div class="item-title">${escapeHtml(g.title)}</div>
+            <div class="meta">${price}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
+            ${st}
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+            ${act}
+            ${coordUI}
+            ${admin}
+          </div>
+        </div>
       `;
     }
-  }
 
-  const admin = state.isAdmin
-    ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>`
-    : "";
-
-  return `
-    <div class="item ${my ? "my-reservation" : ""}">
-      <div class="item-content">
-        <div class="item-title">${escapeHtml(g.title)}</div>
-        <div class="meta">${price}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
-        ${st}
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-        ${act}
-        ${coordUI}
-        ${admin}
-      </div>
-    </div>
-  `;
-}
     function renderGroupGiftItem(g, isMySection = false) {
       const inMySection = (isMySection === true);
 
@@ -1039,7 +1211,7 @@
         </div>
       `;
 
-     let act = `<button style="background:#2E7D32;" onclick="app.contribute('${g.id}')">An Gruppengeschenk beteiligen</button>`;
+      let act = `<button style="background:#2E7D32;" onclick="app.contribute('${g.id}')">An Gruppengeschenk beteiligen</button>`;
       if (inMySection) act = `<button class="undo" onclick="app.removeContribution('${g.id}')">Beitrag zurückziehen</button>`;
 
       const priceStr = g.Preis ? `<span>${escapeHtml(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
