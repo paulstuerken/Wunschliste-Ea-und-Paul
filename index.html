@@ -10,26 +10,29 @@
 
   <style>
     :root {
-      --bg-body: #F7F7F5;
+      --bg-body: #E8F0F8;
       --bg-card: #FFFFFF;
-      --text-primary: #1A1A1A;
-      --text-secondary: #717171;
-      --text-muted: #A0A0A0;
-      --border: #EBEBEB;
-      --border-hover: #D4D4D4;
-      --accent: #2C2C2C;
-      --accent-hover: #444444;
-      --accent-soft: #F0F0EE;
-      --green: #2E7D32;
-      --green-bg: #E8F5E9;
-      --red: #D32F2F;
+      --text-primary: #0F1E30;
+      --text-secondary: #3A5878;
+      --text-muted: #6B8FAD;
+      --border: #C0D6EA;
+      --border-hover: #9FC0D8;
+      --accent: #1A3A5C;
+      --accent-hover: #245080;
+      --accent-soft: #D4E4F0;
+      --pink: #D64070;
+      --pink-hover: #BE2E5C;
+      --pink-soft: #FBDBE6;
+      --green: #3A7A5C;
+      --green-bg: #DAEEE4;
+      --red: #C03040;
       --radius-lg: 20px;
       --radius-md: 14px;
       --radius-sm: 10px;
       --radius-pill: 999px;
-      --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
-      --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
-      --shadow-float: 0 12px 40px rgba(0,0,0,0.12);
+      --shadow-card: 0 1px 4px rgba(27,42,61,0.04), 0 4px 14px rgba(27,42,61,0.03);
+      --shadow-card-hover: 0 2px 8px rgba(27,42,61,0.07), 0 8px 24px rgba(27,42,61,0.05);
+      --shadow-float: 0 12px 40px rgba(27,42,61,0.14);
       --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
       --transition: 0.2s var(--ease);
     }
@@ -48,7 +51,7 @@
     .hero-container { position: relative; margin-bottom: 48px; }
     .hero {
       width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius-lg);
-      display: block; background: #E8E8E6;
+      display: block; background: var(--accent-soft);
     }
     .hero-overlay {
       position: absolute; bottom: 0; left: 0; right: 0; padding: 40px 32px 28px;
@@ -71,7 +74,7 @@
       color: var(--text-secondary); margin-bottom: 10px; letter-spacing: 0.02em;
     }
     .progress-track { height: 5px; background: var(--border); border-radius: var(--radius-pill); overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--accent); width: 0; transition: width 1s var(--ease); border-radius: var(--radius-pill); }
+    .progress-fill { height: 100%; background: var(--pink); width: 0; transition: width 1s var(--ease); border-radius: var(--radius-pill); }
 
     /* ---- Group Gift Card ---- */
     .group-gift {
@@ -88,7 +91,7 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 14px; user-select: none; transition: all var(--transition);
     }
-    .iban-container:hover { border-color: var(--border-hover); background: #EAEAE8; }
+    .iban-container:hover { border-color: var(--pink); background: var(--pink-soft); }
     .copy-icon { width: 16px; height: 16px; fill: var(--text-muted); }
 
     /* ---- Release Section ---- */
@@ -110,7 +113,7 @@
       font-size: 15px; outline: none; font-family: inherit;
       transition: border-color var(--transition), box-shadow var(--transition);
     }
-    .search-input:focus { border-color: var(--border-hover); box-shadow: var(--shadow-card-hover); }
+    .search-input:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(214,64,112,0.1); }
     .search-input::placeholder { color: var(--text-muted); }
     .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; fill: var(--text-muted); pointer-events: none; }
 
@@ -124,6 +127,7 @@
     }
     .toggle-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
     .toggle-btn.active { background: var(--accent); color: #FFF; border-color: var(--accent); }
+    .toggle-btn:hover { border-color: var(--pink); color: var(--pink); }
     .sort-select {
       border: 1px solid transparent; background: transparent; font-size: 13px;
       cursor: pointer; padding: 8px 0; font-family: inherit; color: var(--text-secondary);
@@ -149,14 +153,12 @@
     .item {
       background: var(--bg-card); padding: 20px; margin-bottom: 12px;
       border-radius: var(--radius-lg); border: 1px solid var(--border);
-      display: grid; grid-template-columns: auto 1fr auto;
-      gap: 20px; align-items: center;
+      display: flex; flex-direction: row; align-items: center; gap: 20px;
       box-shadow: var(--shadow-card);
       transition: box-shadow var(--transition), border-color var(--transition);
     }
     .item:hover { box-shadow: var(--shadow-card-hover); border-color: var(--border-hover); }
-    .item.no-image { grid-template-columns: 1fr auto; }
-    .item.my-reservation { border-color: var(--green); background: #FCFEFA; }
+    .item.my-reservation { border-color: var(--pink); background: var(--pink-soft); }
 
     /* ---- Item Image ---- */
     .item-image {
@@ -171,30 +173,38 @@
     }
     .item-image-placeholder svg { width: 28px; height: 28px; fill: var(--text-muted); opacity: 0.4; }
 
-    .item-content { min-width: 0; }
+    .item-content { flex: 1; min-width: 0; }
     .item-title { font-size: 16px; font-weight: 500; margin-bottom: 6px; overflow-wrap: anywhere; line-height: 1.35; }
     .meta { font-size: 13px; color: var(--text-secondary); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .meta a { text-decoration: none; color: var(--text-muted); transition: color var(--transition); }
     .meta a:hover { color: var(--text-primary); }
     .sep { width: 3px; height: 3px; background: var(--border-hover); border-radius: 50%; flex: 0 0 auto; }
 
+    /* ---- Item Actions ---- */
+    .item-actions {
+      display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+      flex-shrink: 0; width: 160px;
+    }
+    .item-actions button { width: 100%; text-align: center; white-space: normal; word-wrap: break-word; }
+    .item-actions .coord-link { font-size:11px; color:var(--text-muted); text-decoration:underline; text-align:center; display:block; }
+
     /* ---- Buttons ---- */
     button {
-      background: var(--accent); color: #FFF; border: none;
+      background: var(--pink); color: #FFF; border: none;
       padding: 10px 20px; border-radius: var(--radius-sm);
       font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
       transition: all var(--transition); white-space: nowrap;
     }
-    button:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    button:hover { background: var(--pink-hover); transform: translateY(-1px); }
     button:active { transform: translateY(0); }
-    button:disabled { background: var(--accent-soft); color: var(--text-muted); cursor: default; transform: none; }
+    button:disabled { background: var(--accent-soft); color: var(--text-muted); cursor: default; transform: none; border: 1px solid var(--border); }
     button.reserved {
       background: transparent; color: var(--text-secondary);
       border: 1px solid var(--border);
     }
-    button.reserved:hover { background: var(--accent-soft); transform: translateY(-1px); }
+    button.reserved:hover { background: var(--pink-soft); color: var(--pink); border-color: var(--pink); transform: translateY(-1px); }
     button.undo {
-      background: var(--green-bg); color: var(--green); border: 1px solid rgba(46,125,50,0.3);
+      background: var(--green-bg); color: var(--green); border: 1px solid rgba(74,139,110,0.3);
     }
     button.undo:hover { background: rgba(76,175,80,0.12); transform: translateY(-1px); }
 
@@ -229,7 +239,7 @@
     .modal-actions { display: flex; gap: 10px; }
     .modal-btn { flex: 1; padding: 13px; border-radius: var(--radius-sm); font-weight: 500; }
     .modal-btn.secondary { background: var(--accent-soft); color: var(--text-primary); }
-    .modal-btn.secondary:hover { background: #E5E5E3; }
+    .modal-btn.secondary:hover { background: var(--border); }
 
     .pin-input-container { display: flex; gap: 12px; justify-content: center; margin: 20px 0; }
     .pin-digit {
@@ -238,7 +248,7 @@
       background: var(--accent-soft); font-family: inherit; font-weight: 600;
       transition: all var(--transition);
     }
-    .pin-digit:focus { border-color: var(--accent); background: #FFF; outline: none; box-shadow: 0 0 0 3px rgba(0,0,0,0.06); }
+    .pin-digit:focus { border-color: var(--pink); background: #FFF; outline: none; box-shadow: 0 0 0 3px rgba(214,64,112,0.15); }
 
     /* ---- Admin ---- */
     .admin-badge {
@@ -262,7 +272,7 @@
     .toast.active { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* ---- Group Gift Item ---- */
-    .item.group-gift-item { border-left: 4px solid var(--green); }
+    .item.group-gift-item { border-left: 4px solid var(--pink); }
 
     /* ---- Responsive ---- */
     @media (max-width: 600px) {
@@ -270,11 +280,17 @@
       .hero { height: 240px; }
       .hero-overlay { padding: 28px 20px 20px; }
       .hero-overlay h1 { font-size: 26px; }
-      .item { grid-template-columns: 1fr; gap: 14px; }
-      .item.no-image { grid-template-columns: 1fr; }
-      .item-image, .item-image-placeholder { width: 100%; height: 180px; border-radius: var(--radius-sm); }
+      .item {
+        flex-direction: column; align-items: stretch; gap: 14px;
+      }
+      .item-image, .item-image-placeholder {
+        width: 100%; height: 180px; border-radius: var(--radius-sm);
+      }
+      .item-actions {
+        min-width: unset;
+      }
+      .item-actions button { width: 100%; }
       .filter-row { flex-direction: column; align-items: stretch; }
-      button { width: 100%; }
       .sort-select { width: 100%; }
     }
   </style>
@@ -327,10 +343,13 @@
       <div style="font-size:13px;color:var(--text-muted);margin-top:10px;">Max Tiefenbacher</div>
     </div>
 
-    <div class="release-section">
-      <h2>Reservierung freigeben</h2>
-      <p>Falls du einen Wunsch reserviert hast, kannst du ihn mit deinem Code hier freigeben.</p>
-      <button class="modal-btn secondary" style="width:auto;padding:10px 20px;border-radius:var(--radius-sm);" onclick="app.openReleaseModal()">Mit Code freigeben</button>
+    <div style="text-align:center;color:var(--text-primary);font-size:18px;margin-bottom:24px;line-height:1.6;">
+      Lieferadresse: Urte und Jens Bötel, Hinter der Kirche 12, 38312 Börßum
+    </div>
+
+    <div style="text-align:center;margin-bottom:36px;">
+      <p style="font-size:16px;color:var(--text-secondary);margin:0 0 12px;">Du hast bereits reserviert und möchtest es rückgängig machen?</p>
+      <button class="modal-btn secondary" style="width:auto;padding:12px 24px;border-radius:var(--radius-sm);font-size:16px;color:var(--text-secondary);" onclick="app.openReleaseModal()">Mit Code freigeben</button>
     </div>
 
     <div id="my-reservations-section">
@@ -1245,19 +1264,18 @@
     }
 
     // ---------- Image helper ----------
-    const placeholderHTML = '<div class="item-image-placeholder"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div>';
-
     window.handleImgError = function(img) {
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = placeholderHTML;
-      img.replaceWith(wrapper.firstChild);
+      const placeholder = document.createElement('div');
+      placeholder.className = 'item-image-placeholder';
+      placeholder.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>';
+      img.replaceWith(placeholder);
     };
 
     function renderImageBlock(g) {
       if (g.image_url) {
         return `<img class="item-image" src="${escapeHtml(g.image_url)}" alt="${escapeHtml(g.title)}" loading="lazy" onerror="handleImgError(this)" />`;
       }
-      return placeholderHTML;
+      return "";
     }
 
     function renderItem(g, isMySection = false) {
@@ -1324,14 +1342,14 @@
         : "";
 
       return `
-        <div class="item ${my ? "my-reservation" : ""} ${!hasImage ? "no-image" : ""}">
+        <div class="item ${my ? "my-reservation" : ""}">
           ${renderImageBlock(g)}
           <div class="item-content">
             <div class="item-title">${escapeHtml(g.title)}</div>
             <div class="meta">${price}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop &#8599;</a></div>
             ${st}
           </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+          <div class="item-actions">
             ${act}
             ${coordUI}
             ${admin}
@@ -1342,7 +1360,6 @@
 
     function renderGroupGiftItem(g, isMySection = false) {
       const inMySection = (isMySection === true);
-      const hasImage = !!g.image_url;
 
       const current = getContributionTotal(g.id);
       const target = parseFloat(g.target_amount) || 1;
@@ -1366,9 +1383,9 @@
       const priceStr = g.Preis ? `<span style="font-weight:500;">${escapeHtml(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
 
       return `
-        <div class="item group-gift-item ${isReservedByMe(g) ? "my-reservation" : ""} ${!hasImage ? "no-image" : ""}">
+        <div class="item group-gift-item ${isReservedByMe(g) ? "my-reservation" : ""}">
           ${renderImageBlock(g)}
-          <div class="item-content" style="min-width:0;">
+          <div class="item-content">
             <div class="item-title">
               ${escapeHtml(g.title)}
               <span style="font-size:11px;font-weight:500;color:var(--green);background:var(--green-bg);padding:2px 8px;border-radius:var(--radius-pill);margin-left:6px;white-space:nowrap;">Sammelgeschenk</span>
@@ -1376,7 +1393,7 @@
             <div class="meta">${priceStr}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Details &#8599;</a></div>
             ${bar}
           </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:100px;">
+          <div class="item-actions">
             ${act}
           </div>
         </div>
