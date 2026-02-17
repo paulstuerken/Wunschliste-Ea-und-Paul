@@ -6,142 +6,276 @@
   <title>Hochzeitswünsche | Ea & Paul</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
-    :root{
-      --bg-body:#FAFAFA;
-      --bg-card:#FFFFFF;
-      --text-primary:#1A1A1A;
-      --text-secondary:#666666;
-      --radius-card:16px;
-      --radius-btn:12px;
-      --shadow-soft:0 8px 30px rgba(0,0,0,0.04);
-      --btn-bg:#1A1A1A;
-      --btn-text:#FFFFFF;
-      --btn-bg-hover:#333333;
-      --ease:cubic-bezier(0.2,0.8,0.2,1);
+    :root {
+      --bg-body: #F7F7F5;
+      --bg-card: #FFFFFF;
+      --text-primary: #1A1A1A;
+      --text-secondary: #717171;
+      --text-muted: #A0A0A0;
+      --border: #EBEBEB;
+      --border-hover: #D4D4D4;
+      --accent: #2C2C2C;
+      --accent-hover: #444444;
+      --accent-soft: #F0F0EE;
+      --green: #2E7D32;
+      --green-bg: #E8F5E9;
+      --red: #D32F2F;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --radius-pill: 999px;
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+      --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
+      --shadow-float: 0 12px 40px rgba(0,0,0,0.12);
+      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --transition: 0.2s var(--ease);
     }
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-    body{margin:0;font-family:"Outfit",sans-serif;background:var(--bg-body);color:var(--text-primary);line-height:1.5;}
-    a{color:inherit}
 
-    .wrap{max-width:720px;margin:0 auto;padding:60px 24px;}
-    .hero{width:100%;height:360px;object-fit:cover;border-radius:var(--radius-card);margin-bottom:40px;background:#EEE;display:block;}
-    h1{font-size:32px;font-weight:600;text-align:center;margin:0 0 16px 0;}
-    .intro{text-align:center;color:var(--text-secondary);margin:0 auto 48px auto;max-width:480px;}
-    .empty-state{text-align:center;color:var(--text-secondary);padding:40px 16px;font-size:14px;}
-
-    .group-gift{background:#FFF;border:1px solid #EAEAEA;border-radius:var(--radius-card);padding:32px;margin-bottom:40px;text-align:center;}
-    .group-gift h2{font-size:18px;margin:0 0 12px 0;}
-    .group-gift p{color:#555;margin:0 0 24px 0;}
-    .iban-container{
-      display:inline-flex;align-items:center;gap:10px;background:#F9F9F9;padding:10px 18px;border-radius:999px;
-      border:1px solid #EEE;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-      user-select:none;
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0; font-family: "Outfit", sans-serif; background: var(--bg-body);
+      color: var(--text-primary); line-height: 1.55; -webkit-font-smoothing: antialiased;
     }
-    .copy-icon{width:16px;height:16px;fill:#888;}
+    a { color: inherit; }
 
-    .release-section{background:#FFF;border:1px solid #EAEAEA;border-radius:var(--radius-card);padding:24px;margin-bottom:32px;text-align:center;}
-    .release-section h2{font-size:14px;margin:0 0 12px 0;}
-    .release-section p{font-size:13px;color:#666;margin:0 0 20px 0;}
+    /* ---- Layout ---- */
+    .wrap { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
 
-    .progress-container{margin-bottom:32px;}
-    .progress-text{text-align:center;font-size:13px;color:var(--text-secondary);margin-bottom:8px;}
-    .progress-track{height:6px;background:#EEE;border-radius:999px;overflow:hidden;}
-    .progress-fill{height:100%;background:var(--text-primary);width:0;transition:width 0.8s var(--ease);}
-
-    .controls{display:flex;flex-direction:column;gap:16px;margin-bottom:40px;}
-    .search-row{position:relative;}
-    .search-input{
-      width:100%;padding:14px 14px 14px 44px;border:1px solid transparent;background:#FFF;border-radius:var(--radius-btn);
-      box-shadow:0 2px 8px rgba(0,0,0,0.03);font-size:15px;outline:none;
+    /* ---- Hero ---- */
+    .hero-container { position: relative; margin-bottom: 48px; }
+    .hero {
+      width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius-lg);
+      display: block; background: #E8E8E6;
     }
-    .search-input:focus{border-color:#E5E5E5;}
-    .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;fill:#999;pointer-events:none;}
-
-    .filter-row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;}
-    .toggles{display:flex;gap:8px;flex-wrap:wrap;}
-    .toggle-btn{
-      background:transparent;border:1px solid #E5E5E5;color:var(--text-secondary);padding:8px 14px;font-size:13px;border-radius:var(--radius-btn);
-      cursor:pointer;font-family:inherit;
+    .hero-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 40px 32px 28px;
+      background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     }
-    .toggle-btn.active{background:var(--text-primary);color:#FFF;border-color:var(--text-primary);}
-    .sort-select{border:1px solid transparent;background:transparent;font-size:13px;cursor:pointer;padding:8px 0;font-family:inherit;}
-
-    .section-title{
-      display:flex;justify-content:space-between;align-items:center;margin:32px 0 14px;cursor:pointer;user-select:none;gap:12px;
+    .hero-overlay h1 {
+      color: #FFF; font-size: 34px; font-weight: 600; margin: 0 0 6px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
-    .section-title h2{margin:0;font-size:16px;font-weight:600;line-height:1.2;overflow-wrap:anywhere;}
-    .section-chevron{width:14px;height:14px;fill:var(--text-secondary);flex:0 0 auto;transition:transform 0.25s;}
-    .section-title.collapsed .section-chevron{transform:rotate(-90deg);}
-
-    .gift-group{display:block;}
-    .gift-group.collapsed{display:none;}
-
-    .item{
-      background:var(--bg-card);padding:24px;margin-bottom:12px;border-radius:var(--radius-card);
-      display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;
-      box-shadow:0 1px 3px rgba(0,0,0,0.02);overflow:hidden;
+    .hero-overlay p {
+      color: rgba(255,255,255,0.85); font-size: 15px; margin: 0;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.2);
     }
-    .item.my-reservation{border:1px solid #E0E0E0;background:#FFFEFA;}
-    .item-title{font-size:17px;font-weight:500;margin-bottom:6px;overflow-wrap:anywhere;}
-    .meta{font-size:14px;color:var(--text-secondary);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-    .meta a{text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.2);}
-    .sep{width:2px;height:2px;background:#CCC;border-radius:50%;flex:0 0 auto;}
 
-    button{
-      background:var(--btn-bg);color:var(--btn-text);border:none;padding:10px 18px;border-radius:var(--radius-btn);
-      font-size:13px;cursor:pointer;font-family:inherit;transition:background 0.2s;white-space:nowrap;
+    /* ---- Progress ---- */
+    .progress-container { margin-bottom: 36px; }
+    .progress-text {
+      text-align: center; font-size: 13px; font-weight: 500;
+      color: var(--text-secondary); margin-bottom: 10px; letter-spacing: 0.02em;
     }
-    button:hover{background:var(--btn-bg-hover);}
-    button:disabled{background:#F5F5F5;color:#CCC;cursor:default;}
-    button.reserved{background:transparent;color:var(--text-secondary);border:1px solid #E5E5E5;}
-    button.reserved:hover{background:transparent;}
-    button.undo{background:rgba(76,175,80,0.06);color:#2E7D32;border:1px solid #4CAF50;}
-    button.undo:hover{background:rgba(76,175,80,0.10);}
+    .progress-track { height: 5px; background: var(--border); border-radius: var(--radius-pill); overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--accent); width: 0; transition: width 1s var(--ease); border-radius: var(--radius-pill); }
 
-    #my-reservations-section{background:#F4F4F4;border-radius:var(--radius-card);padding:24px;margin-bottom:40px;display:none;}
-    #my-reservations-section h2{font-size:18px;margin:0 0 16px 0;}
-
-    .modal-overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(4px);
-      display:flex;justify-content:center;align-items:center;z-index:999;opacity:0;pointer-events:none;transition:opacity 0.2s;
+    /* ---- Group Gift Card ---- */
+    .group-gift {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 32px; margin-bottom: 24px; text-align: center;
+      box-shadow: var(--shadow-card);
     }
-    .modal-overlay.active{opacity:1;pointer-events:auto;}
-    .modal{background:#FFF;width:90%;max-width:360px;padding:28px;border-radius:20px;text-align:center;transform:scale(0.96);transition:transform 0.2s;}
-    .modal-overlay.active .modal{transform:scale(1);}
-    .modal h3{margin:0 0 12px;}
-    .modal p{color:#666;font-size:15px;margin:0 0 20px;}
-    .modal-actions{display:flex;gap:10px;}
-    .modal-btn{flex:1;padding:12px;border-radius:12px;}
-    .modal-btn.secondary{background:#F5F5F5;color:#333;}
-
-    .pin-input-container{display:flex;gap:12px;justify-content:center;margin:20px 0;}
-    .pin-digit{
-      width:48px;height:56px;font-size:24px;text-align:center;border:1px solid #E5E5E5;border-radius:12px;background:#FAFAFA;
+    .group-gift h2 { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+    .group-gift p { color: var(--text-secondary); margin: 0 0 20px; font-size: 15px; }
+    .iban-container {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--accent-soft); padding: 12px 20px; border-radius: var(--radius-pill);
+      border: 1px solid var(--border); cursor: pointer;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 14px; user-select: none; transition: all var(--transition);
     }
-    .pin-digit:focus{border-color:#333;background:#FFF;outline:none;}
+    .iban-container:hover { border-color: var(--border-hover); background: #EAEAE8; }
+    .copy-icon { width: 16px; height: 16px; fill: var(--text-muted); }
 
-    .admin-badge{
-      position:fixed;top:10px;right:10px;background:#000;color:#FFF;padding:4px 8px;font-size:10px;border-radius:4px;display:none;z-index:2000;
+    /* ---- Release Section ---- */
+    .release-section {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 24px; margin-bottom: 36px; text-align: center;
+      box-shadow: var(--shadow-card);
     }
-    body.admin-mode .admin-badge{display:block;}
+    .release-section h2 { font-size: 14px; font-weight: 600; margin: 0 0 8px; }
+    .release-section p { font-size: 13px; color: var(--text-secondary); margin: 0 0 16px; }
 
-    .toast{
-      position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
-      background:#222;color:#FFF;padding:12px 24px;border-radius:999px;opacity:0;pointer-events:none;transition:all 0.3s;
-      z-index:1000;max-width:calc(100% - 24px);text-align:center;overflow-wrap:anywhere;
+    /* ---- Controls ---- */
+    .controls { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+    .search-row { position: relative; }
+    .search-input {
+      width: 100%; padding: 14px 14px 14px 46px;
+      border: 1px solid var(--border); background: var(--bg-card);
+      border-radius: var(--radius-md); box-shadow: var(--shadow-card);
+      font-size: 15px; outline: none; font-family: inherit;
+      transition: border-color var(--transition), box-shadow var(--transition);
     }
-    .toast.active{opacity:1;transform:translateX(-50%) translateY(0);}
+    .search-input:focus { border-color: var(--border-hover); box-shadow: var(--shadow-card-hover); }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; fill: var(--text-muted); pointer-events: none; }
 
-    @media (max-width:600px){
-      .wrap{padding:40px 20px;}
-      .hero{height:260px;}
-      .item{grid-template-columns:1fr;gap:16px;}
-      .filter-row{flex-direction:column;align-items:stretch;}
-      button{width:100%;}
-      .sort-select{width:100%;}
+    .filter-row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .toggles { display: flex; gap: 8px; flex-wrap: wrap; }
+    .toggle-btn {
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary);
+      padding: 8px 16px; font-size: 13px; border-radius: var(--radius-pill);
+      cursor: pointer; font-family: inherit; font-weight: 400;
+      transition: all var(--transition);
+    }
+    .toggle-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+    .toggle-btn.active { background: var(--accent); color: #FFF; border-color: var(--accent); }
+    .sort-select {
+      border: 1px solid transparent; background: transparent; font-size: 13px;
+      cursor: pointer; padding: 8px 0; font-family: inherit; color: var(--text-secondary);
+    }
+
+    /* ---- Section Titles ---- */
+    .section-title {
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 36px 0 16px; cursor: pointer; user-select: none; gap: 12px;
+      padding: 4px 0;
+    }
+    .section-title h2 { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+    .section-chevron {
+      width: 14px; height: 14px; fill: var(--text-muted); flex: 0 0 auto;
+      transition: transform 0.25s var(--ease);
+    }
+    .section-title.collapsed .section-chevron { transform: rotate(-90deg); }
+
+    .gift-group { display: block; }
+    .gift-group.collapsed { display: none; }
+
+    /* ---- Gift Items ---- */
+    .item {
+      background: var(--bg-card); padding: 20px; margin-bottom: 12px;
+      border-radius: var(--radius-lg); border: 1px solid var(--border);
+      display: grid; grid-template-columns: auto 1fr auto;
+      gap: 20px; align-items: center;
+      box-shadow: var(--shadow-card);
+      transition: box-shadow var(--transition), border-color var(--transition);
+    }
+    .item:hover { box-shadow: var(--shadow-card-hover); border-color: var(--border-hover); }
+    .item.no-image { grid-template-columns: 1fr auto; }
+    .item.my-reservation { border-color: var(--green); background: #FCFEFA; }
+
+    /* ---- Item Image ---- */
+    .item-image {
+      width: 90px; height: 90px; border-radius: var(--radius-sm);
+      object-fit: cover; background: var(--accent-soft); flex-shrink: 0;
+      display: block;
+    }
+    .item-image-placeholder {
+      width: 90px; height: 90px; border-radius: var(--radius-sm);
+      background: var(--accent-soft); flex-shrink: 0; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .item-image-placeholder svg { width: 28px; height: 28px; fill: var(--text-muted); opacity: 0.4; }
+
+    .item-content { min-width: 0; }
+    .item-title { font-size: 16px; font-weight: 500; margin-bottom: 6px; overflow-wrap: anywhere; line-height: 1.35; }
+    .meta { font-size: 13px; color: var(--text-secondary); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .meta a { text-decoration: none; color: var(--text-muted); transition: color var(--transition); }
+    .meta a:hover { color: var(--text-primary); }
+    .sep { width: 3px; height: 3px; background: var(--border-hover); border-radius: 50%; flex: 0 0 auto; }
+
+    /* ---- Buttons ---- */
+    button {
+      background: var(--accent); color: #FFF; border: none;
+      padding: 10px 20px; border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
+      transition: all var(--transition); white-space: nowrap;
+    }
+    button:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    button:disabled { background: var(--accent-soft); color: var(--text-muted); cursor: default; transform: none; }
+    button.reserved {
+      background: transparent; color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    button.reserved:hover { background: var(--accent-soft); transform: translateY(-1px); }
+    button.undo {
+      background: var(--green-bg); color: var(--green); border: 1px solid rgba(46,125,50,0.3);
+    }
+    button.undo:hover { background: rgba(76,175,80,0.12); transform: translateY(-1px); }
+
+    /* ---- My Reservations ---- */
+    #my-reservations-section {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px; margin-bottom: 36px;
+      display: none; box-shadow: var(--shadow-card);
+    }
+    #my-reservations-section h2 { font-size: 18px; font-weight: 600; margin: 0 0 16px; }
+
+    .empty-state { text-align: center; color: var(--text-muted); padding: 48px 16px; font-size: 14px; }
+
+    /* ---- Modal ---- */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal {
+      background: #FFF; width: 90%; max-width: 380px; padding: 32px;
+      border-radius: var(--radius-lg); text-align: center;
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.3s var(--ease);
+      box-shadow: var(--shadow-float);
+    }
+    .modal-overlay.active .modal { transform: scale(1) translateY(0); }
+    .modal h3 { margin: 0 0 12px; font-size: 18px; font-weight: 600; }
+    .modal p { color: var(--text-secondary); font-size: 15px; margin: 0 0 20px; }
+    .modal-actions { display: flex; gap: 10px; }
+    .modal-btn { flex: 1; padding: 13px; border-radius: var(--radius-sm); font-weight: 500; }
+    .modal-btn.secondary { background: var(--accent-soft); color: var(--text-primary); }
+    .modal-btn.secondary:hover { background: #E5E5E3; }
+
+    .pin-input-container { display: flex; gap: 12px; justify-content: center; margin: 20px 0; }
+    .pin-digit {
+      width: 52px; height: 60px; font-size: 24px; text-align: center;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--accent-soft); font-family: inherit; font-weight: 600;
+      transition: all var(--transition);
+    }
+    .pin-digit:focus { border-color: var(--accent); background: #FFF; outline: none; box-shadow: 0 0 0 3px rgba(0,0,0,0.06); }
+
+    /* ---- Admin ---- */
+    .admin-badge {
+      position: fixed; top: 10px; right: 10px; background: var(--red); color: #FFF;
+      padding: 4px 10px; font-size: 10px; font-weight: 600; border-radius: var(--radius-sm);
+      display: none; z-index: 2000; letter-spacing: 0.05em;
+    }
+    body.admin-mode .admin-badge { display: block; }
+
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: var(--accent); color: #FFF;
+      padding: 14px 28px; border-radius: var(--radius-pill);
+      opacity: 0; pointer-events: none; transition: all 0.35s var(--ease);
+      z-index: 1000; max-width: calc(100% - 32px); text-align: center;
+      overflow-wrap: anywhere; font-size: 14px; font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    }
+    .toast.active { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ---- Group Gift Item ---- */
+    .item.group-gift-item { border-left: 4px solid var(--green); }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 600px) {
+      .wrap { padding: 24px 16px 60px; }
+      .hero { height: 240px; }
+      .hero-overlay { padding: 28px 20px 20px; }
+      .hero-overlay h1 { font-size: 26px; }
+      .item { grid-template-columns: 1fr; gap: 14px; }
+      .item.no-image { grid-template-columns: 1fr; }
+      .item-image, .item-image-placeholder { width: 100%; height: 180px; border-radius: var(--radius-sm); }
+      .filter-row { flex-direction: column; align-items: stretch; }
+      button { width: 100%; }
+      .sort-select { width: 100%; }
     }
   </style>
 </head>
@@ -150,9 +284,13 @@
   <div class="admin-badge">ADMIN</div>
 
   <div class="wrap">
-    <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" class="hero" alt="Cover" />
-    <h1>Unsere Hochzeitswunschliste</h1>
-    <p class="intro">Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind kein Muss.</p>
+    <div class="hero-container">
+      <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" class="hero" alt="Cover" />
+      <div class="hero-overlay">
+        <h1>Unsere Hochzeitswunschliste</h1>
+        <p>Wir freuen uns, dass ihr diesen besonderen Tag mit uns feiert. Geschenke sind kein Muss.</p>
+      </div>
+    </div>
 
     <div id="admin-dashboard" style="display:none;background:#FFF0F0;border:2px solid #D32F2F;padding:20px;margin-bottom:40px;border-radius:16px;">
       <h2 style="color:#D32F2F;margin-top:0;font-size:18px;">Admin Dashboard</h2>
@@ -172,6 +310,11 @@
       </div>
     </div>
 
+    <div class="progress-container" id="progress-container">
+      <div class="progress-text" id="progress-text">Lade Status...</div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
     <div class="group-gift">
       <h2>Sammelgeschenk – KPM Kurland</h2>
       <p>Wer sich beteiligen möchte, kann dies gerne über unseren Trauzeugen Max Tiefenbacher tun.</p>
@@ -181,18 +324,18 @@
         </svg>
         <span>DE89 2007 0024 0191 3888 02</span>
       </div>
-      <div style="font-size:13px;color:#888;margin-top:8px;">Max Tiefenbacher</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:10px;">Max Tiefenbacher</div>
     </div>
 
     <div class="release-section">
       <h2>Reservierung freigeben</h2>
       <p>Falls du einen Wunsch reserviert hast, kannst du ihn mit deinem Code hier freigeben.</p>
-      <button class="modal-btn secondary" style="width:auto;padding:8px 16px;" onclick="app.openReleaseModal()">Mit Code freigeben</button>
+      <button class="modal-btn secondary" style="width:auto;padding:10px 20px;border-radius:var(--radius-sm);" onclick="app.openReleaseModal()">Mit Code freigeben</button>
     </div>
 
-    <div class="progress-container" id="progress-container">
-      <div class="progress-text" id="progress-text">Lade Status...</div>
-      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div id="my-reservations-section">
+      <h2>Deine Reservierungen</h2>
+      <div id="my-reservations-list"></div>
     </div>
 
     <div class="controls">
@@ -215,11 +358,6 @@
           <option value="price_desc">Preis (absteigend)</option>
         </select>
       </div>
-    </div>
-
-    <div id="my-reservations-section">
-      <h2>Deine Reservierungen</h2>
-      <div id="my-reservations-list"></div>
     </div>
 
     <div id="list"><div class="empty-state">Lade Liste...</div></div>
@@ -355,7 +493,6 @@
     function myReservationForGift(giftId) {
       const mine = (state.reservations || []).filter(r => r.gift_id === giftId && state.userPins.includes(r.pin));
       if (mine.length === 0) return null;
-      // Falls mehrere Datensätze existieren, summieren wir sicherheitshalber
       const totalQty = mine.reduce((s, r) => s + (parseInt(r.qty) || 1), 0);
       return { pin: mine[0].pin, qty: totalQty, rows: mine };
     }
@@ -456,7 +593,6 @@
       });
     }
 
-    // NEU: PIN + Menge auswählen (maxQty >= 1)
     function requestReservationInput(title, txt, maxQty) {
       return new Promise(resolve => {
         const safeMax = Math.max(1, parseInt(maxQty || 1, 10));
@@ -615,7 +751,6 @@
         if (!g) return;
         if (getAvailable(g) < 1) { showToast("Nicht mehr verfügbar."); return; }
 
-        // Immer zuerst frisch prüfen, damit maxQty korrekt ist
         const { data: fresh, error: fErr } = await sb.from("gifts").select("quantity, reserved_quantity").eq("id", id).single();
         if (fErr || !fresh) { showToast("Fehler beim Prüfen."); return; }
 
@@ -632,7 +767,6 @@
         const pin = input.pin;
         const qtyWanted = Math.max(1, Math.min(availableNow, parseInt(input.qty || 1, 10) || 1));
 
-        // Prüfen, ob es für (gift_id,pin) schon eine Reservierung gibt
         const { data: existingRows, error: exErr } = await sb
           .from("reservations")
           .select("id, qty")
@@ -643,7 +777,6 @@
         const existing = (existingRows && existingRows.length > 0) ? existingRows[0] : null;
         const existingQty = existing ? (parseInt(existing.qty) || 1) : 0;
 
-        // Nochmal live gegen die Verfügbarkeit: falls jemand dazwischen reserviert
         const { data: fresh2, error: fErr2 } = await sb.from("gifts").select("quantity, reserved_quantity").eq("id", id).single();
         if (fErr2 || !fresh2) { showToast("Fehler beim Prüfen."); return; }
 
@@ -652,7 +785,6 @@
 
         const qtyFinal = Math.max(1, Math.min(availableNow2, qtyWanted));
 
-        // Update oder Insert
         if (existing) {
           const newExistingQty = existingQty + qtyFinal;
 
@@ -674,7 +806,6 @@
           }
         }
 
-        // reserved_quantity hochzählen
         const newQ = (parseInt(fresh2.reserved_quantity) || 0) + qtyFinal;
         await sb.from("gifts").update({ reserved_quantity: newQ }).eq("id", id);
 
@@ -750,7 +881,6 @@
           return;
         }
 
-        // Wenn mehrere Reservierungen mit gleicher PIN existieren, lassen wir wählen
         if (hasRes && list.length > 1) {
           const el = document.getElementById("modalOverlay");
           document.getElementById("modalTitle").textContent = "Mehrere Reservierungen gefunden";
@@ -1114,6 +1244,16 @@
       }
     }
 
+    // ---------- Image helper ----------
+    const placeholderSVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>`;
+
+    function renderImageBlock(g) {
+      if (g.image_url) {
+        return `<img class="item-image" src="${escapeHtml(g.image_url)}" alt="${escapeHtml(g.title)}" loading="lazy" onerror="this.outerHTML='<div class=\\'item-image-placeholder\\'>${placeholderSVG}</div>'" />`;
+      }
+      return `<div class="item-image-placeholder">${placeholderSVG}</div>`;
+    }
+
     function renderItem(g, isMySection = false) {
       const inMySection = (isMySection === true);
 
@@ -1122,8 +1262,9 @@
       const avail = getAvailable(g);
       const myRes = myReservationForGift(g.id);
       const my = !!myRes;
+      const hasImage = !!g.image_url;
 
-      const price = g.Preis ? `<span>${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
+      const price = g.Preis ? `<span style="font-weight:500;">${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
 
       let act = "";
       if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
@@ -1136,12 +1277,12 @@
       const qty = parseInt(g.quantity) || 1;
 
       if (myRes && (parseInt(myRes.qty) || 0) > 0) {
-        st += `<div style="color:#555;font-size:12px;margin-top:6px;">Du hast ${parseInt(myRes.qty)} reserviert</div>`;
+        st += `<div style="color:var(--text-secondary);font-size:12px;margin-top:6px;">Du hast ${parseInt(myRes.qty)} reserviert</div>`;
       }
 
       if (qty > 1) {
-        if (avail === 0) st += `<div style="color:#D32F2F;font-size:12px;">Alle ${qty} vergeben</div>`;
-        else st += `<div style="color:#2E7D32;font-size:12px;">${avail} von ${qty} verfügbar</div>`;
+        if (avail === 0) st += `<div style="color:var(--red);font-size:12px;">Alle ${qty} vergeben</div>`;
+        else st += `<div style="color:var(--green);font-size:12px;">${avail} von ${qty} verfügbar</div>`;
       }
 
       let coordUI = "";
@@ -1165,7 +1306,7 @@
             <a href="${escapeHtml(group.whatsapp_link)}"
                target="_blank"
                rel="noopener"
-               style="font-size:11px;color:#666;text-decoration:underline">
+               style="font-size:11px;color:var(--text-muted);text-decoration:underline">
               An Gruppengeschenk beteiligen (${count}/${group.max_members})
             </a>
           `;
@@ -1177,10 +1318,11 @@
         : "";
 
       return `
-        <div class="item ${my ? "my-reservation" : ""}">
+        <div class="item ${my ? "my-reservation" : ""} ${!hasImage ? "no-image" : ""}">
+          ${renderImageBlock(g)}
           <div class="item-content">
             <div class="item-title">${escapeHtml(g.title)}</div>
-            <div class="meta">${price}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop ↗</a></div>
+            <div class="meta">${price}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Zum Shop &#8599;</a></div>
             ${st}
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
@@ -1194,36 +1336,38 @@
 
     function renderGroupGiftItem(g, isMySection = false) {
       const inMySection = (isMySection === true);
+      const hasImage = !!g.image_url;
 
       const current = getContributionTotal(g.id);
       const target = parseFloat(g.target_amount) || 1;
       const percent = Math.min(100, (current / target) * 100);
 
       const bar = `
-        <div style="margin-top:8px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;color:#555;margin-bottom:4px;">
+        <div style="margin-top:10px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin-bottom:4px;">
             <span>${current}€ gesammelt</span>
             <span>Ziel: ${target}€</span>
           </div>
-          <div style="height:6px;background:#EEE;border-radius:4px;overflow:hidden;">
-            <div style="height:100%;width:${percent}%;background:#4CAF50;"></div>
+          <div style="height:5px;background:var(--border);border-radius:4px;overflow:hidden;">
+            <div style="height:100%;width:${percent}%;background:var(--green);border-radius:4px;transition:width 0.8s var(--ease);"></div>
           </div>
         </div>
       `;
 
-      let act = `<button style="background:#2E7D32;" onclick="app.contribute('${g.id}')">An Gruppengeschenk beteiligen</button>`;
+      let act = `<button style="background:var(--green);" onclick="app.contribute('${g.id}')">Beteiligen</button>`;
       if (inMySection) act = `<button class="undo" onclick="app.removeContribution('${g.id}')">Beitrag zurückziehen</button>`;
 
-      const priceStr = g.Preis ? `<span>${escapeHtml(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
+      const priceStr = g.Preis ? `<span style="font-weight:500;">${escapeHtml(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
 
       return `
-        <div class="item ${isReservedByMe(g) ? "my-reservation" : ""}" style="border-left:4px solid #4CAF50;">
-          <div class="item-content" style="width:100%">
+        <div class="item group-gift-item ${isReservedByMe(g) ? "my-reservation" : ""} ${!hasImage ? "no-image" : ""}">
+          ${renderImageBlock(g)}
+          <div class="item-content" style="min-width:0;">
             <div class="item-title">
               ${escapeHtml(g.title)}
-              <span style="font-size:12px;font-weight:400;color:#4CAF50;background:#E8F5E9;padding:2px 6px;border-radius:4px;margin-left:6px;">Sammelgeschenk</span>
+              <span style="font-size:11px;font-weight:500;color:var(--green);background:var(--green-bg);padding:2px 8px;border-radius:var(--radius-pill);margin-left:6px;white-space:nowrap;">Sammelgeschenk</span>
             </div>
-            <div class="meta">${priceStr}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Details ↗</a></div>
+            <div class="meta">${priceStr}<a href="${escapeHtml(g.url)}" target="_blank" rel="noopener">Details &#8599;</a></div>
             ${bar}
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:100px;">
