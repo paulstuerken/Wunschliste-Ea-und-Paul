@@ -427,6 +427,14 @@
         .replace(/"/g, "&quot;");
     }
 
+    function escapeId(s) {
+      return String(s || "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r");
+    }
+
     function showToast(msg) {
       const t = document.getElementById("toast");
       t.textContent = msg;
@@ -1290,11 +1298,11 @@
       const price = g.Preis ? `<span style="font-weight:500;">${escapeHtml(g.Preis)}</span><div class="sep"></div>` : "";
 
       let act = "";
-      if (avail > 0) act = `<button onclick="app.reserve('${g.id}')">Reservieren</button>`;
-      else if (my) act = `<button class="reserved" onclick="app.unreserve('${g.id}')">Meine Reservierung</button>`;
+      if (avail > 0) act = `<button onclick="app.reserve('${escapeId(g.id)}')">Reservieren</button>`;
+      else if (my) act = `<button class="reserved" onclick="app.unreserve('${escapeId(g.id)}')">Meine Reservierung</button>`;
       else act = `<button disabled>Vergeben</button>`;
 
-      if (inMySection) act = `<button class="undo" onclick="app.unreserve('${g.id}')">Freigeben</button>`;
+      if (inMySection) act = `<button class="undo" onclick="app.unreserve('${escapeId(g.id)}')">Freigeben</button>`;
 
       let st = "";
       const qty = parseInt(g.quantity) || 1;
@@ -1319,7 +1327,7 @@
         if (!group) {
           coordUI = `
             <button class="reserved" style="font-size:11px"
-              onclick="app.createCoordination('${g.id}')">
+              onclick="app.createCoordination('${escapeId(g.id)}')">
               Organisation eines Gruppengeschenkes übernehmen
             </button>
           `;
@@ -1337,7 +1345,7 @@
       }
 
       const admin = state.isAdmin
-        ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${g.id}')">RESET GIFT</button></div>`
+        ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${escapeId(g.id)}')">RESET GIFT</button></div>`
         : "";
 
       return `
@@ -1376,8 +1384,8 @@
         </div>
       `;
 
-      let act = `<button style="background:var(--green);" onclick="app.contribute('${g.id}')">Beteiligen</button>`;
-      if (inMySection) act = `<button class="undo" onclick="app.removeContribution('${g.id}')">Beitrag zurückziehen</button>`;
+      let act = `<button style="background:var(--green);" onclick="app.contribute('${escapeId(g.id)}')">Beteiligen</button>`;
+      if (inMySection) act = `<button class="undo" onclick="app.removeContribution('${escapeId(g.id)}')">Beitrag zurückziehen</button>`;
 
       const priceStr = g.Preis ? `<span style="font-weight:500;">${escapeHtml(g.Preis)} (Ziel)</span><div class="sep"></div>` : "";
 
