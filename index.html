@@ -63,8 +63,9 @@
       text-shadow: 0 2px 12px rgba(0,0,0,0.3); text-align: center;
     }
     .hero-overlay p {
-      color: rgba(255,255,255,0.85); font-size: 15px; margin: 0;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.2);
+      color: rgba(255,255,255,0.9); font-size: 15px; margin: 8px 0 0;
+      text-align: center; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.25);
     }
 
     /* ---- Progress ---- */
@@ -103,6 +104,15 @@
     .release-section h2 { font-size: 14px; font-weight: 600; margin: 0 0 8px; }
     .release-section p { font-size: 13px; color: var(--text-secondary); margin: 0 0 16px; }
 
+    /* ---- Info Card (Lieferadresse) ---- */
+    .info-card {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 18px 24px; margin-bottom: 24px; text-align: center; box-shadow: var(--shadow-card);
+    }
+    .info-card-label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+    .info-card-value { font-size: 16px; color: var(--text-primary); line-height: 1.5; }
+
     /* ---- Controls ---- */
     .controls { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
     .search-row { position: relative; }
@@ -125,9 +135,8 @@
       cursor: pointer; font-family: inherit; font-weight: 400;
       transition: all var(--transition);
     }
-    .toggle-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
-    .toggle-btn.active { background: var(--accent); color: #FFF; border-color: var(--accent); }
     .toggle-btn:hover { border-color: var(--pink); color: var(--pink); }
+    .toggle-btn.active { background: var(--accent); color: #FFF; border-color: var(--accent); }
     .sort-select {
       border: 1px solid transparent; background: transparent; font-size: 13px;
       cursor: pointer; padding: 8px 0; font-family: inherit; color: var(--text-secondary);
@@ -304,6 +313,7 @@
       <img src="https://drive.google.com/thumbnail?id=1WYWYZjvu1wDPXqNuzFNPFI2quZTky3q0&sz=w2000" class="hero" alt="Cover" />
       <div class="hero-overlay">
         <h1>Unsere Hochzeitswunschliste</h1>
+        <p>Ea &amp; Paul</p>
       </div>
     </div>
 
@@ -342,8 +352,9 @@
       <div style="font-size:13px;color:var(--text-muted);margin-top:10px;">Max Tiefenbacher</div>
     </div>
 
-    <div style="text-align:center;color:var(--text-primary);font-size:18px;margin-bottom:24px;line-height:1.6;">
-      Lieferadresse: Urte und Jens Bötel, Hinter der Kirche 12, 38312 Börßum
+    <div class="info-card">
+      <span class="info-card-label">Lieferadresse</span>
+      <span class="info-card-value">Urte und Jens Bötel · Hinter der Kirche 12 · 38312 Börßum</span>
     </div>
 
     <div style="text-align:center;margin-bottom:36px;">
