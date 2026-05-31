@@ -216,7 +216,6 @@
       flex-shrink: 0; width: 160px;
     }
     .item-actions button { width: 100%; text-align: center; white-space: normal; word-wrap: break-word; }
-    .item-actions .coord-link { font-size:11px; color:var(--text-muted); text-decoration:underline; text-align:center; display:block; }
 
     /* ---- Buttons ---- */
     button {
@@ -457,8 +456,6 @@
     const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const state = {
-      coordGroups: [],
-      coordMembers: [],
       gifts: [],
       reservations: [],
       contributions: [],
@@ -509,40 +506,6 @@
       }
     }
 
-    // ---------- WhatsApp ----------
-    function normalizeWhatsAppLink(raw) {
-      let link = String(raw || "").trim();
-      if (!link) return "";
-      if (link.startsWith("chat.whatsapp.com/")) link = "https://" + link;
-      if (link.startsWith("www.chat.whatsapp.com/")) link = "https://" + link.replace(/^www\./, "");
-      if (link.startsWith("whatsapp.com/invite/")) link = "https://www." + link;
-      if (link.startsWith("www.whatsapp.com/invite/")) link = "https://" + link;
-      return link.trim();
-    }
-
-    function isValidWhatsAppInvite(raw) {
-      const link = normalizeWhatsAppLink(raw);
-      try {
-        const u = new URL(link);
-        const host = u.hostname.replace(/^www\./, "");
-        const path = u.pathname.replace(/\/+/g, "/");
-        const isChat = host === "chat.whatsapp.com" && path.length > 2;
-        const isInvite = host === "whatsapp.com" && path.startsWith("/invite/") && path.length > "/invite/".length;
-        return isChat || isInvite;
-      } catch {
-        return false;
-      }
-    }
-
-    function openWhatsApp(link) {
-      const url = normalizeWhatsAppLink(link);
-      if (!isValidWhatsAppInvite(url)) {
-        showToast("Ungültiger WhatsApp-Link.");
-        return;
-      }
-      window.open(url, "_blank", "noopener");
-    }
-
     // ---------- Data helpers ----------
     function parsePrice(s) {
       if (!s) return Infinity;
@@ -581,23 +544,6 @@
         return (state.contributions || []).some(c => c.gift_id === g.id && state.userPins.includes(c.pin));
       }
       return !!myReservationForGift(g.id);
-    }
-
-    // ---------- Coordination helpers ----------
-    function getGroupForGift(giftId) {
-      return (state.coordGroups || []).find(gr => gr.gift_id === giftId) || null;
-    }
-
-    function getMemberPinsForGroup(groupId) {
-      const pins = (state.coordMembers || [])
-        .filter(m => m.group_id === groupId)
-        .map(m => String(m.pin || "").trim())
-        .filter(Boolean);
-      return Array.from(new Set(pins));
-    }
-
-    function getMemberCount(groupId) {
-      return getMemberPinsForGroup(groupId).length;
     }
 
     // ---------- Modal helpers ----------
@@ -1055,79 +1001,6 @@
         await loadData();
       },
 
-      createCoordination: async (giftId) => {
-        const existing = getGroupForGift(giftId);
-        if (existing) {
-          showToast("Für dieses Geschenk gibt es bereits eine Organisation.");
-          return;
-        }
-
-        const pin = await requestPin("Organisation übernehmen", "Bitte lege einen 4-stelligen Code fest.");
-        if (!pin) return;
-
-        const linkRaw = prompt("WhatsApp Gruppenlink einfügen:") || "";
-        const link = normalizeWhatsAppLink(linkRaw);
-
-        if (!isValidWhatsAppInvite(link)) {
-          showToast("Ungültiger WhatsApp Gruppenlink. Bitte direkt aus WhatsApp kopieren.");
-          return;
-        }
-
-        const max = parseInt(prompt("Maximale Teilnehmerzahl? (z.B. 3)"), 10);
-        if (!max || max < 2) { showToast("Ungültige Anzahl."); return; }
-
-        const { data: created, error } = await sb
-          .from("gift_coordination_groups")
-          .insert({ gift_id: giftId, creator_pin: pin, whatsapp_link: link, max_members: max })
-          .select("*")
-          .single();
-
-        if (error || !created) {
-          console.error(error);
-          showToast("Fehler beim Anlegen.");
-          return;
-        }
-
-        const { error: mErr } = await sb
-          .from("gift_coordination_members")
-          .insert({ group_id: created.id, pin: pin });
-
-        if (mErr) console.warn("Member insert failed (check columns/RLS):", mErr);
-
-        savePin(pin);
-        showToast("Organisation angelegt.");
-        await loadData();
-      },
-
-      joinCoordination: async (groupId) => {
-        const group = (state.coordGroups || []).find(g => g.id === groupId);
-        if (!group) { showToast("Gruppe nicht gefunden."); return; }
-
-        const currentPins = getMemberPinsForGroup(groupId);
-        const max = parseInt(group.max_members) || 0;
-
-        if (max > 0 && currentPins.length >= max) {
-          showToast("Diese Organisation ist bereits voll.");
-          return;
-        }
-
-        const pin = await requestPin("An Gruppengeschenk beteiligen", "Bitte gib einen 4-stelligen Code ein.");
-        if (!pin) return;
-
-        if (!currentPins.includes(pin)) {
-          const { error } = await sb
-            .from("gift_coordination_members")
-            .insert({ group_id: groupId, pin: pin });
-
-          if (error) {
-            console.warn("Join insert failed (check columns/RLS):", error);
-          }
-        }
-
-        savePin(pin);
-        openWhatsApp(group.whatsapp_link);
-        await loadData();
-      }
     };
 
     // ---------- Load + Render ----------
@@ -1146,21 +1019,6 @@
         return;
       }
       state.gifts = gs || [];
-
-      try {
-        const { data: groups, error: ggErr } = await sb.from("gift_coordination_groups").select("*");
-        if (ggErr) throw ggErr;
-
-        const { data: members, error: gmErr } = await sb.from("gift_coordination_members").select("*");
-        if (gmErr) throw gmErr;
-
-        state.coordGroups = groups || [];
-        state.coordMembers = members || [];
-      } catch (e) {
-        console.warn("Coord tables missing / RLS / error:", e);
-        state.coordGroups = [];
-        state.coordMembers = [];
-      }
 
       try {
         const { data: contribs, error: cErr } = await sb.from("contributions").select("*");
@@ -1369,34 +1227,6 @@
         else st += `<div style="color:var(--green);font-size:12px;">${avail} von ${qty} verfügbar</div>`;
       }
 
-      let coordUI = "";
-      const group = getGroupForGift(g.id);
-
-      const isGiftReserved =
-        (parseInt(g.reserved_quantity || 0) > 0) ||
-        (getAvailable(g) === 0);
-
-      if (!g.is_group_gift && g.allow_coordination && !isGiftReserved) {
-        if (!group) {
-          coordUI = `
-            <button class="reserved" style="font-size:11px"
-              onclick="app.createCoordination('${escapeId(g.id)}')">
-              Organisation eines Gruppengeschenkes übernehmen
-            </button>
-          `;
-        } else {
-          const count = getMemberCount(group.id);
-          coordUI = `
-            <a href="${escapeHtml(group.whatsapp_link)}"
-               target="_blank"
-               rel="noopener"
-               style="font-size:11px;color:var(--text-muted);text-decoration:underline">
-              An Gruppengeschenk beteiligen (${count}/${group.max_members})
-            </a>
-          `;
-        }
-      }
-
       const admin = state.isAdmin
         ? `<div style="margin-top:5px"><button style="background:black;color:white;padding:4px 8px;font-size:10px" onclick="app.adminReset('${escapeId(g.id)}')">RESET GIFT</button></div>`
         : "";
@@ -1411,7 +1241,6 @@
           </div>
           <div class="item-actions">
             ${act}
-            ${coordUI}
             ${admin}
           </div>
         </div>
